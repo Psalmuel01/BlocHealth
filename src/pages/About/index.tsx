@@ -19,19 +19,19 @@ const About = () => {
           <p>Patient records</p>
         </Card>
         <Card className='bg-[#7CED0B61] flex flex-col gap-5 py-10 items-center w-full'>
-          <div><img src="/images/inpatient.png" alt="" className='w-16' /></div>
+          <div><img src="/images/icon-park.png" alt="" className='w-16' /></div>
           <p className='text-6xl font-clash_semibold'>120</p>
-          <p>Patient records</p>
+          <p>Appointments</p>
         </Card>
         <Card className='bg-[#0BEDED61] flex flex-col gap-5 py-10 items-center w-full'>
-          <div><img src="/images/inpatient.png" alt="" className='w-16' /></div>
+          <div><img src="/images/doc-chart.png" alt="" className='w-16' /></div>
           <p className='text-6xl font-clash_semibold'>120</p>
-          <p>Patient records</p>
+          <p>Pending records</p>
         </Card>
         <Card className='bg-[#B92BFC61] flex flex-col gap-5 py-10 items-center w-full'>
-          <div><img src="/images/inpatient.png" alt="" className='w-16' /></div>
+          <div><img src="/images/arrow-up.png" alt="" className='w-16' /></div>
           <p className='text-6xl font-clash_semibold'>120</p>
-          <p>Patient records</p>
+          <p>Shared records</p>
         </Card>
       </div>
 
