@@ -1,8 +1,12 @@
+import Header from '@/components/Header'
 import React from 'react'
 
 const NewsRecord = () => {
   return (
-    <div>NewsRecord</div>
+    <div className='pt-10 px-20 pb-0 h-screen'>
+      <Header />
+      <p>NewsRecord</p>
+    </div>
   )
 }
 
