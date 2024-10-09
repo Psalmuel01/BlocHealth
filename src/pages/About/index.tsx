@@ -1,7 +1,6 @@
 import Header from '@/components/Header'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import React from 'react'
 
 const About = () => {
   return (

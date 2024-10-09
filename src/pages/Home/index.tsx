@@ -1,10 +1,9 @@
-import React from 'react'
 import { Button } from '@/components/ui/button'
 import Header from '@/components/Header'
 
 const Home = () => {
   return (
-    <div className='flex flex-col justify-between pt-10 px-20 pb-0 h-screen'>
+    <div className='flex flex-col justify-between pt-10 px-20 pb-0 lg:h-screen'>
       {/* Header */}
       <Header />
 
