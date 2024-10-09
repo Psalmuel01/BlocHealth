@@ -4,15 +4,15 @@ import { Input } from '@/components/ui/input'
 
 const About = () => {
   return (
-    <div className='pt-10 px-20 pb-0 h-screen'>
+    <div className='p-10 px-5 lg:px-20 lg:h-screen'>
       <Header />
 
-      <div className='flex items-center justify-between mt-10'>
+      <div className='flex max-md:flex-col max-md:gap-2 items-center justify-between mt-10'>
         <p className='text-2xl w-full'>Welcome! <span className='font-clash_semibold ml-1'>Dr. John Leo</span></p>
         <Input type="email" placeholder="Search patient records" />
       </div>
 
-      <div className='mt-10 flex justify-between gap-10'>
+      <div className='mt-10 flex max-md:flex-col justify-between gap-10 max-md:gap-5'>
         <Card className='bg-[#D9D9D91A] flex flex-col gap-5 py-10 items-center w-full'>
           <div><img src="/images/inpatient.png" alt="" className='w-16' /></div>
           <p className='text-6xl font-clash_semibold'>120</p>
