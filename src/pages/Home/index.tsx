@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import Header from '@/components/Header'
 import { Link } from 'react-router-dom'
+// import { ConnectWallet } from '@coinbase/onchainkit/wallet'
+// import { Connect } from '@/components/Connect'
 
 const Home = () => {
   return (
@@ -15,6 +17,8 @@ const Home = () => {
         <div className='mt-5'>
           <Link to="/about"><Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button></Link>
         </div>
+        {/* <Connect />
+        <ConnectWallet /> */}
       </div>
 
       {/* Footer */}
