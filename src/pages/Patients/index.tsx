@@ -23,21 +23,21 @@ const PatientInfo: Patient[] = [
     },
     {
         name: "Peace Angel",
-        id: "51882C",
+        id: "51882D",
         image: "/images/patient2.png",
         published: 'Unpublished',
         shared: 'Shared'
     },
     {
         name: "Joy David",
-        id: "51882C",
+        id: "51882E",
         image: "/images/patient3.png",
         published: 'Published',
         shared: 'Shared'
     },
     {
         name: "Daniel Matt",
-        id: "51882C",
+        id: "51882F",
         image: "/images/patient4.png",
         published: 'Published',
         shared: 'Shared'
@@ -51,21 +51,21 @@ const PatientInfo: Patient[] = [
     },
     {
         name: "Peace Angel",
-        id: "51882C",
+        id: "51882D",
         image: "/images/patient2.png",
         published: 'Unpublished',
         shared: 'Shared'
     },
     {
         name: "Joy David",
-        id: "51882C",
+        id: "51882E",
         image: "/images/patient3.png",
         published: 'Published',
         shared: 'Shared'
     },
     {
         name: "Daniel Matt",
-        id: "51882C",
+        id: "51882F",
         image: "/images/patient4.png",
         published: 'Published',
         shared: 'Shared'
@@ -79,7 +79,7 @@ const PatientInfo: Patient[] = [
     },
     {
         name: "Daniel Matt",
-        id: "51882C",
+        id: "51882F",
         image: "/images/patient4.png",
         published: 'Unpublished',
         shared: 'Shared'
@@ -107,7 +107,7 @@ const Patients = () => {
                 <div className="mt-5 flex flex-wrap justify-between gap-4 text-sm">
                     {PatientInfo.map((patient, index) => (
                         <Card key={index} className="bg-[#35F3F324] p-3 px-5 w-[49%] max-md:w-full">
-                            <Link to="/patient" className="flex items-center justify-between">
+                            <Link to={`/patients/${patient.id}`} className="flex items-center justify-between">
                                 <div className="lg:flex-1 flex items-center gap-3">
                                     <img src={patient.image} alt={patient.name} />
                                     <div>
