@@ -9,7 +9,7 @@ const About = () => {
 
       <div className='flex max-md:flex-col max-md:gap-2 items-center justify-between mt-10'>
         <p className='text-2xl w-full'>Welcome! <span className='font-clash_semibold ml-1'>Dr. John Leo</span></p>
-        <Input type="email" placeholder="Search patient records" />
+        <Input type="text" placeholder="Search patient records" />
       </div>
 
       <div className='mt-10 flex max-md:flex-col justify-between gap-10 max-md:gap-5'>

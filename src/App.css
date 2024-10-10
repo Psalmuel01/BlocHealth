@@ -5,10 +5,17 @@
 body {
   background: linear-gradient(179.48deg, #2924A6 -26.07%, #100E40 99.55%) no-repeat;
   /* padding: 3% 5% 0; pt-10 px-20 pb-0 h-screen */
-  min-height: 100vh;
+  /* min-height: 100vh; */
   color: white;
   font-family: 'ClashDisplay-Regular', sans-serif;
   overflow-x: hidden;
+}
+
+.border-gradient {
+  border: 1px solid;
+  border-image-source: linear-gradient(96.13deg, #2924A6 -11.15%, #146899 100.31%);
+  border-image-slice: 1;
+  /* border-radius: 50px; */
 }
 
 @font-face {
