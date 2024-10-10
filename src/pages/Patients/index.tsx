@@ -108,15 +108,15 @@ const Patients = () => {
                     {PatientInfo.map((patient, index) => (
                         <Card key={index} className="bg-[#35F3F324] p-3 px-5 w-[49%] max-md:w-full">
                             <Link to="/patient" className="flex items-center justify-between">
-                                <div className="flex-1 flex items-center gap-3">
+                                <div className="lg:flex-1 flex items-center gap-3">
                                     <img src={patient.image} alt={patient.name} />
                                     <div>
                                         <p className="font-clash_semibold">{patient.name}</p>
                                         <p>ID: {patient.id}</p>
                                     </div>
                                 </div>
-                                <p className={`flex-1 font-clash_medium ${patient.published === 'Published' ? 'text-green-500' : 'text-red-500'}`}>{patient.published}</p>
-                                <p className="flex-2">{patient.shared}(6)</p>
+                                <p className={`lg:flex-1 font-clash_medium ${patient.published === 'Published' ? 'text-green-500' : 'text-red-500'}`}>{patient.published}</p>
+                                <p className="lg:flex-2">{patient.shared}(6)</p>
                             </Link>
                         </Card>
                     ))}
