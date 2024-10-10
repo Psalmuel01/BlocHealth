@@ -50,7 +50,7 @@ import {
   Identity,
   EthBalance,
 } from "@coinbase/onchainkit/identity";
-import { color } from "@coinbase/onchainkit/theme";
+// import { color } from "@coinbase/onchainkit/theme";
 import { Link } from "react-router-dom";
 
 export function WalletConnect() {

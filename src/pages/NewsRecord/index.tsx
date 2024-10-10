@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Cross1Icon, Link2Icon } from '@radix-ui/react-icons';
+import { Link2Icon } from '@radix-ui/react-icons';
+// import { Cross1Icon } from '@radix-ui/react-icons';
+import { Publish } from './Publish';
 
 
 const NewsRecord = () => {
@@ -127,7 +129,8 @@ const NewsRecord = () => {
           <Button size='lg' className='bg-[#2924A6]'>Save & Exit</Button>
           <Button size='lg' className='bg-[#2924A6]'>Save & Continue</Button>
         </div>
-        <Button size='lg' className='bg-[#2924A6]'>Publish record</Button>
+        {/* <Button size='lg' className='bg-[#2924A6]'>Publish record</Button> */}
+        <Publish />
       </div>
     </div >
   )

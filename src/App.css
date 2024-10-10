@@ -5,7 +5,7 @@
 body {
   background: linear-gradient(179.48deg, #2924A6 -26.07%, #100E40 99.55%) no-repeat;
   /* padding: 3% 5% 0; pt-10 px-20 pb-0 h-screen */
-  /* min-height: 100vh; */
+  min-height: 100vh;
   color: white;
   font-family: 'ClashDisplay-Regular', sans-serif;
   overflow-x: hidden;

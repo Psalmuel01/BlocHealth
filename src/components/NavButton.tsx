@@ -23,8 +23,8 @@ const NavButton = () => {
                     </button>
                 </DialogTrigger>
                 {/* <div className="fixed inset-0 z-50" /> */}
-                <DialogContent className="text-[#070B12] fixed h-full left-32 z-50 w-2/3 bg-white px-6 py-6">
-                    <div className="flex items-center justify-between">
+                <DialogContent className="fixed h-full left-32 z-50 w-2/3 bg-[#100E40] text-white px-6 py-6">
+                    <div className="flex items-end justify-start">
                         <Link to="/" className="text-xl">
                             <span className='font-clash_semibold'>Bloc</span>Health
                         </Link>

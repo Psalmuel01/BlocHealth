@@ -13,6 +13,7 @@ import Home from './pages/Home/index.tsx';
 import About from './pages/About/index.tsx';
 import NewsRecord from './pages/NewsRecord/index.tsx';
 import { baseSepolia } from 'viem/chains';
+import Patients from './pages/Patients/index.tsx';
 
 globalThis.Buffer = Buffer;
 
@@ -34,6 +35,10 @@ function App() {
       path: "about",
       element: <About />,
     },
+    {
+      path: "patients",
+      element: <Patients />
+    }
   ]);
 
   return (
