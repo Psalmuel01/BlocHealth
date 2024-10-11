@@ -29,14 +29,14 @@ const About = () => {
           </Link>
         </Card>
         <Card className='bg-[#0BEDED61] py-10 w-full'>
-          <Link to={"/patients"} className='flex flex-col gap-5 items-center'>
+          <Link to={"/pending"} className='flex flex-col gap-5 items-center'>
             <div><img src="/images/doc-chart.png" alt="" className='w-16' /></div>
             <p className='text-6xl font-clash_semibold'>05</p>
             <p>Pending records</p>
           </Link>
         </Card>
         <Card className='bg-[#B92BFC61] py-10 w-full'>
-          <Link to={"/patients"} className='flex flex-col gap-5 items-center'>
+          <Link to={"/shared"} className='flex flex-col gap-5 items-center'>
             <div><img src="/images/arrow-up.png" alt="" className='w-16' /></div>
             <p className='text-6xl font-clash_semibold'>10</p>
             <p>Shared records</p>

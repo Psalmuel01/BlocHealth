@@ -12,11 +12,13 @@ import {
 import Home from './pages/Home/index.tsx';
 import About from './pages/About/index.tsx';
 import NewsRecord from './pages/NewsRecord/index.tsx';
-import { baseSepolia } from 'viem/chains';
-// import {base} from 'wagmi/chains';
+
 import Patients from './pages/Patients/index.tsx';
 import Patient from './pages/Patients/Patient/index.tsx';
 import Appointments from './pages/Appointments/index.tsx';
+import Shared from './pages/Shared/index.tsx';
+import Pending from './pages/Pending/index.tsx';
+import { base } from 'wagmi/chains';
 
 globalThis.Buffer = Buffer;
 
@@ -49,13 +51,21 @@ function App() {
     {
       path: "appointments",
       element: <Appointments />
+    },
+    {
+      path: "shared",
+      element: <Shared />
+    },
+    {
+      path: "pending",
+      element: <Pending />
     }
   ]);
 
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY} chain={baseSepolia}>
+        <OnchainKitProvider apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY} chain={base}>
           <RouterProvider router={router} />
         </OnchainKitProvider>
       </QueryClientProvider>

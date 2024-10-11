@@ -2,13 +2,14 @@ import Header from "@/components/Header"
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Cross1Icon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 
 interface Patient {
     name: string;
     id: string;
     image: string;
-    published: 'Published' | 'Unpublished';
+    published: 'Published';
     shared: string;
 }
 
@@ -22,13 +23,6 @@ const PatientInfo: Patient[] = [
         shared: 'Shared'
     },
     {
-        name: "Peace Angel",
-        id: "51882D",
-        image: "/images/patient2.png",
-        published: 'Unpublished',
-        shared: 'Shared'
-    },
-    {
         name: "Joy David",
         id: "51882E",
         image: "/images/patient3.png",
@@ -40,20 +34,6 @@ const PatientInfo: Patient[] = [
         id: "51882F",
         image: "/images/patient4.png",
         published: 'Published',
-        shared: 'Shared'
-    },
-    {
-        name: "Jason Dave",
-        id: "51882C",
-        image: "/images/patient.png",
-        published: 'Unpublished',
-        shared: 'Shared'
-    },
-    {
-        name: "Peace Angel",
-        id: "51882D",
-        image: "/images/patient2.png",
-        published: 'Unpublished',
         shared: 'Shared'
     },
     {
@@ -75,28 +55,21 @@ const PatientInfo: Patient[] = [
         id: "51882C",
         image: "/images/patient.png",
         published: 'Published',
-        shared: 'Shared'
-    },
-    {
-        name: "Daniel Matt",
-        id: "51882F",
-        image: "/images/patient4.png",
-        published: 'Unpublished',
         shared: 'Shared'
     },
 ]
 
-const Patients = () => {
+const Shared = () => {
     return (
         <div className='pt-10 px-5 lg:px-20 min-h-screen'>
             <Header />
 
             <div className='flex justify-between mt-5'>
                 <div>
-                    <p className='text-2xl font-clash_semibold'>Patients' Record</p>
-                    <p className='font-clash_light'>Record of your patients</p>
+                    <p className='text-2xl font-clash_semibold'>Shared Records</p>
+                    <p className='font-clash_light'>Shared record of your patients</p>
                 </div>
-                {/* <Cross1Icon /> */}
+                <Cross1Icon />
             </div>
 
             <div className="lg:w-1/2 mt-5">
@@ -115,7 +88,7 @@ const Patients = () => {
                                         <p>ID: {patient.id}</p>
                                     </div>
                                 </div>
-                                <p className={`lg:flex-1 font-clash_medium ${patient.published === 'Published' ? 'text-green-500' : 'text-red-500'}`}>{patient.published}</p>
+                                <p className='lg:flex-1 font-clash_medium text-green-500'>{patient.published}</p>
                                 <p className="lg:flex-2">{patient.shared}(6)</p>
                             </Link>
                         </Card>
@@ -131,4 +104,4 @@ const Patients = () => {
     )
 }
 
-export default Patients
+export default Shared
