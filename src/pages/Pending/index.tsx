@@ -2,7 +2,8 @@ import Header from "@/components/Header"
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router-dom";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Patient {
     name: string;
@@ -45,16 +46,18 @@ const PatientInfo: Patient[] = [
 ]
 
 const Pending = () => {
+    const navigate = useNavigate();
+
     return (
         <div className='pt-10 px-5 lg:px-20 min-h-screen'>
             <Header />
 
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between items-center mt-5'>
                 <div>
                     <p className='text-2xl font-clash_semibold'>Pending Record</p>
                     <p className='font-clash_light'>Record of patients yet to be published on the blockchain</p>
                 </div>
-                {/* <Cross1Icon /> */}
+                <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} />
             </div>
 
             <div className="lg:w-1/2 mt-5">

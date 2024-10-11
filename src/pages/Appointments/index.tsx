@@ -1,7 +1,8 @@
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ChevronDownIcon } from "@radix-ui/react-icons"
+import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons"
+import { useNavigate } from "react-router-dom"
 
 const appointments = [
     {
@@ -49,16 +50,18 @@ const appointments = [
 ]
 
 const Appointments = () => {
+    const navigate = useNavigate();
+
     return (
         <div className='pt-10 px-5 lg:px-20 pb-0 min-h-screen'>
             <Header />
 
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between items-center mt-5'>
                 <div>
                     <p className='text-2xl font-clash_semibold'>Scheduled Appointments</p>
                     <p className='font-clash_light'>List of appointments you have to attend to</p>
                 </div>
-                {/* <Cross1Icon /> */}
+                <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} />
             </div>
 
             <div className="mt-8">

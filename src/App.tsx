@@ -10,7 +10,7 @@ import {
   RouterProvider
 } from "react-router-dom";
 import Home from './pages/Home/index.tsx';
-import About from './pages/About/index.tsx';
+import Dashboard from './pages/Dashboard/index.tsx';
 import NewsRecord from './pages/NewsRecord/index.tsx';
 
 import Patients from './pages/Patients/index.tsx';
@@ -18,7 +18,8 @@ import Patient from './pages/Patients/Patient/index.tsx';
 import Appointments from './pages/Appointments/index.tsx';
 import Shared from './pages/Shared/index.tsx';
 import Pending from './pages/Pending/index.tsx';
-import { base } from 'wagmi/chains';
+import { baseSepolia } from 'wagmi/chains';
+import Notifications from './pages/Notifications/index.tsx';
 
 globalThis.Buffer = Buffer;
 
@@ -37,8 +38,8 @@ function App() {
       element: <NewsRecord />,
     },
     {
-      path: "about",
-      element: <About />,
+      path: "dashboard",
+      element: <Dashboard />,
     },
     {
       path: "patients",
@@ -59,13 +60,17 @@ function App() {
     {
       path: "pending",
       element: <Pending />
+    },
+    {
+      path: "notifications",
+      element: <Notifications />
     }
   ]);
 
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY} chain={base}>
+        <OnchainKitProvider apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY} chain={baseSepolia}>
           <RouterProvider router={router} />
         </OnchainKitProvider>
       </QueryClientProvider>

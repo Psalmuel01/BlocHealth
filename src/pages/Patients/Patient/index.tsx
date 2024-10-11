@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Cross1Icon, OpenInNewWindowIcon } from "@radix-ui/react-icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const patient = {
     name: 'Jason Dave',
@@ -11,7 +11,8 @@ const patient = {
 
 const Patient = () => {
     const { id } = useParams();
-    console.log(id)
+    const navigate = useNavigate();
+    // console.log(id)
 
     return (
         <div className="pt-10 px-5 lg:px-20 min-h-screen overflow-x-hidden">
@@ -27,7 +28,7 @@ const Patient = () => {
                 </div>
                 <div className="flex gap-5">
                     <OpenInNewWindowIcon />
-                    <Link to="/patients"><Cross1Icon /></Link>
+                    <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} />
                 </div>
             </div>
 

@@ -2,8 +2,22 @@ import Header from '@/components/Header'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Link } from 'react-router-dom'
+import { useAccount } from 'wagmi'
 
-const About = () => {
+const Dashboard = () => {
+  const { isConnected } = useAccount();
+
+  if (!isConnected) {
+    return (
+      <div className='p-10 px-5 lg:px-20 lg:min-h-screen'>
+        <Header />
+        <div className='flex flex-col justify-center items-center h-[80vh]'>
+          <p className='text-3xl max-md:text-xl'>Please connect your wallet</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className='p-10 px-5 lg:px-20 lg:h-screen'>
       <Header />
@@ -52,4 +66,4 @@ const About = () => {
   )
 }
 
-export default About
+export default Dashboard

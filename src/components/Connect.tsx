@@ -15,16 +15,19 @@ import {
   Identity,
   EthBalance,
 } from "@coinbase/onchainkit/identity";
-// import { color } from "@coinbase/onchainkit/theme";
+import { base } from "wagmi/chains";
+import { useAccount } from "wagmi";
 
 export function WalletConnect() {
+  const { address } = useAccount();
+
   return (
-    <div className="flex justify-end">
+    <div className="flex">
       <Wallet>
         <ConnectWallet className="bg-[#2924A6] hover:bg-blue-800">
           <ConnectWalletText>Sign In</ConnectWalletText>
-          <Avatar className="h-6 w-6" />
-          <Name className="text-white" />
+          <Avatar address={address} chain={base} className="h-6 w-6" />
+          <Name address={address} chain={base} className="text-white" />
         </ConnectWallet>
         <WalletDropdown>
           <Identity

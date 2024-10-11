@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Button } from './ui/button';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
+import { WalletConnect } from './Connect';
 
 const navigation = [
-    { name: 'Home', to: '/' },
+    { name: 'Dashboard', to: '/dashboard' },
     { name: 'NewsRecord', to: '/records' },
-    { name: 'About', to: '/about' },
+    { name: 'About', to: '' },
 ];
 
 const NavButton = () => {
@@ -30,22 +30,22 @@ const NavButton = () => {
                         </Link>
                     </div>
                     {/* <div className="flow-root"> */}
-                        <div>
-                            <div className="py-6">
-                                {navigation.map((item) => (
-                                    <Link
-                                        key={item.name}
-                                        to={item.to}
-                                        className="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 hover:bg-gray-50"
-                                    >
-                                        {item.name}
-                                    </Link>
-                                ))}
-                            </div>
-                            <div className="py-6">
-                                <Link to="/about"><Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button></Link>
-                            </div>
+                    <div>
+                        <div className="py-6">
+                            {navigation.map((item) => (
+                                <Link
+                                    key={item.name}
+                                    to={item.to}
+                                    className="-mx-3 block rounded-lg px-3 py-2 text-base leading-7 hover:bg-gray-50"
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
                         </div>
+                        <div className="py-6">
+                            <WalletConnect />
+                        </div>
+                    </div>
                     {/* </div> */}
                 </DialogContent>
             </Dialog>
