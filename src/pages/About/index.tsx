@@ -22,7 +22,7 @@ const About = () => {
           </Link>
         </Card>
         <Card className='bg-[#7CED0B61] py-10 w-full'>
-          <Link to={"/patients"} className='flex flex-col gap-5 items-center'>
+          <Link to={"/appointments"} className='flex flex-col gap-5 items-center'>
             <div><img src="/images/icon-park.png" alt="" className='w-16' /></div>
             <p className='text-6xl font-clash_semibold'>30</p>
             <p>Appointments</p>

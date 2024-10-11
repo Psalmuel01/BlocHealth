@@ -1,38 +1,3 @@
-// import { 
-//     ConnectWallet, 
-//     Wallet, 
-//     WalletDropdown, 
-//     WalletDropdownDisconnect, 
-//   } from '@coinbase/onchainkit/wallet'; 
-//   import {
-//     Address,
-//     Avatar,
-//     Name,
-//     Identity,
-//   } from '@coinbase/onchainkit/identity';
-//   import { color } from '@coinbase/onchainkit/theme';
-   
-//   export function WalletConnect() {
-//     return (
-//       <div className="flex justify-end">
-//         <Wallet>
-//           <ConnectWallet>
-//             <Avatar className="h-6 w-6" />
-//             <Name />
-//           </ConnectWallet>
-//           <WalletDropdown>
-//             <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-//               <Avatar />
-//               <Name />
-//               <Address className={color.foregroundMuted} />
-//             </Identity>
-//             <WalletDropdownDisconnect />
-//           </WalletDropdown>
-//         </Wallet>
-//       </div>
-//     );
-//   }
-
 import {
   ConnectWallet,
   ConnectWalletText,
@@ -51,20 +16,19 @@ import {
   EthBalance,
 } from "@coinbase/onchainkit/identity";
 // import { color } from "@coinbase/onchainkit/theme";
-import { Link } from "react-router-dom";
 
 export function WalletConnect() {
   return (
     <div className="flex justify-end">
       <Wallet>
-        <ConnectWallet className="bg-green-800 hover:bg-green-700">
+        <ConnectWallet className="bg-[#2924A6] hover:bg-blue-800">
           <ConnectWalletText>Sign In</ConnectWalletText>
           <Avatar className="h-6 w-6" />
           <Name className="text-white" />
         </ConnectWallet>
         <WalletDropdown>
           <Identity
-            className="px-4 pt-3 pb-2 hover:bg-green-200"
+            className="px-4 pt-3 pb-2 hover:bg-blue-700"
             hasCopyAddressOnClick
           >
             <Avatar />
@@ -73,22 +37,6 @@ export function WalletConnect() {
             <EthBalance />
           </Identity>
           <WalletDropdownBasename />
-          <div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content p-2 shadow bg-base-100 hover:bg-transparent w-full"
-            >
-              <li className="">
-                <Link
-                  to="/dashboard/profile"
-                  className="h-12 leading-10 justify-between"
-                >
-                  Profile
-                  <span className="badge">New</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
           <WalletDropdownLink
             className="hover:bg-green-200"
             icon="wallet"

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+// import { Button } from '@/components/ui/button'
 import NavButton from './NavButton'
+import { WalletConnect } from './Connect'
 
 const Header = () => {
     return (
@@ -12,7 +13,8 @@ const Header = () => {
                 <Link to="/records">NewsRecord</Link>
                 <Link to="/about">About</Link>
             </div>
-            <Link to="/about"><Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button></Link>
+            {/* <Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button> */}
+            <WalletConnect />
         </div>
     )
 }

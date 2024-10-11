@@ -13,8 +13,10 @@ import Home from './pages/Home/index.tsx';
 import About from './pages/About/index.tsx';
 import NewsRecord from './pages/NewsRecord/index.tsx';
 import { baseSepolia } from 'viem/chains';
+// import {base} from 'wagmi/chains';
 import Patients from './pages/Patients/index.tsx';
 import Patient from './pages/Patients/Patient/index.tsx';
+import Appointments from './pages/Appointments/index.tsx';
 
 globalThis.Buffer = Buffer;
 
@@ -44,6 +46,10 @@ function App() {
       path: "patients/:id",
       element: <Patient />,
     },
+    {
+      path: "appointments",
+      element: <Appointments />
+    }
   ]);
 
   return (
