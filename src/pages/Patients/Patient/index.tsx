@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Cross1Icon, OpenInNewWindowIcon } from "@radix-ui/react-icons";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const patient = {
     name: 'Jason Dave',

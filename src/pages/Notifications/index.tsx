@@ -53,7 +53,7 @@ const Notifications = () => {
             <div className="mt-8">
                 <div className="flex flex-col gap-5">
                     {notifications.map((notification) => (
-                        <Card className="flex max-md:flex-col max-md:gap-2 items-center justify-between p-4 px-6 border-none bg-[#35F3F324]" key={notification.name}>
+                        <Card className="flex max-md:flex-col max-md:gap-2 items-center justify-between p-4 px-6 border-none bg-[#35F3F324]" key={notification.id}>
                             <div className="flex-1 pr-10 flex max-md:text-center items-center gap-3">
                                 <img src={notification.img} alt="" className="w-7" />
                                 <p>{notification.notif}</p>
