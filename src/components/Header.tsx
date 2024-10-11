@@ -4,6 +4,7 @@ import NavButton from './NavButton'
 import { WalletConnect } from './Connect'
 import { BellIcon } from '@radix-ui/react-icons'
 import { useAccount } from 'wagmi'
+import { toast } from 'react-hot-toast'
 
 const Header = () => {
     const { isConnected } = useAccount();
@@ -14,7 +15,7 @@ const Header = () => {
             <div className='hidden lg:flex align-center gap-10'>
                 <Link to="/dashboard">Dashboard</Link>
                 <Link to="/records">New Record</Link>
-                <Link to="">About</Link>
+                <Link onClick={() => toast("Coming soon")} to="">About</Link>
             </div>
             {/* <Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button> */}
             <div className='flex items-center gap-3'>

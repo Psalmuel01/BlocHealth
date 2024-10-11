@@ -1,4 +1,5 @@
 import './App.css'
+import { Toaster } from 'react-hot-toast';
 import '@coinbase/onchainkit/styles.css';
 import { Buffer } from 'buffer'
 import { WagmiProvider } from 'wagmi'
@@ -72,6 +73,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY} chain={baseSepolia}>
           <RouterProvider router={router} />
+          <Toaster />
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
