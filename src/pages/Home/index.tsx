@@ -1,10 +1,18 @@
 // import { Button } from '@/components/ui/button'
 import Header from '@/components/Header'
 import { WalletConnect } from '@/components/Connect'
+// import CONTRACT_ABI from "@/utils/abi"
+// import { TransactionDefault } from "@coinbase/onchainkit/transaction"
+// import { CONTRACT_ADDRESS } from "@/utils/constants"
+// import { useGetPatientById } from "../../contexts/hooks"
+// import useContractInteractions from '@/contexts/useContractInteractions'
 
 const Home = () => {
+  // const { owner } = useContractInteractions()
+  // const patientAddr = useGetPatientById(1)
+
   return (
-    <div className='flex flex-col justify-between p-10 px-5 lg:px-20 pb-0 h-screen'>
+    <div className='flex flex-col justify-between p-10 px-5 lg:px-20 pb-0 min-h-screen'>
       {/* Header */}
       <Header />
 
@@ -16,6 +24,23 @@ const Home = () => {
           <Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button>
         </div> */}
         <WalletConnect />
+
+        {/* <p>Owner: {owner}</p>
+        <p>Address: {patientAddr}</p>
+        <TransactionDefault
+          contracts={
+            [
+              {
+                address: CONTRACT_ADDRESS,
+                abi: CONTRACT_ABI,
+                functionName: "authorizeDoctor",
+                args: [],
+              },
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ] as any
+          }
+        /> */}
+
       </div>
 
       {/* Footer */}

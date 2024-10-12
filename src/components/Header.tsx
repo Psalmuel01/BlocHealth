@@ -9,7 +9,7 @@ import { toast } from 'react-hot-toast'
 const Header = () => {
     const { isConnected } = useAccount();
     return (
-        <div className='flex align-center justify-between'>
+        <div className='flex items-center justify-between'>
             <Link to="/" className='text-xl max-md:hidden'><span className='font-clash_semibold'>Bloc</span>Health</Link>
             <NavButton />
             <div className='hidden lg:flex align-center gap-10'>
