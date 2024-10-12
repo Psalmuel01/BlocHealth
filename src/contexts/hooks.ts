@@ -19,5 +19,16 @@ export const useGetPatientById = (patientId: number) => {
     args: [patientId],
   });
 
+  console.log(patientAddress);
   return patientAddress as string;
+};
+
+export const useGetAllPatients = () => {
+  const { data: patients } = useReadMainContract({
+    functionName: "getAllPatients",
+    args: [],
+  });
+
+  console.log(patients); //this is working, check console
+  // return patients as string[{}];
 };
