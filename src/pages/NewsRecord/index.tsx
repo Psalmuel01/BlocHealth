@@ -16,6 +16,7 @@ import {
 } from "@/utils/interfaces";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "react-hot-toast";
+import { set } from "react-hook-form";
 
 const epochToDateString = (epochTimestamp) => {
   const date = new Date(epochTimestamp * 1000);
@@ -37,7 +38,7 @@ const shortenFileName = (fileName) => {
 const NewsRecord = () => {
   const navigate = useNavigate();
 
-  const [fileName, setFileName] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const [basicInfo, setBasicInfo] = useState<
     Omit<
@@ -94,12 +95,45 @@ const NewsRecord = () => {
     };
   }, [basicInfo, contactInfo, emergencyContacts, medicalInfo]);
 
+  const validateInputs = () => {
+    const isBasicInfoValid =
+      basicInfo._fullName.trim() !== "" &&
+      basicInfo._patientAddress.trim() !== "" &&
+      basicInfo._gender !== null &&
+      basicInfo._dateOfBirth !== 0;
+
+    const isMedicalInfoValid =
+      medicalInfo.currentMedications.trim() !== "" &&
+      medicalInfo.diagnosis.trim() !== "" &&
+      medicalInfo.treatmentPlan.trim() !== "";
+
+    const isContactInfoValid =
+      contactInfo.phoneNumber.trim() !== "" &&
+      contactInfo.emailAddress.trim() !== "" &&
+      contactInfo.residentialAddress.trim() !== "" &&
+      contactInfo.nextOfKin.trim() !== "" &&
+      contactInfo.nextOfKinPhoneNumber.trim() !== "" &&
+      contactInfo.nextOfKinResidentialAddress.trim() !== "";
+
+    const areEmergencyContactsValid = emergencyContacts.every(
+      (contact) =>
+        contact.name.trim() !== "" &&
+        contact.phoneNumber.trim() !== "" &&
+        contact.residentialAddress.trim() !== ""
+    );
+
+    return (
+      isBasicInfoValid && isMedicalInfoValid && isContactInfoValid && areEmergencyContactsValid
+    );
+  };
+
+
   useEffect(() => {
     const savedRecord = localStorage.getItem("patientRecord");
+
     if (savedRecord) {
       const parsedRecord: IRecords = JSON.parse(savedRecord);
 
-      // Populate the state with the stored values
       setBasicInfo({
         _patientAddress: parsedRecord._patientAddress,
         _fullName: parsedRecord._fullName,
@@ -182,25 +216,17 @@ const NewsRecord = () => {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    if (file.size > 2 * 1024 * 1024) {
-                      toast.error("Image is too large, please upload a file smaller than 2MB.");
-                      return;
-                    }
-
+                    setMedicalInfo({
+                      ...medicalInfo,
+                      medicalHistoryFile: file.name,
+                    })
+                    console.log("sam here", file.name);
                     const reader = new FileReader();
-
                     reader.onloadend = () => {
-                      const base64String = reader.result as string;  // File content as a Base64 string
-
-                      setMedicalInfo({
-                        ...medicalInfo,
-                        medicalHistoryFile: base64String,  // Set the Base64 string as medicalHistoryFile
-                      });
-
-                      setFileName(file.name);
+                      setImageSrc(reader.result as string);
                     };
 
-                    reader.readAsDataURL(file);  // Read the file as a Data URL (Base64 string)
+                    reader.readAsDataURL(file)
                   }
                 }}
               />
@@ -213,8 +239,8 @@ const NewsRecord = () => {
                   </span>
                   :
                   <div className="flex max-md:flex-col gap-2">
-                    <img src={medicalInfo.medicalHistoryFile} className="w-5 object-contain" alt="Uploaded Medical File Preview" />
-                    <p className="max-md:text-xs">Uploaded {shortenFileName(fileName)}</p>
+                    <img src={imageSrc} className="w-5 object-contain" alt="Uploaded Medical File Preview" />
+                    <p className="max-md:text-xs">Uploaded {shortenFileName(medicalInfo.medicalHistoryFile)}</p>
                   </div>}
 
               </div>
@@ -317,7 +343,7 @@ const NewsRecord = () => {
             />
             <Input
               id="kin_phone"
-              type="text"
+              type="number"
               placeholder="Next of kin phone number"
               value={contactInfo.nextOfKinPhoneNumber}
               onChange={(e) =>
@@ -404,16 +430,27 @@ const NewsRecord = () => {
         <div className="flex max-md:flex-col gap-5 max-md:gap-3">
           <Button size="lg" className="bg-[#2924A6]" onClick={() => {
             localStorage.setItem('patientRecord', JSON.stringify(combinedInfo));
-            navigate(-1);
           }}>
-            Save & Exit
+            Save
           </Button>
-          {/* <Button size="lg" className="bg-[#2924A6]">
-            Save & Continue
+          {/* <Button size="lg" className="bg-[#2924A6]" onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}>
+            Clear
           </Button> */}
         </div>
         {/* <Button size='lg' className='bg-[#2924A6]'>Publish record</Button> */}
-        <Publish info={combinedInfo} />
+        <div onClick={() => {
+          if (validateInputs()) {
+            localStorage.clear();
+          } else {
+            toast.error('Please fill in all required fields');
+          }
+        }
+        }>
+          <Publish isValidated={validateInputs()} info={combinedInfo} />
+        </div>
       </div>
     </div>
   );

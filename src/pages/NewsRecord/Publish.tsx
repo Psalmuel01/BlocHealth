@@ -11,13 +11,16 @@ import {
 } from "@/components/ui/dialog";
 import { IRecords } from "@/utils/interfaces";
 
-export function Publish({ info }: { info: IRecords }) {
-    console.log(Object.values(info));
-    // console.log(Object.keys(info));
+export function Publish({ info, isValidated }: { info: IRecords, isValidated: boolean }) {
+    console.log({
+        info,
+        entries: Object.entries(info),
+    })
+
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button size="lg" className="bg-[#2924A6]">
+                <Button size="lg" className="bg-[#2924A6]" disabled={!isValidated}>
                     Publish record
                 </Button>
             </DialogTrigger>
@@ -36,6 +39,14 @@ export function Publish({ info }: { info: IRecords }) {
                         functionName="addPatient"
                         args={Object.values(info)}
                     />
+                    {/* <Button
+                        variant="outline"
+                        className="bg-transparent border-[#2924A6]"
+                        onClick={() => console.log({
+                            info,
+                            entries: Object.entries(info),
+                        })}
+                    /> */}
                     <DialogClose>
                         <Button
                             variant="outline"
