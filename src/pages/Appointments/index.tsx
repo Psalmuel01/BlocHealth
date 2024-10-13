@@ -1,7 +1,7 @@
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons"
+import { Cross1Icon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import useContractInteractions from "../Dashboard/useContractInteractions"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"

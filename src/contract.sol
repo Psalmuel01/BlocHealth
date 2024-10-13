@@ -1,6 +1,6 @@
 /**
- * Submitted for verification at sepolia.basescan.org on 2024-10-12
- */
+ *Submitted for verification at sepolia.basescan.org on 2024-10-12
+*/
 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
@@ -8,8 +8,8 @@ pragma solidity ^0.8.26;
 contract BlocHealth {
     address public admin;
     mapping(address => bool) public registeredPatients;
-    mapping(address => uint256) public patientAddresses;
-    mapping(uint256 => address) public patientIds;
+    mapping(address => uint256) private patientAddresses;
+    mapping(uint256 => address) private patientIds;
 
     struct EmergencyContact {
         string name;
@@ -35,13 +35,10 @@ contract BlocHealth {
         string medicalHistoryFile;
     }
 
-    enum Gender {
-        Male,
-        Female,
-        Other
-    }
+    enum Gender { Male, Female, Other }
 
     struct Patient {
+        uint256 id;
         string fullName;
         Gender gender;
         uint256 dateOfBirth;
@@ -95,12 +92,14 @@ contract BlocHealth {
         bool _isPublished,
         EmergencyContact[] memory _emergencyContacts
     ) public onlyAdmin {
+
         require(_patientAddress != address(0), "Invalid address.");
         require(patientAddresses[_patientAddress] == 0, "Address is already associated with a patient.");
 
         uint256 currentPatientId = patientIdCounter;
 
         Patient storage newPatient = patients[currentPatientId];
+        newPatient.id = currentPatientId;
         newPatient.fullName = _fullName;
         newPatient.gender = _gender;
         newPatient.dateOfBirth = _dateOfBirth;
@@ -122,14 +121,20 @@ contract BlocHealth {
     }
 
     // Registered patients book their own appointments
-    function bookAppointment(uint256 _patientId, string memory _name, uint256 _date, string memory _reason)
-        public
-        onlyRegisteredPatient
-    {
+    function bookAppointment(
+        uint256 _patientId,
+        string memory _name,
+        uint256 _date,
+        string memory _reason
+    ) public onlyRegisteredPatient {
         require(_patientId > 0 && _patientId < patientIdCounter, "Invalid patient ID.");
 
         uint256 currentAppointmentId = appointmentIdCounter;
-        appointments[currentAppointmentId] = Appointment({name: _name, date: _date, reason: _reason});
+        appointments[currentAppointmentId] = Appointment({
+            name: _name,
+            date: _date,
+            reason: _reason
+        });
 
         patientAppointments[_patientId].push(currentAppointmentId);
 
@@ -140,7 +145,7 @@ contract BlocHealth {
     // Get all appointments for a specific patient
     function getAppointmentsByPatient(uint256 _patientId) public view returns (Appointment[] memory) {
         require(_patientId > 0 && _patientId < patientIdCounter, "Patient does not exist.");
-
+        
         uint256[] storage appointmentIds = patientAppointments[_patientId];
         Appointment[] memory result = new Appointment[](appointmentIds.length);
 
@@ -157,46 +162,6 @@ contract BlocHealth {
             allPatients[i - 1] = patients[i];
         }
         return allPatients;
-    }
-
-    function getPublishedPatients() public view returns (Patient[] memory) {
-        uint256 publishedCount = 0;
-        for (uint256 i = 1; i < patientIdCounter; i++) {
-            if (patients[i].isPublished) {
-                publishedCount++;
-            }
-        }
-
-        Patient[] memory publishedPatients = new Patient[](publishedCount);
-        uint256 index = 0;
-        for (uint256 i = 1; i < patientIdCounter; i++) {
-            if (patients[i].isPublished) {
-                publishedPatients[index] = patients[i];
-                index++;
-            }
-        }
-
-        return publishedPatients;
-    }
-
-    function getUnpublishedPatients() public view returns (Patient[] memory) {
-        uint256 unpublishedCount = 0;
-        for (uint256 i = 1; i < patientIdCounter; i++) {
-            if (!patients[i].isPublished) {
-                unpublishedCount++;
-            }
-        }
-
-        Patient[] memory unpublishedPatients = new Patient[](unpublishedCount);
-        uint256 index = 0;
-        for (uint256 i = 1; i < patientIdCounter; i++) {
-            if (!patients[i].isPublished) {
-                unpublishedPatients[index] = patients[i];
-                index++;
-            }
-        }
-
-        return unpublishedPatients;
     }
 
     function getAllAppointments() public view returns (Appointment[] memory) {

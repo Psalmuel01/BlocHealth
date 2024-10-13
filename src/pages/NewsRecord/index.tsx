@@ -6,7 +6,7 @@ import { Link2Icon } from "@radix-ui/react-icons";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Publish } from "./Publish";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Gender,
   IContactInfo,
@@ -15,6 +15,7 @@ import {
   IRecords,
 } from "@/utils/interfaces";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "react-hot-toast";
 
 const epochToDateString = (epochTimestamp) => {
   const date = new Date(epochTimestamp * 1000);
@@ -24,8 +25,19 @@ const epochToDateString = (epochTimestamp) => {
   return `${year}-${month}-${day}`;
 };
 
+const shortenFileName = (fileName) => {
+  if (fileName.length > 20) {
+    const extension = fileName.split('.').pop();
+    const baseName = fileName.slice(0, 20 - extension.length - 3);
+    return `${baseName}...${extension}`;
+  }
+  return fileName;
+};
+
 const NewsRecord = () => {
   const navigate = useNavigate();
+
+  const [fileName, setFileName] = useState<string>("");
 
   const [basicInfo, setBasicInfo] = useState<
     Omit<
@@ -81,6 +93,26 @@ const NewsRecord = () => {
       _emergencyContacts: emergencyContacts,
     };
   }, [basicInfo, contactInfo, emergencyContacts, medicalInfo]);
+
+  useEffect(() => {
+    const savedRecord = localStorage.getItem("patientRecord");
+    if (savedRecord) {
+      const parsedRecord: IRecords = JSON.parse(savedRecord);
+
+      // Populate the state with the stored values
+      setBasicInfo({
+        _patientAddress: parsedRecord._patientAddress,
+        _fullName: parsedRecord._fullName,
+        _gender: parsedRecord._gender,
+        _dateOfBirth: parsedRecord._dateOfBirth,
+      });
+
+      setMedicalInfo(parsedRecord._medicalInfo);
+      setContactInfo(parsedRecord._contactInfo);
+      setEmergencyContacts(parsedRecord._emergencyContacts);
+
+    }
+  }, [combinedInfo._medicalInfo.medicalHistoryFile]);
 
   return (
     <div className="pt-10 px-5 lg:px-20 pb-0 min-h-screen">
@@ -145,13 +177,46 @@ const NewsRecord = () => {
               <Input
                 id="picture"
                 type="file"
+                accept="image/*"
                 className="absolute inset-0 opacity-0 z-10 cursor-pointer"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    if (file.size > 2 * 1024 * 1024) {
+                      toast.error("Image is too large, please upload a file smaller than 2MB.");
+                      return;
+                    }
+
+                    const reader = new FileReader();
+
+                    reader.onloadend = () => {
+                      const base64String = reader.result as string;  // File content as a Base64 string
+
+                      setMedicalInfo({
+                        ...medicalInfo,
+                        medicalHistoryFile: base64String,  // Set the Base64 string as medicalHistoryFile
+                      });
+
+                      setFileName(file.name);
+                    };
+
+                    reader.readAsDataURL(file);  // Read the file as a Data URL (Base64 string)
+                  }
+                }}
               />
               <div className="flex items-center justify-start px-3 w-full h-full border border-gradient border-gray-300 rounded-md">
-                <span className="text-gray-500 text-sm w-full flex items-center justify-between">
-                  Upload medical history
-                  <Link2Icon />
-                </span>
+                {medicalInfo.medicalHistoryFile == ""
+                  ?
+                  <span className="text-gray-500 text-sm w-full flex items-center justify-between">
+                    Upload medical history
+                    <Link2Icon />
+                  </span>
+                  :
+                  <div className="flex max-md:flex-col gap-2">
+                    <img src={medicalInfo.medicalHistoryFile} className="w-5 object-contain" alt="Uploaded Medical File Preview" />
+                    <p className="max-md:text-xs">Uploaded {shortenFileName(fileName)}</p>
+                  </div>}
+
               </div>
               {/* </div> */}
             </div>
@@ -172,7 +237,12 @@ const NewsRecord = () => {
                 setBasicInfo({ ...basicInfo, _dateOfBirth: epochTimestamp });
               }}
             />
-            <Input id="allergies" type="text" placeholder="Allergies" />
+            <Input
+              id="allergies"
+              type="text"
+              placeholder="Allergies"
+              value={medicalInfo.allergies}
+              onChange={(e) => setMedicalInfo({ ...medicalInfo, allergies: e.target.value })} />
           </div>
           <div className="flex gap-3">
             <Input
@@ -332,12 +402,15 @@ const NewsRecord = () => {
 
       <div className="mt-14 mb-10 flex items-end justify-between">
         <div className="flex max-md:flex-col gap-5 max-md:gap-3">
-          <Button size="lg" className="bg-[#2924A6]">
+          <Button size="lg" className="bg-[#2924A6]" onClick={() => {
+            localStorage.setItem('patientRecord', JSON.stringify(combinedInfo));
+            navigate(-1);
+          }}>
             Save & Exit
           </Button>
-          <Button size="lg" className="bg-[#2924A6]">
+          {/* <Button size="lg" className="bg-[#2924A6]">
             Save & Continue
-          </Button>
+          </Button> */}
         </div>
         {/* <Button size='lg' className='bg-[#2924A6]'>Publish record</Button> */}
         <Publish info={combinedInfo} />
