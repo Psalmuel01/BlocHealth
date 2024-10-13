@@ -2,11 +2,13 @@ import { CONTRACT_ADDRESS } from "@/utils/constants";
 import CONTRACT_ABI from "@/utils/abi";
 import { useReadContract } from "wagmi";
 import { type UseReadContractParameters } from "wagmi";
+import { IPatient } from "../utils/interfaces";
 
 export const useReadMainContract = (params: UseReadContractParameters) => {
   const result = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
+
     ...params,
   });
 
@@ -19,16 +21,14 @@ export const useGetPatientById = (patientId: number) => {
     args: [patientId],
   });
 
-  console.log(patientAddress);
   return patientAddress as string;
 };
 
-export const useGetAllPatients = () => {
-  const { data: patients } = useReadMainContract({
-    functionName: "getAllPatients",
-    args: [],
+export const useGetPatientInfoByAddress = (_patientAddress: string) => {
+  const { data: patientInfo } = useReadMainContract({
+    functionName: "getPatientInfoByAddress",
+    args: [_patientAddress],
   });
 
-  console.log(patients); //this is working, check console
-  // return patients as string[{}];
+  return patientInfo as IPatient;
 };

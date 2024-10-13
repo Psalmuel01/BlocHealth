@@ -1,35 +1,134 @@
-import Header from '@/components/Header'
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Link2Icon } from '@radix-ui/react-icons';
-import { Cross1Icon } from '@radix-ui/react-icons';
-import { Publish } from './Publish';
-import { useNavigate } from 'react-router-dom';
+import Header from "@/components/Header";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Link2Icon } from "@radix-ui/react-icons";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { Publish } from "./Publish";
+import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import {
+  Gender,
+  IContactInfo,
+  IEmergencyContact,
+  IMedicalInfo,
+  IRecords,
+} from "@/utils/interfaces";
+import { useAccount } from "wagmi";
 
+const epochToDateString = (epochTimestamp) => {
+  const date = new Date(epochTimestamp * 1000);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 const NewsRecord = () => {
   const navigate = useNavigate();
 
+  const [basicInfo, setBasicInfo] = useState<
+    Omit<
+      IRecords,
+      "_contactInfo" | "_emergencyContacts" | "_medicalInfo" | "_isPublished"
+    >
+  >({
+    _patientAddress: "",
+    _fullName: "",
+    _gender: Gender.Male,
+    _dateOfBirth: 0,
+  });
+
+  const [medicalInfo, setMedicalInfo] = useState<IMedicalInfo>({
+    currentMedications: "",
+    allergies: "",
+    diagnosis: "",
+    treatmentPlan: "",
+    medicalHistoryFile: "",
+  });
+
+  const [contactInfo, setContactInfo] = useState<IContactInfo>({
+    phoneNumber: "",
+    residentialAddress: "",
+    emailAddress: "",
+    nextOfKin: "",
+    nextOfKinPhoneNumber: "",
+    nextOfKinResidentialAddress: "",
+    healthInsured: false,
+  });
+
+  const [emergencyContacts, setEmergencyContacts] = useState<
+    IEmergencyContact[]
+  >([
+    {
+      name: "",
+      phoneNumber: "",
+      residentialAddress: "",
+    },
+    {
+      name: "",
+      phoneNumber: "",
+      residentialAddress: "",
+    },
+  ]);
+
+  const combinedInfo = useMemo<IRecords>(() => {
+    return {
+      ...basicInfo,
+      _contactInfo: contactInfo,
+      _medicalInfo: medicalInfo,
+      _isPublished: false,
+      _emergencyContacts: emergencyContacts,
+    };
+  }, [basicInfo, contactInfo, emergencyContacts, medicalInfo]);
+
   return (
-    <div className='pt-10 px-5 lg:px-20 pb-0 min-h-screen'>
+    <div className="pt-10 px-5 lg:px-20 pb-0 min-h-screen">
       <Header />
 
-      <div className='flex justify-between items-center mt-5'>
+      <div className="flex justify-between items-center mt-5">
         <div>
-          <p className='text-2xl font-clash_semibold'>New Record</p>
-          <p className='font-clash_light'>Create new patient record</p>
+          <p className="text-2xl font-clash_semibold">New Record</p>
+          <p className="font-clash_light">Create new patient record</p>
         </div>
         <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} />
       </div>
 
-      <div className='mt-5'>
-        <p className='font-clash_medium'>Patient's Personal Details:</p>
-        <div className='mt-3 flex flex-col gap-4'>
-          <div className='flex gap-3'>
-            <Input id="name" type="text" placeholder="Full Name" />
-            <Input id="medications" type="text" placeholder="Current medications" />
+      <div className="mt-5">
+        <p className="font-clash_medium">Patient's Personal Details:</p>
+        <div className="mt-3 flex flex-col gap-4">
+          <div className="flex gap-3">
+            <Input
+              id="name"
+              type="text"
+              placeholder="Full Name"
+              value={basicInfo._fullName}
+              onChange={(e) =>
+                setBasicInfo({ ...basicInfo, _fullName: e.target.value })
+              }
+            />
+            <Input
+              id="address_id"
+              type="text"
+              placeholder="Address ID"
+              value={basicInfo._patientAddress}
+              onChange={(e) =>
+                setBasicInfo({ ...basicInfo, _patientAddress: e.target.value })
+              }
+            />
+            <Input
+              id="medications"
+              type="text"
+              placeholder="Current medications"
+              value={medicalInfo.currentMedications}
+              onChange={(e) =>
+                setMedicalInfo({
+                  ...medicalInfo,
+                  currentMedications: e.target.value,
+                })
+              }
+            />
             <div className="flex items-center space-x-2">
               <Label
                 htmlFor="terms"
@@ -49,7 +148,7 @@ const NewsRecord = () => {
               <Checkbox id="female" />
             </div>
           </div>
-          <div className='flex gap-3'>
+          <div className="flex gap-3">
             <div className="relative grid w-full max-w-sm items-center gap-1.5">
               {/* <div className="relative"> */}
               <Input
@@ -58,39 +157,133 @@ const NewsRecord = () => {
                 className="absolute inset-0 opacity-0 z-10 cursor-pointer"
               />
               <div className="flex items-center justify-start px-3 w-full h-full border border-gradient border-gray-300 rounded-md">
-                <span className="text-gray-500 text-sm w-full flex items-center justify-between">Upload medical history<Link2Icon /></span>
+                <span className="text-gray-500 text-sm w-full flex items-center justify-between">
+                  Upload medical history
+                  <Link2Icon />
+                </span>
               </div>
               {/* </div> */}
             </div>
             {/* <Input id="picture" type="file" placeholder="Upload medical history" /> */}
-            <Input id='date' type="text" placeholder="Date of Birth (dd/mm/yyyy)" />
-            <Input id='allergies' type="text" placeholder="Allergies" />
+            <Input
+              id="date"
+              type="date"
+              placeholder="Date of Birth (dd/mm/yyyy)"
+              value={
+                basicInfo._dateOfBirth > 0
+                  ? epochToDateString(basicInfo._dateOfBirth)
+                  : ""
+              }
+              onChange={(e) => {
+                const date = new Date(e.target.value);
+                const epochTimestamp = date.getTime() / 1000;
+
+                setBasicInfo({ ...basicInfo, _dateOfBirth: epochTimestamp });
+              }}
+            />
+            <Input id="allergies" type="text" placeholder="Allergies" />
           </div>
-          <div className='flex gap-3'>
-            <Input id='diagnosis' type="text" placeholder="Diagnosis" />
-            <Input id='treatment' type="text" placeholder="Treatment plan" />
+          <div className="flex gap-3">
+            <Input
+              id="diagnosis"
+              type="text"
+              placeholder="Diagnosis"
+              value={medicalInfo.diagnosis}
+              onChange={(e) =>
+                setMedicalInfo({ ...medicalInfo, diagnosis: e.target.value })
+              }
+            />
+            <Input
+              id="treatment"
+              type="text"
+              placeholder="Treatment plan"
+              value={medicalInfo.treatmentPlan}
+              onChange={(e) =>
+                setMedicalInfo({
+                  ...medicalInfo,
+                  treatmentPlan: e.target.value,
+                })
+              }
+            />
           </div>
         </div>
       </div>
 
-      <div className='mt-5'>
-        <p className='font-clash_medium'>Contact Info:</p>
-        <div className='mt-3 flex flex-col gap-4'>
-          <div className='flex gap-3'>
-            <Input id="phone" type="number" placeholder="Phone number" />
-            <Input id="email" type="email" placeholder="Email address" />
-            <Input id="address" type="text" placeholder="Residential address" />
+      <div className="mt-5">
+        <p className="font-clash_medium">Contact Info:</p>
+        <div className="mt-3 flex flex-col gap-4">
+          <div className="flex gap-3">
+            <Input
+              id="phone"
+              type="number"
+              placeholder="Phone number"
+              value={contactInfo.phoneNumber}
+              onChange={(e) =>
+                setContactInfo({ ...contactInfo, phoneNumber: e.target.value })
+              }
+            />
+            <Input
+              id="email"
+              type="email"
+              placeholder="Email address"
+              value={contactInfo.emailAddress}
+              onChange={(e) =>
+                setContactInfo({ ...contactInfo, emailAddress: e.target.value })
+              }
+            />
+            <Input
+              id="address"
+              type="text"
+              placeholder="Residential address"
+              value={contactInfo.residentialAddress}
+              onChange={(e) =>
+                setContactInfo({
+                  ...contactInfo,
+                  residentialAddress: e.target.value,
+                })
+              }
+            />
           </div>
-          <div className='flex gap-3'>
-            <Input id="kin" type="text" placeholder="Next of kin" />
-            <Input id="kin_phone" type="text" placeholder="Next of kin phone number" />
-            <Input id="kin_address" type="text" placeholder="Next of kin residential address" />
+          <div className="flex gap-3">
+            <Input
+              id="kin"
+              type="text"
+              placeholder="Next of kin"
+              value={contactInfo.nextOfKin}
+              onChange={(e) =>
+                setContactInfo({ ...contactInfo, nextOfKin: e.target.value })
+              }
+            />
+            <Input
+              id="kin_phone"
+              type="text"
+              placeholder="Next of kin phone number"
+              value={contactInfo.nextOfKinPhoneNumber}
+              onChange={(e) =>
+                setContactInfo({
+                  ...contactInfo,
+                  nextOfKinPhoneNumber: e.target.value,
+                })
+              }
+            />
+            <Input
+              id="kin_address"
+              type="text"
+              placeholder="Next of kin residential address"
+              value={contactInfo.nextOfKinResidentialAddress}
+              onChange={(e) =>
+                setContactInfo({
+                  ...contactInfo,
+                  nextOfKinResidentialAddress: e.target.value,
+                })
+              }
+            />
           </div>
         </div>
       </div>
 
-      <div className='mt-5 flex gap-5 items-center'>
-        <p className='font-clash_medium'>Health Insurance:</p>
+      <div className="mt-5 flex gap-5 items-center">
+        <p className="font-clash_medium">Health Insurance:</p>
         <div className="flex items-center space-x-2">
           <Label
             htmlFor="terms"
@@ -111,32 +304,63 @@ const NewsRecord = () => {
         </div>
       </div>
 
-      <div className='mt-5'>
-        <p className='font-clash_medium'>Emergency Contacts:</p>
-        <div className='mt-3 flex flex-col gap-4'>
-          <div className='flex gap-3'>
-            <Input id="emg_name1" type="text" placeholder="Contact name" />
-            <Input id="emg_phone1" type="number" placeholder="Phone number" />
-            <Input id="emg_address1" type="text" placeholder="Residential address" />
-          </div>
-          <div className='flex gap-3'>
-            <Input id="emg_name1" type="text" placeholder="Contact name" />
-            <Input id="emg_phone1" type="number" placeholder="Phone number" />
-            <Input id="emg_address1" type="text" placeholder="Residential address" />
-          </div>
+      <div className="mt-5">
+        <p className="font-clash_medium">Emergency Contacts:</p>
+        <div className="mt-3 flex flex-col gap-4">
+          {emergencyContacts.map((contact, index) => (
+            <div className="flex gap-3" key={index}>
+              <Input
+                id={`emg_name${index + 1}`}
+                type="text"
+                placeholder="Contact name"
+                value={contact.name}
+                onChange={(e) => {
+                  const newContacts = [...emergencyContacts];
+                  newContacts[index].name = e.target.value;
+                  setEmergencyContacts(newContacts);
+                }}
+              />
+              <Input
+                id={`emg_phone${index + 1}`}
+                type="number"
+                placeholder="Phone number"
+                value={contact.phoneNumber}
+                onChange={(e) => {
+                  const newContacts = [...emergencyContacts];
+                  newContacts[index].phoneNumber = e.target.value;
+                  setEmergencyContacts(newContacts);
+                }}
+              />
+              <Input
+                id="emg_address1"
+                type="text"
+                placeholder="Residential address"
+                value={contact.residentialAddress}
+                onChange={(e) => {
+                  const newContacts = [...emergencyContacts];
+                  newContacts[index].residentialAddress = e.target.value;
+                  setEmergencyContacts(newContacts);
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className='mt-14 mb-10 flex items-end justify-between'>
-        <div className='flex max-md:flex-col gap-5 max-md:gap-3'>
-          <Button size='lg' className='bg-[#2924A6]'>Save & Exit</Button>
-          <Button size='lg' className='bg-[#2924A6]'>Save & Continue</Button>
+      <div className="mt-14 mb-10 flex items-end justify-between">
+        <div className="flex max-md:flex-col gap-5 max-md:gap-3">
+          <Button size="lg" className="bg-[#2924A6]">
+            Save & Exit
+          </Button>
+          <Button size="lg" className="bg-[#2924A6]">
+            Save & Continue
+          </Button>
         </div>
         {/* <Button size='lg' className='bg-[#2924A6]'>Publish record</Button> */}
-        <Publish />
+        <Publish info={combinedInfo} />
       </div>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
-export default NewsRecord
+export default NewsRecord;

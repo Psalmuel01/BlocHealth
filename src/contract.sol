@@ -1,185 +1,221 @@
+/**
+ * Submitted for verification at sepolia.basescan.org on 2024-10-12
+ */
+
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity ^0.8.26;
 
-abstract contract BlocHealth {
-    address public owner;
-    uint256 private patientIdCounter;
+contract BlocHealth {
+    address public admin;
+    mapping(address => bool) public registeredPatients;
+    mapping(address => uint256) public patientAddresses;
+    mapping(uint256 => address) public patientIds;
 
-    struct Patient {
-        uint256 id;
+    struct EmergencyContact {
         string name;
-        uint256 dateOfBirth;
-        string bloodType;
-        string[] allergies;
-        string[] medications;
-        address[] authorizedDoctors;
-        string ipfsImageLink;
-        bool isActive;
+        string phoneNumber;
+        string residentialAddress;
     }
 
-    event DoctorAuthorized(address indexed patientAddress, address indexed doctorAddress);
-    event DoctorDeauthorized(address indexed patientAddress, address indexed doctorAddress);
-    event IPFSImageUpdated(address indexed patientAddress, uint256 indexed patientId, string ipfsImageLink);
-    event PatientAdded(address indexed patientAddress, uint256 indexed patientId);
-    event PatientUpdated(address indexed patientAddress, uint256 indexed patientId);
+    struct ContactInfo {
+        string phoneNumber;
+        string emailAddress;
+        string residentialAddress;
+        string nextOfKin;
+        string nextOfKinPhoneNumber;
+        string nextOfKinResidentialAddress;
+        bool healthInsured;
+    }
 
-    mapping(address => Patient) private patients;
-    mapping(uint256 => address) private patientIds;
-    mapping(address => bool) public doctors;
+    struct MedicalInfo {
+        string currentMedications;
+        string allergies;
+        string diagnosis;
+        string treatmentPlan;
+        string medicalHistoryFile;
+    }
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only the owner can perform this action");
+    enum Gender {
+        Male,
+        Female,
+        Other
+    }
+
+    struct Patient {
+        string fullName;
+        Gender gender;
+        uint256 dateOfBirth;
+        ContactInfo contactInfo;
+        MedicalInfo medicalInfo;
+        bool isPublished;
+        bool isActive;
+        EmergencyContact[] emergencyContacts;
+    }
+
+    struct Appointment {
+        string name;
+        uint256 date;
+        string reason;
+    }
+
+    uint256 public patientIdCounter = 1;
+    uint256 public appointmentIdCounter = 1;
+
+    mapping(uint256 => Patient) private patients;
+    mapping(uint256 => Appointment) private appointments;
+    mapping(uint256 => uint256[]) private patientAppointments;
+
+    event PatientAdded(uint256 patientId, string fullName, bool isPublished);
+    event AppointmentBooked(uint256 appointmentId, uint256 patientId, string name);
+    event AdminAdded(address newAdmin);
+    event AdminRemoved(address admin);
+
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only admin can perform this action.");
         _;
     }
 
-    modifier onlyAuthorized(address _patientAddress) {
-        require(
-            msg.sender == owner || msg.sender == _patientAddress || isAuthorizedDoctor(_patientAddress, msg.sender),
-            "Not authorized to access this patient's information"
-        );
+    modifier onlyRegisteredPatient() {
+        require(registeredPatients[msg.sender], "You must be a registered patient to perform this action.");
         _;
     }
 
     constructor() {
-        owner = msg.sender;
-        patientIdCounter = 0;
+        admin = msg.sender;
     }
 
-    function addDoctor(address _doctorAddress) public onlyOwner {
-        doctors[_doctorAddress] = true;
-    }
-
-    function removeDoctor(address _doctorAddress) public onlyOwner {
-        doctors[_doctorAddress] = false;
-    }
-
+    // Admin adds a new patient
     function addPatient(
         address _patientAddress,
-        string memory _name,
+        string memory _fullName,
+        Gender _gender,
         uint256 _dateOfBirth,
-        string memory _bloodType,
-        string memory _ipfsImageLink
-    ) public onlyOwner {
-        require(!patients[_patientAddress].isActive, "Patient already exists");
+        ContactInfo memory _contactInfo,
+        MedicalInfo memory _medicalInfo,
+        bool _isPublished,
+        EmergencyContact[] memory _emergencyContacts
+    ) public onlyAdmin {
+        require(_patientAddress != address(0), "Invalid address.");
+        require(patientAddresses[_patientAddress] == 0, "Address is already associated with a patient.");
 
+        uint256 currentPatientId = patientIdCounter;
+
+        Patient storage newPatient = patients[currentPatientId];
+        newPatient.fullName = _fullName;
+        newPatient.gender = _gender;
+        newPatient.dateOfBirth = _dateOfBirth;
+        newPatient.contactInfo = _contactInfo;
+        newPatient.medicalInfo = _medicalInfo;
+        newPatient.isPublished = _isPublished;
+        newPatient.isActive = true;
+
+        for (uint256 i = 0; i < _emergencyContacts.length; i++) {
+            newPatient.emergencyContacts.push(_emergencyContacts[i]);
+        }
+
+        registeredPatients[_patientAddress] = true;
+        patientAddresses[_patientAddress] = currentPatientId;
+        patientIds[currentPatientId] = _patientAddress;
+
+        emit PatientAdded(currentPatientId, _fullName, _isPublished);
         patientIdCounter++;
-        uint256 newPatientId = patientIdCounter;
-
-        patients[_patientAddress] = Patient({
-            id: newPatientId,
-            name: _name,
-            dateOfBirth: _dateOfBirth,
-            bloodType: _bloodType,
-            allergies: new string[](0),
-            medications: new string[](0),
-            authorizedDoctors: new address[](0),
-            ipfsImageLink: _ipfsImageLink,
-            isActive: true
-        });
-
-        patientIds[newPatientId] = _patientAddress;
-
-        emit PatientAdded(_patientAddress, newPatientId);
     }
 
-    function updatePatient(address _patientAddress, string memory _name, uint256 _dateOfBirth, string memory _bloodType)
+    // Registered patients book their own appointments
+    function bookAppointment(uint256 _patientId, string memory _name, uint256 _date, string memory _reason)
         public
-        onlyAuthorized(_patientAddress)
+        onlyRegisteredPatient
     {
-        require(patients[_patientAddress].isActive, "Patient does not exist");
+        require(_patientId > 0 && _patientId < patientIdCounter, "Invalid patient ID.");
 
-        Patient storage patient = patients[_patientAddress];
-        patient.name = _name;
-        patient.dateOfBirth = _dateOfBirth;
-        patient.bloodType = _bloodType;
+        uint256 currentAppointmentId = appointmentIdCounter;
+        appointments[currentAppointmentId] = Appointment({name: _name, date: _date, reason: _reason});
 
-        emit PatientUpdated(_patientAddress, patient.id);
+        patientAppointments[_patientId].push(currentAppointmentId);
+
+        emit AppointmentBooked(currentAppointmentId, _patientId, _name);
+        appointmentIdCounter++;
     }
 
-    function updateIPFSImageLink(address _patientAddress, string memory _ipfsImageLink)
-        public
-        onlyAuthorized(_patientAddress)
-    {
-        require(patients[_patientAddress].isActive, "Patient does not exist");
+    // Get all appointments for a specific patient
+    function getAppointmentsByPatient(uint256 _patientId) public view returns (Appointment[] memory) {
+        require(_patientId > 0 && _patientId < patientIdCounter, "Patient does not exist.");
 
-        Patient storage patient = patients[_patientAddress];
-        patient.ipfsImageLink = _ipfsImageLink;
+        uint256[] storage appointmentIds = patientAppointments[_patientId];
+        Appointment[] memory result = new Appointment[](appointmentIds.length);
 
-        emit IPFSImageUpdated(_patientAddress, patient.id, _ipfsImageLink);
+        for (uint256 i = 0; i < appointmentIds.length; i++) {
+            result[i] = appointments[appointmentIds[i]];
+        }
+
+        return result;
     }
 
-    function addAllergy(address _patientAddress, string memory _allergy) public onlyAuthorized(_patientAddress) {
-        require(patients[_patientAddress].isActive, "Patient does not exist");
-        patients[_patientAddress].allergies.push(_allergy);
-        emit PatientUpdated(_patientAddress, patients[_patientAddress].id);
+    function getAllPatients() public view returns (Patient[] memory) {
+        Patient[] memory allPatients = new Patient[](patientIdCounter - 1);
+        for (uint256 i = 1; i < patientIdCounter; i++) {
+            allPatients[i - 1] = patients[i];
+        }
+        return allPatients;
     }
 
-    function addMedication(address _patientAddress, string memory _medication) public onlyAuthorized(_patientAddress) {
-        require(patients[_patientAddress].isActive, "Patient does not exist");
-        patients[_patientAddress].medications.push(_medication);
-        emit PatientUpdated(_patientAddress, patients[_patientAddress].id);
-    }
-
-    function authorizeDoctor(address _doctorAddress) public {
-        require(patients[msg.sender].isActive, "Patient does not exist");
-        require(doctors[_doctorAddress], "Not a registered doctor");
-        patients[msg.sender].authorizedDoctors.push(_doctorAddress);
-        emit DoctorAuthorized(msg.sender, _doctorAddress);
-    }
-
-    function deauthorizeDoctor(address _doctorAddress) public {
-        require(patients[msg.sender].isActive, "Patient does not exist");
-        Patient storage patient = patients[msg.sender];
-        for (uint256 i = 0; i < patient.authorizedDoctors.length; i++) {
-            if (patient.authorizedDoctors[i] == _doctorAddress) {
-                patient.authorizedDoctors[i] = patient.authorizedDoctors[patient.authorizedDoctors.length - 1];
-                patient.authorizedDoctors.pop();
-                emit DoctorDeauthorized(msg.sender, _doctorAddress);
-                break;
+    function getPublishedPatients() public view returns (Patient[] memory) {
+        uint256 publishedCount = 0;
+        for (uint256 i = 1; i < patientIdCounter; i++) {
+            if (patients[i].isPublished) {
+                publishedCount++;
             }
         }
-    }
 
-    function getAllPatients() public view returns (Patient[] memory _patients) {
-        _patients = new Patient[](patientIdCounter);
-
-        for (uint256 i = 0; i < patientIdCounter; i++) {
-            _patients[i] = patients[patientIds[i + 1]];
+        Patient[] memory publishedPatients = new Patient[](publishedCount);
+        uint256 index = 0;
+        for (uint256 i = 1; i < patientIdCounter; i++) {
+            if (patients[i].isPublished) {
+                publishedPatients[index] = patients[i];
+                index++;
+            }
         }
+
+        return publishedPatients;
     }
 
-    function getPatientInfo(address _patientAddress)
-        public
-        view
-        onlyAuthorized(_patientAddress)
-        returns (uint256, string memory, uint256, string memory, string[] memory, string[] memory, string memory)
-    {
-        require(patients[_patientAddress].isActive, "Patient does not exist");
-        Patient memory patient = patients[_patientAddress];
-        return (
-            patient.id,
-            patient.name,
-            patient.dateOfBirth,
-            patient.bloodType,
-            patient.allergies,
-            patient.medications,
-            patient.ipfsImageLink
-        );
+    function getUnpublishedPatients() public view returns (Patient[] memory) {
+        uint256 unpublishedCount = 0;
+        for (uint256 i = 1; i < patientIdCounter; i++) {
+            if (!patients[i].isPublished) {
+                unpublishedCount++;
+            }
+        }
+
+        Patient[] memory unpublishedPatients = new Patient[](unpublishedCount);
+        uint256 index = 0;
+        for (uint256 i = 1; i < patientIdCounter; i++) {
+            if (!patients[i].isPublished) {
+                unpublishedPatients[index] = patients[i];
+                index++;
+            }
+        }
+
+        return unpublishedPatients;
+    }
+
+    function getAllAppointments() public view returns (Appointment[] memory) {
+        Appointment[] memory allAppointments = new Appointment[](appointmentIdCounter - 1);
+        for (uint256 i = 1; i < appointmentIdCounter; i++) {
+            allAppointments[i - 1] = appointments[i];
+        }
+        return allAppointments;
+    }
+
+    function getPatientInfoByAddress(address _patientAddress) public view returns (Patient memory) {
+        require(patientAddresses[_patientAddress] != 0, "Patient does not exist.");
+        uint256 patientId = patientAddresses[_patientAddress];
+        return patients[patientId];
     }
 
     function getPatientByID(uint256 _patientId) public view returns (address) {
         address patientAddress = patientIds[_patientId];
-        require(patients[patientAddress].isActive, "Patient does not exist");
+        require(patients[_patientId].isActive, "Patient does not exist");
         return patientAddress;
-    }
-
-    function isAuthorizedDoctor(address _patientAddress, address _doctorAddress) public view returns (bool) {
-        Patient storage patient = patients[_patientAddress];
-        for (uint256 i = 0; i < patient.authorizedDoctors.length; i++) {
-            if (patient.authorizedDoctors[i] == _doctorAddress) {
-                return true;
-            }
-        }
-        return false;
     }
 }

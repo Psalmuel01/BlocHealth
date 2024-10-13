@@ -19,6 +19,11 @@ import Pending from "./pages/Pending/index.tsx";
 import { baseSepolia } from "wagmi/chains";
 import Notifications from "./pages/Notifications/index.tsx";
 import { ContractInteractionsProvider } from "./contexts/ContractInteractions";
+import { TransactionDefault } from "@coinbase/onchainkit/transaction";
+import { CONTRACT_ADDRESS } from "@/utils/constants";
+import Header from "@/components/Header";
+import CONTRACT_ABI from "@/utils/abi";
+import TransactionTemplate from "@/components/TransactionTemplate";
 
 globalThis.Buffer = Buffer;
 
@@ -62,6 +67,10 @@ function App() {
       path: "notifications",
       element: <Notifications />,
     },
+    // {
+    //   path: "example",
+    //   element: <Example />,
+    // },
   ]);
 
   return (
@@ -80,5 +89,20 @@ function App() {
     </WagmiProvider>
   );
 }
+
+const Example = () => {
+  return (
+    <div>
+      <Header />
+      <div className="h-[100vh] grid place-content-center">
+        <TransactionTemplate
+          args={[1n, "James", 102033334n, "fever"] as (string | bigint)[]}
+          functionName="bookAppointment"
+          text="Book Appointment"
+        />
+      </div>
+    </div>
+  );
+};
 
 export default App;

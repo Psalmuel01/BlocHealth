@@ -1,15 +1,24 @@
+import { IPatient } from "../utils/interfaces";
 import { useReadMainContract } from "./hooks";
-import { createContext } from "react";
+import { createContext, useMemo } from "react";
 
 type TContractInteractions = {
   owner: string;
-  patientIdCounter: string;
+  totalPatients: number;
+  totalAppointments: number;
+  patientsInfo: IPatient[];
+  publishedPatients: IPatient[];
+  pendingPatients: IPatient[];
 };
 
 export const ContractInteractionsContext = createContext<TContractInteractions>(
   {
     owner: "0x0000000000000000000000000000000000000000",
-    patientIdCounter: "",
+    totalPatients: 0,
+    totalAppointments: 0,
+    patientsInfo: [] as IPatient[],
+    publishedPatients: [] as IPatient[],
+    pendingPatients: [] as IPatient[],
   }
 );
 
@@ -26,13 +35,41 @@ export const ContractInteractionsProvider = ({
   const { data: patientIdCounter } = useReadMainContract({
     functionName: "patientIdCounter",
     // args: [1],
-  })
+  });
+
+  const { data: appointmentIdCounter } = useReadMainContract({
+    functionName: "appointmentIdCounter",
+    // args: [1],
+  });
+
+  const { data: patientsInfo } = useReadMainContract({
+    functionName: "getAllPatients",
+    args: [],
+  });
+
+  const publishedPatients = useMemo(() => {
+    if (!patientsInfo) return [];
+    return (patientsInfo as IPatient[]).filter(
+      (patient) => patient.isPublished
+    );
+  }, [patientsInfo]);
+
+  const pendingPatients = useMemo(() => {
+    if (!patientsInfo) return [];
+    return (patientsInfo as IPatient[]).filter(
+      (patient) => !patient.isPublished
+    );
+  }, [patientsInfo]);
 
   return (
     <ContractInteractionsContext.Provider
       value={{
         owner: owner as string,
-        patientIdCounter: patientIdCounter as string
+        totalPatients: Number(patientIdCounter) - 1,
+        totalAppointments: Number(appointmentIdCounter) - 1,
+        patientsInfo: patientsInfo as IPatient[],
+        publishedPatients,
+        pendingPatients,
       }}
     >
       {children}
