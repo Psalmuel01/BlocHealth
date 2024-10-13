@@ -50,4 +50,10 @@ export enum Gender {
     _isPublished: boolean;
     _emergencyContacts: IEmergencyContact[];
   }
+
+  export interface IAppointment {
+    name: string;
+    date: bigint;
+    reason: string;
+}
   

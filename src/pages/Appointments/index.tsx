@@ -3,54 +3,11 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
-
-const appointments = [
-    {
-        name: "Peace Aliu",
-        date: "11/12/2024",
-        time: "09:00am",
-        timer: "$250.00",
-    },
-    {
-        name: "Joy Amu",
-        date: "11/12/2024",
-        time: "10:30am",
-        timer: "$150.00",
-    },
-    {
-        name: "Dave Matt",
-        date: "10/12/2024",
-        time: "07:00am",
-        timer: "$350.00",
-    },
-    {
-        name: "Joy Amu",
-        date: "10/12/2024",
-        time: "09:00am",
-        timer: "$450.00",
-    },
-    {
-        name: "Pacemaker",
-        date: "10/12/2024",
-        time: "10:30am",
-        timer: "$550.00",
-    },
-    {
-        name: "Pacemaker",
-        date: "10/12/2024",
-        time: "07:00am",
-        timer: "$200.00",
-    },
-    {
-        name: "Peace Angel and 20 others",
-        date: "",
-        time: "",
-        timer: "$200.00",
-    },
-]
+import useContractInteractions from "../Dashboard/useContractInteractions"
 
 const Appointments = () => {
     const navigate = useNavigate();
+    const { appointments } = useContractInteractions();
 
     return (
         <div className='pt-10 px-5 lg:px-20 pb-0 min-h-screen'>
@@ -72,8 +29,8 @@ const Appointments = () => {
                                 <img src="/images/cross.png" alt="" className="w-7" />
                                 <p>You have an appointment with <span className="font-clash_medium">{appointment.name}</span></p>
                             </div>
-                            <div className="">{appointment.date}</div>
-                            <div className="flex-1 text-center">{appointment.time}</div>
+                            <div className="">{new Date(Number(appointment.date) * 1000).toDateString()}</div>
+                            <div className="flex-1 text-center">{new Date(Number(appointment.date) * 1000).toLocaleTimeString('en-US', {hour: "2-digit", minute: "2-digit"})}</div>
                             <div className="text-right"><ChevronDownIcon /></div>
                         </Card>
                     ))}

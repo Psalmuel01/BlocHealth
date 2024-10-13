@@ -1,4 +1,4 @@
-import { IPatient } from "../utils/interfaces";
+import { IAppointment, IPatient } from "../utils/interfaces";
 import { useReadMainContract } from "./hooks";
 import { createContext, useMemo } from "react";
 
@@ -7,6 +7,7 @@ type TContractInteractions = {
   totalPatients: number;
   totalAppointments: number;
   patientsInfo: IPatient[];
+  appointments: IAppointment[];
   publishedPatients: IPatient[];
   pendingPatients: IPatient[];
 };
@@ -17,6 +18,7 @@ export const ContractInteractionsContext = createContext<TContractInteractions>(
     totalPatients: 0,
     totalAppointments: 0,
     patientsInfo: [] as IPatient[],
+    appointments: [] as IAppointment[],
     publishedPatients: [] as IPatient[],
     pendingPatients: [] as IPatient[],
   }
@@ -47,6 +49,11 @@ export const ContractInteractionsProvider = ({
     args: [],
   });
 
+  const { data: appointments } = useReadMainContract({
+    functionName: "getAllAppointments",
+    args: [],
+  })
+
   const publishedPatients = useMemo(() => {
     if (!patientsInfo) return [];
     return (patientsInfo as IPatient[]).filter(
@@ -68,6 +75,7 @@ export const ContractInteractionsProvider = ({
         totalPatients: Number(patientIdCounter) - 1,
         totalAppointments: Number(appointmentIdCounter) - 1,
         patientsInfo: patientsInfo as IPatient[],
+        appointments: appointments as IAppointment[],
         publishedPatients,
         pendingPatients,
       }}
