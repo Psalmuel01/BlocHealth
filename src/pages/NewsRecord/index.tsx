@@ -15,7 +15,7 @@ import {
   IMedicalInfo,
   IRecords,
 } from "@/utils/interfaces";
-import { useAccount } from "wagmi";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const epochToDateString = (epochTimestamp) => {
   const date = new Date(epochTimestamp * 1000);
@@ -36,7 +36,7 @@ const NewsRecord = () => {
   >({
     _patientAddress: "",
     _fullName: "",
-    _gender: Gender.Male,
+    _gender: null,
     _dateOfBirth: 0,
   });
 
@@ -55,7 +55,7 @@ const NewsRecord = () => {
     nextOfKin: "",
     nextOfKinPhoneNumber: "",
     nextOfKinResidentialAddress: "",
-    healthInsured: false,
+    healthInsured: null,
   });
 
   const [emergencyContacts, setEmergencyContacts] = useState<
@@ -129,24 +129,16 @@ const NewsRecord = () => {
                 })
               }
             />
-            <div className="flex items-center space-x-2">
-              <Label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Male
-              </Label>
-              <Checkbox id="male" />
-            </div>
-            <div className="flex items-center space-x-2">
-              <Label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Female
-              </Label>
-              <Checkbox id="female" />
-            </div>
+            <RadioGroup className="flex" value={basicInfo._gender} onValueChange={(value) => setBasicInfo({ ...basicInfo, _gender: value as unknown as Gender })}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Male} id="r1" />
+                <Label htmlFor="r1">Male</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Female} id="r2" />
+                <Label htmlFor="r2">Female</Label>
+              </div>
+            </RadioGroup>
           </div>
           <div className="flex gap-3">
             <div className="relative grid w-full max-w-sm items-center gap-1.5">
@@ -284,24 +276,16 @@ const NewsRecord = () => {
 
       <div className="mt-5 flex gap-5 items-center">
         <p className="font-clash_medium">Health Insurance:</p>
-        <div className="flex items-center space-x-2">
-          <Label
-            htmlFor="terms"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Yes
-          </Label>
-          <Checkbox id="yes" />
-        </div>
-        <div className="flex items-center space-x-2">
-          <Label
-            htmlFor="terms"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            No
-          </Label>
-          <Checkbox id="no" />
-        </div>
+        <RadioGroup className="flex" value={contactInfo.healthInsured} onValueChange={(value) => setContactInfo({ ...contactInfo, healthInsured: value as unknown as boolean })}>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={true} id="r1" />
+            <Label htmlFor="r1">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={false} id="r2" />
+            <Label htmlFor="r2">No</Label>
+          </div>
+        </RadioGroup>
       </div>
 
       <div className="mt-5">

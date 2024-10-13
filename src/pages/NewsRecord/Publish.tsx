@@ -12,6 +12,8 @@ import {
 import { IRecords } from "@/utils/interfaces";
 
 export function Publish({ info }: { info: IRecords }) {
+    console.log(Object.values(info));
+    // console.log(Object.keys(info));
     return (
         <Dialog>
             <DialogTrigger asChild>
