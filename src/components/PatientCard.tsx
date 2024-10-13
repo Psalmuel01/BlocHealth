@@ -16,7 +16,7 @@ const PatientCard = ({
     >
       <div className="lg:flex-1 flex items-center gap-3">
         <img
-          src={`/images/patient${(index % 4) + 1}.png`}
+          src={`/images/patient${((index + 1) % 4 === 0 ? 4 : (index + 1) % 4)}.png`}
           alt={patient.fullName}
         />
         <div>
@@ -25,9 +25,8 @@ const PatientCard = ({
         </div>
       </div>
       <p
-        className={`lg:flex-1 font-clash_medium ${
-          patient.isPublished ? "text-green-500" : "text-red-500"
-        }`}
+        className={`lg:flex-1 font-clash_medium ${patient.isPublished ? "text-green-500" : "text-red-500"
+          }`}
       >
         {patient.isPublished ? "Published" : "Unpublished"}
       </p>

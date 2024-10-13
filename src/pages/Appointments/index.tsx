@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import useContractInteractions from "../Dashboard/useContractInteractions"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 const Appointments = () => {
     const navigate = useNavigate();
@@ -22,19 +23,27 @@ const Appointments = () => {
             </div>
 
             <div className="mt-8">
-                <div className="flex flex-col gap-5">
-                    {appointments.map((appointment) => (
-                        <Card className="flex max-md:flex-col max-md:gap-2 items-center justify-between p-4 px-6 border-none bg-[#35F3F324]" key={appointment.name}>
-                            <div className="flex-1 pr-10 flex max-md:text-center items-center gap-3">
-                                <img src="/images/cross.png" alt="" className="w-7" />
-                                <p>You have an appointment with <span className="font-clash_medium">{appointment.name}</span></p>
-                            </div>
-                            <div className="">{new Date(Number(appointment.date) * 1000).toDateString()}</div>
-                            <div className="flex-1 text-center">{new Date(Number(appointment.date) * 1000).toLocaleTimeString('en-US', {hour: "2-digit", minute: "2-digit"})}</div>
-                            <div className="text-right"><ChevronDownIcon /></div>
+                {appointments.length === 0 && <p className="text-center">No scheduled appointments</p>}
+                <Accordion type="single" collapsible className="w-full flex flex-col gap-5">
+                    {appointments.map((appointment, index) => (
+                        <Card className="flex max-md:flex-col max-md:gap-2 items-center justify-between p-2 px-6 border-none bg-[#35F3F324]" key={appointment.name}>
+                            <AccordionItem className="w-full border-none" value={`item-${index}`}>
+                                <AccordionTrigger>
+                                    <div className="flex-1 pr-10 flex max-md:text-center items-center gap-3">
+                                        <img src="/images/cross.png" alt="" className="w-7" />
+                                        <p>You have an appointment with <span className="font-clash_medium">{appointment.name}</span></p>
+                                    </div>
+                                    <div className="">{new Date(Number(appointment.date) * 1000).toDateString()}</div>
+                                    <div className="flex-1 text-center">{new Date(Number(appointment.date) * 1000).toLocaleTimeString('en-US', { hour: "2-digit", minute: "2-digit" })}</div>
+
+                                </AccordionTrigger>
+                                <AccordionContent className="flex gap-2 mt-2">
+                                    <span className="font-clash_medium">Reason:</span>{appointment.reason}
+                                </AccordionContent>
+                            </AccordionItem>
                         </Card>
                     ))}
-                </div>
+                </Accordion>
             </div>
 
             <div className='mt-10 mb-10 flex justify-between max-md:flex-col gap-5 max-md:gap-3'>

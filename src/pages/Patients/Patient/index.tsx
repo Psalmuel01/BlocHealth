@@ -29,7 +29,7 @@ const Patient = () => {
             <div className="mt-5 flex items-center justify-between">
                 <div className="lg:flex-1 flex items-center gap-3">
                     <img
-                        src={`/images/patient${Number(patientInfo.id) % 4}.png`}
+                        src={`/images/patient${(Number(patientInfo.id) % 4 === 0 ? 4 : Number(patientInfo.id) % 4)}.png`}
                         alt={patientInfo.fullName}
                     />
                     <div>
