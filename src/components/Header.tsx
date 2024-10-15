@@ -14,7 +14,7 @@ const Header = () => {
             <NavButton />
             <div className='hidden lg:flex align-center gap-10'>
                 <Link to="/dashboard">Dashboard</Link>
-                <Link to="/records">New Record</Link>
+                <Link to="/create-record">New Record</Link>
                 <Link onClick={() => toast("Coming soon")} to="">About</Link>
             </div>
             {/* <Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button> */}

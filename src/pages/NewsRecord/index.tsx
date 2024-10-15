@@ -16,6 +16,7 @@ import {
 } from "@/utils/interfaces";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "react-hot-toast";
+import { useAccount } from "wagmi";
 
 const epochToDateString = (epochTimestamp) => {
   const date = new Date(epochTimestamp * 1000);
@@ -36,6 +37,7 @@ const shortenFileName = (fileName) => {
 
 const NewsRecord = () => {
   const navigate = useNavigate();
+  const { isConnected } = useAccount();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
@@ -113,7 +115,7 @@ const NewsRecord = () => {
       contactInfo.nextOfKin.trim() !== "" &&
       contactInfo.nextOfKinPhoneNumber.trim() !== "" &&
       contactInfo.nextOfKinResidentialAddress.trim() !== ""
-      contactInfo.healthInsured !== null;
+    contactInfo.healthInsured !== null;
 
     const areEmergencyContactsValid = emergencyContacts.every(
       (contact) =>
@@ -147,6 +149,17 @@ const NewsRecord = () => {
 
     }
   }, [combinedInfo._medicalInfo.medicalHistoryFile]);
+
+  if (!isConnected) {
+    return (
+      <div className="p-10 px-5 lg:px-20 lg:min-h-screen">
+        <Header />
+        <div className="flex flex-col justify-center items-center h-[80vh]">
+          <p className="text-3xl max-md:text-xl">Please connect your wallet</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-10 px-5 lg:px-20 pb-0 min-h-screen">

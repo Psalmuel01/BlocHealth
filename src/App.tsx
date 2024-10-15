@@ -36,7 +36,7 @@ function App() {
       element: <Home />,
     },
     {
-      path: "records",
+      path: "create-record",
       element: <NewsRecord />,
     },
     {
