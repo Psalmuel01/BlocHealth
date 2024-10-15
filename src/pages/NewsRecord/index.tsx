@@ -112,7 +112,8 @@ const NewsRecord = () => {
       contactInfo.residentialAddress.trim() !== "" &&
       contactInfo.nextOfKin.trim() !== "" &&
       contactInfo.nextOfKinPhoneNumber.trim() !== "" &&
-      contactInfo.nextOfKinResidentialAddress.trim() !== "";
+      contactInfo.nextOfKinResidentialAddress.trim() !== ""
+      contactInfo.healthInsured !== null;
 
     const areEmergencyContactsValid = emergencyContacts.every(
       (contact) =>
@@ -201,6 +202,10 @@ const NewsRecord = () => {
               <div className="flex items-center space-x-2">
                 <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Female} id="r2" />
                 <Label htmlFor="r2">Female</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Other} id="r3" />
+                <Label htmlFor="r3">Other</Label>
               </div>
             </RadioGroup>
           </div>
