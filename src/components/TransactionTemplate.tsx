@@ -41,7 +41,8 @@ function TransactionTemplate({
           address: CONTRACT_ADDRESS,
           abi: CONTRACT_ABI,
           functionName,
-          args: args?.length > 0 ? args : [],
+          //@ts-ignore
+          args: args.length > 0 ? args : [],
         },
       ]}
       onError={onError}
