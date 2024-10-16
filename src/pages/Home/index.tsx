@@ -12,7 +12,7 @@ const Home = () => {
       {/* Body */}
       <div className='flex flex-col gap-5 items-center justify-center text-center'>
         <p className='lg:text-7xl text-3xl font-clash_semibold w-3/5'>Patient Records all in one Place.</p>
-        <p className='lg:w-1/2'>Lorem ipsum dolor sit amet consectetur. Diam elementum non pellentesque in justo erat in porttitor. Semper quis et mattis tellus.</p>
+        <p className='lg:w-1/2'>Empowering patients and providers with real-time, transparent, and tamper-proof data management for better care and peace of mind.</p>
         {/* <div className='mt-5'>
           <Button size='lg' className='bg-[#2924A6]'>Connect Wallet</Button>
         </div> */}

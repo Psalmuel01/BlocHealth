@@ -17,6 +17,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
+import { isAddress } from "ethers";
 
 const epochToDateString = (epochTimestamp) => {
   const date = new Date(epochTimestamp * 1000);
@@ -40,6 +41,25 @@ const NewsRecord = () => {
   const { isConnected } = useAccount();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [validated, setValidated] = useState<boolean>(false);
+  const [errors, setErrors] = useState({
+    fullName: '',
+    address: '',
+    medications: '',
+    gender: '',
+    dob: '',
+    diagnosis: '',
+    treatmentPlan: '',
+    allergies: '',
+    phoneNumber: '',
+    emailAddress: '',
+    residentialAddress: '',
+    nextOfKin: '',
+    nextOfKinPhoneNumber: '',
+    nextOfKinResidentialAddress: '',
+    emergencyContacts: '',
+    healthInsured: ''
+  });
 
   const [basicInfo, setBasicInfo] = useState<
     Omit<
@@ -97,36 +117,30 @@ const NewsRecord = () => {
   }, [basicInfo, contactInfo, emergencyContacts, medicalInfo]);
 
   const validateInputs = () => {
-    const isBasicInfoValid =
-      basicInfo._fullName.trim() !== "" &&
-      basicInfo._patientAddress.trim() !== "" &&
-      basicInfo._gender !== null &&
-      basicInfo._dateOfBirth !== 0;
+    const newErrors = {
+      fullName: basicInfo._fullName.trim() === '' ? 'Full name is required' : '',
+      address: !isAddress(basicInfo._patientAddress) ? 'Invalid Ethereum address' : '',
+      medications: medicalInfo.currentMedications.trim() === '' ? 'Medications are required' : '',
+      gender: basicInfo._gender === null ? 'Please select a gender' : '',
+      dob: basicInfo._dateOfBirth === 0 ? 'Date of birth is required' : '',
+      diagnosis: medicalInfo.diagnosis.trim() === '' ? 'Diagnosis is required' : '',
+      treatmentPlan: medicalInfo.treatmentPlan.trim() === '' ? 'Treatment plan is required' : '',
+      allergies: medicalInfo.allergies.trim() === '' ? 'Allergies are required' : '',
+      phoneNumber: contactInfo.phoneNumber.trim() === '' ? 'Phone number is required' : '',
+      emailAddress: contactInfo.emailAddress.trim() === '' ? 'Email is required' : '',
+      residentialAddress: contactInfo.residentialAddress.trim() === '' ? 'Residential address is required' : '',
+      nextOfKin: contactInfo.nextOfKin.trim() === '' ? 'Next of kin is required' : '',
+      nextOfKinPhoneNumber: contactInfo.nextOfKinPhoneNumber.trim() === '' ? 'Next of kin phone number is required' : '',
+      nextOfKinResidentialAddress: contactInfo.nextOfKinResidentialAddress.trim() === '' ? 'Next of kin address is required' : '',
+      healthInsured: contactInfo.healthInsured === null ? 'Please select health insurance status' : '',
+      emergencyContacts: emergencyContacts.some(contact => contact.name.trim() === '' || contact.phoneNumber.trim() === '' || contact.residentialAddress.trim() === '')
+        ? 'All emergency contacts must be filled'
+        : ''
+    };
 
-    const isMedicalInfoValid =
-      medicalInfo.currentMedications.trim() !== "" &&
-      medicalInfo.diagnosis.trim() !== "" &&
-      medicalInfo.treatmentPlan.trim() !== "";
+    setErrors(newErrors);
 
-    const isContactInfoValid =
-      contactInfo.phoneNumber.trim() !== "" &&
-      contactInfo.emailAddress.trim() !== "" &&
-      contactInfo.residentialAddress.trim() !== "" &&
-      contactInfo.nextOfKin.trim() !== "" &&
-      contactInfo.nextOfKinPhoneNumber.trim() !== "" &&
-      contactInfo.nextOfKinResidentialAddress.trim() !== ""
-    contactInfo.healthInsured !== null;
-
-    const areEmergencyContactsValid = emergencyContacts.every(
-      (contact) =>
-        contact.name.trim() !== "" &&
-        contact.phoneNumber.trim() !== "" &&
-        contact.residentialAddress.trim() !== ""
-    );
-
-    return (
-      isBasicInfoValid && isMedicalInfoValid && isContactInfoValid && areEmergencyContactsValid
-    );
+    return !Object.values(newErrors).some(errorMsg => errorMsg !== '');
   };
 
 
@@ -176,55 +190,64 @@ const NewsRecord = () => {
       <div className="mt-5">
         <p className="font-clash_medium">Patient's Personal Details:</p>
         <div className="mt-3 flex flex-col gap-4">
-          <div className="flex gap-3">
-            <Input
-              id="name"
-              type="text"
-              placeholder="Full Name"
-              value={basicInfo._fullName}
-              onChange={(e) =>
-                setBasicInfo({ ...basicInfo, _fullName: e.target.value })
-              }
-            />
-            <Input
-              id="address_id"
-              type="text"
-              placeholder="Address ID"
-              value={basicInfo._patientAddress}
-              onChange={(e) =>
-                setBasicInfo({ ...basicInfo, _patientAddress: e.target.value })
-              }
-            />
-            <Input
-              id="medications"
-              type="text"
-              placeholder="Current medications"
-              value={medicalInfo.currentMedications}
-              onChange={(e) =>
-                setMedicalInfo({
-                  ...medicalInfo,
-                  currentMedications: e.target.value,
-                })
-              }
-            />
-            <RadioGroup className="flex" value={basicInfo._gender} onValueChange={(value) => setBasicInfo({ ...basicInfo, _gender: value as unknown as Gender })}>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Male} id="r1" />
-                <Label htmlFor="r1">Male</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Female} id="r2" />
-                <Label htmlFor="r2">Female</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Other} id="r3" />
-                <Label htmlFor="r3">Other</Label>
-              </div>
-            </RadioGroup>
+          <div className="flex max-md:flex-wrap items-center gap-3">
+            <div className="w-full">
+              <Input
+                id="name"
+                type="text"
+                placeholder="Full Name"
+                value={basicInfo._fullName}
+                onChange={(e) =>
+                  setBasicInfo({ ...basicInfo, _fullName: e.target.value })
+                }
+              />
+              {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="address_id"
+                type="text"
+                placeholder="Address ID"
+                value={basicInfo._patientAddress}
+                onChange={(e) => setBasicInfo({ ...basicInfo, _patientAddress: e.target.value })}
+              />
+              {errors.address && <p className="mt-2 text-red-500 text-xs">{errors.address}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="medications"
+                type="text"
+                placeholder="Current medications"
+                value={medicalInfo.currentMedications}
+                onChange={(e) =>
+                  setMedicalInfo({
+                    ...medicalInfo,
+                    currentMedications: e.target.value,
+                  })
+                }
+              />
+              {errors.medications && <p className="mt-2 text-red-500 text-xs">{errors.medications}</p>}
+            </div>
+            <div className="w-full">
+              <RadioGroup className="flex" value={basicInfo._gender} onValueChange={(value) => setBasicInfo({ ...basicInfo, _gender: value as unknown as Gender })}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Male} id="r1" />
+                  <Label htmlFor="r1">Male</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Female} id="r2" />
+                  <Label htmlFor="r2">Female</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={Gender.Other} id="r3" />
+                  <Label htmlFor="r3">Other</Label>
+                </div>
+              </RadioGroup>
+              {errors.gender && <p className="mt-2 text-red-500 text-xs">{errors.gender}</p>}
+            </div>
           </div>
-          <div className="flex gap-3">
-            <div className="relative grid w-full max-w-sm items-center gap-1.5">
-              {/* <div className="relative"> */}
+          <div className="flex max-md:flex-wrap gap-3">
+            <div className="relative grid w-full lg:max-w-sm items-center gap-1.5">
               <Input
                 id="picture"
                 type="file"
@@ -250,65 +273,74 @@ const NewsRecord = () => {
               <div className="flex items-center justify-start px-3 w-full h-full border border-gradient border-gray-300 rounded-md">
                 {medicalInfo.medicalHistoryFile == ""
                   ?
-                  <span className="text-gray-500 text-sm w-full flex items-center justify-between">
+                  <span className="text-gray-500 text-sm w-full flex max-md:flex-col max-md:py-2 items-center justify-between">
                     Upload medical history
                     <Link2Icon />
                   </span>
                   :
-                  <div className="flex max-md:flex-col gap-2">
+                  <div className="flex max-md:py-2 items-center gap-2">
                     <img src={imageSrc} className="w-5 object-contain" alt="Uploaded Medical File Preview" />
                     <p className="max-md:text-xs">Uploaded {shortenFileName(medicalInfo.medicalHistoryFile)}</p>
                   </div>}
-
               </div>
-              {/* </div> */}
             </div>
-            {/* <Input id="picture" type="file" placeholder="Upload medical history" /> */}
-            <Input
-              id="date"
-              type="date"
-              placeholder="Date of Birth (dd/mm/yyyy)"
-              value={
-                basicInfo._dateOfBirth > 0
-                  ? epochToDateString(basicInfo._dateOfBirth)
-                  : ""
-              }
-              onChange={(e) => {
-                const date = new Date(e.target.value);
-                const epochTimestamp = date.getTime() / 1000;
+            <div className="w-full">
+              <Input
+                id="date"
+                type="date"
+                placeholder="Date of Birth (dd/mm/yyyy)"
+                value={
+                  basicInfo._dateOfBirth > 0
+                    ? epochToDateString(basicInfo._dateOfBirth)
+                    : ""
+                }
+                onChange={(e) => {
+                  const date = new Date(e.target.value);
+                  const epochTimestamp = date.getTime() / 1000;
 
-                setBasicInfo({ ...basicInfo, _dateOfBirth: epochTimestamp });
-              }}
-            />
-            <Input
-              id="allergies"
-              type="text"
-              placeholder="Allergies"
-              value={medicalInfo.allergies}
-              onChange={(e) => setMedicalInfo({ ...medicalInfo, allergies: e.target.value })} />
+                  setBasicInfo({ ...basicInfo, _dateOfBirth: epochTimestamp });
+                }}
+              />
+              {errors.dob && <p className="mt-2 text-red-500 text-xs">{errors.dob}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="allergies"
+                type="text"
+                placeholder="Allergies"
+                value={medicalInfo.allergies}
+                onChange={(e) => setMedicalInfo({ ...medicalInfo, allergies: e.target.value })} />
+              {errors.allergies && <p className="mt-2 text-red-500 text-xs">{errors.allergies}</p>}
+            </div>
           </div>
           <div className="flex gap-3">
-            <Input
-              id="diagnosis"
-              type="text"
-              placeholder="Diagnosis"
-              value={medicalInfo.diagnosis}
-              onChange={(e) =>
-                setMedicalInfo({ ...medicalInfo, diagnosis: e.target.value })
-              }
-            />
-            <Input
-              id="treatment"
-              type="text"
-              placeholder="Treatment plan"
-              value={medicalInfo.treatmentPlan}
-              onChange={(e) =>
-                setMedicalInfo({
-                  ...medicalInfo,
-                  treatmentPlan: e.target.value,
-                })
-              }
-            />
+            <div className="w-full">
+              <Input
+                id="diagnosis"
+                type="text"
+                placeholder="Diagnosis"
+                value={medicalInfo.diagnosis}
+                onChange={(e) =>
+                  setMedicalInfo({ ...medicalInfo, diagnosis: e.target.value })
+                }
+              />
+              {errors.diagnosis && <p className="mt-2 text-red-500 text-xs">{errors.diagnosis}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="treatment"
+                type="text"
+                placeholder="Treatment plan"
+                value={medicalInfo.treatmentPlan}
+                onChange={(e) =>
+                  setMedicalInfo({
+                    ...medicalInfo,
+                    treatmentPlan: e.target.value,
+                  })
+                }
+              />
+              {errors.treatmentPlan && <p className="mt-2 text-red-500 text-xs">{errors.treatmentPlan}</p>}
+            </div>
           </div>
         </div>
       </div>
@@ -316,99 +348,120 @@ const NewsRecord = () => {
       <div className="mt-5">
         <p className="font-clash_medium">Contact Info:</p>
         <div className="mt-3 flex flex-col gap-4">
-          <div className="flex gap-3">
-            <Input
-              id="phone"
-              type="number"
-              placeholder="Phone number"
-              value={contactInfo.phoneNumber}
-              onChange={(e) =>
-                setContactInfo({ ...contactInfo, phoneNumber: e.target.value })
-              }
-            />
-            <Input
-              id="email"
-              type="email"
-              placeholder="Email address"
-              value={contactInfo.emailAddress}
-              onChange={(e) =>
-                setContactInfo({ ...contactInfo, emailAddress: e.target.value })
-              }
-            />
-            <Input
-              id="address"
-              type="text"
-              placeholder="Residential address"
-              value={contactInfo.residentialAddress}
-              onChange={(e) =>
-                setContactInfo({
-                  ...contactInfo,
-                  residentialAddress: e.target.value,
-                })
-              }
-            />
+          <div className="flex max-md:flex-wrap gap-3">
+            <div className="w-full">
+              <Input
+                id="phone"
+                type="number"
+                placeholder="Phone number"
+                value={contactInfo.phoneNumber}
+                onChange={(e) =>
+                  setContactInfo({ ...contactInfo, phoneNumber: e.target.value })
+                }
+              />
+              {errors.phoneNumber && <p className="mt-2 text-red-500 text-xs">{errors.phoneNumber}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email address"
+                value={contactInfo.emailAddress}
+                onChange={(e) =>
+                  setContactInfo({ ...contactInfo, emailAddress: e.target.value })
+                }
+              />
+              {errors.emailAddress && <p className="mt-2 text-red-500 text-xs">{errors.emailAddress}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="address"
+                type="text"
+                placeholder="Residential address"
+                value={contactInfo.residentialAddress}
+                onChange={(e) =>
+                  setContactInfo({
+                    ...contactInfo,
+                    residentialAddress: e.target.value,
+                  })
+                }
+              />
+              {errors.residentialAddress && <p className="mt-2 text-red-500 text-xs">{errors.residentialAddress}</p>}
+            </div>
           </div>
-          <div className="flex gap-3">
-            <Input
-              id="kin"
-              type="text"
-              placeholder="Next of kin"
-              value={contactInfo.nextOfKin}
-              onChange={(e) =>
-                setContactInfo({ ...contactInfo, nextOfKin: e.target.value })
-              }
-            />
-            <Input
-              id="kin_phone"
-              type="number"
-              placeholder="Next of kin phone number"
-              value={contactInfo.nextOfKinPhoneNumber}
-              onChange={(e) =>
-                setContactInfo({
-                  ...contactInfo,
-                  nextOfKinPhoneNumber: e.target.value,
-                })
-              }
-            />
-            <Input
-              id="kin_address"
-              type="text"
-              placeholder="Next of kin residential address"
-              value={contactInfo.nextOfKinResidentialAddress}
-              onChange={(e) =>
-                setContactInfo({
-                  ...contactInfo,
-                  nextOfKinResidentialAddress: e.target.value,
-                })
-              }
-            />
+          <div className="flex max-md:flex-wrap gap-3">
+            <div className="w-full">
+              <Input
+                id="kin"
+                type="text"
+                placeholder="Next of kin"
+                value={contactInfo.nextOfKin}
+                onChange={(e) =>
+                  setContactInfo({ ...contactInfo, nextOfKin: e.target.value })
+                }
+              />
+              {errors.nextOfKin && <p className="mt-2 text-red-500 text-xs">{errors.nextOfKin}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="kin_phone"
+                type="number"
+                placeholder="Next of kin phone number"
+                value={contactInfo.nextOfKinPhoneNumber}
+                onChange={(e) =>
+                  setContactInfo({
+                    ...contactInfo,
+                    nextOfKinPhoneNumber: e.target.value,
+                  })
+                }
+              />
+              {errors.nextOfKinPhoneNumber && <p className="mt-2 text-red-500 text-xs">{errors.nextOfKinPhoneNumber}</p>}
+            </div>
+            <div className="w-full">
+              <Input
+                id="kin_address"
+                type="text"
+                placeholder="Next of kin residential address"
+                value={contactInfo.nextOfKinResidentialAddress}
+                onChange={(e) =>
+                  setContactInfo({
+                    ...contactInfo,
+                    nextOfKinResidentialAddress: e.target.value,
+                  })
+                }
+              />
+              {errors.nextOfKinResidentialAddress && <p className="mt-2 text-red-500 text-xs">{errors.nextOfKinResidentialAddress}</p>}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-5 flex gap-5 items-center">
-        <p className="font-clash_medium">Health Insurance:</p>
-        <RadioGroup className="flex" value={contactInfo.healthInsured} onValueChange={(value) => setContactInfo({ ...contactInfo, healthInsured: value as unknown as boolean })}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={true} id="r1" />
-            <Label htmlFor="r1">Yes</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={false} id="r2" />
-            <Label htmlFor="r2">No</Label>
-          </div>
-        </RadioGroup>
+      <div className="mt-5">
+        <div className="flex gap-5 items-center">
+          <p className="font-clash_medium">Health Insurance:</p>
+          <RadioGroup className="flex" value={contactInfo.healthInsured} onValueChange={(value) => setContactInfo({ ...contactInfo, healthInsured: value as unknown as boolean })}>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={true} id="r1" />
+              <Label htmlFor="r1">Yes</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem className="border-[#2924A6]/80 text-blue-300" value={false} id="r2" />
+              <Label htmlFor="r2">No</Label>
+            </div>
+          </RadioGroup>
+        </div>
+        {errors.healthInsured && <p className="mt-2 text-red-500 text-xs">{errors.healthInsured}</p>}
       </div>
 
       <div className="mt-5">
         <p className="font-clash_medium">Emergency Contacts:</p>
         <div className="mt-3 flex flex-col gap-4">
           {emergencyContacts.map((contact, index) => (
-            <div className="flex gap-3" key={index}>
+            <div className="flex max-md:flex-wrap gap-3" key={index}>
               <Input
                 id={`emg_name${index + 1}`}
                 type="text"
-                placeholder="Contact name"
+                placeholder={`Contact name ${index + 1}`}
                 value={contact.name}
                 onChange={(e) => {
                   const newContacts = [...emergencyContacts];
@@ -419,7 +472,7 @@ const NewsRecord = () => {
               <Input
                 id={`emg_phone${index + 1}`}
                 type="number"
-                placeholder="Phone number"
+                placeholder={`Phone number ${index + 1}`}
                 value={contact.phoneNumber}
                 onChange={(e) => {
                   const newContacts = [...emergencyContacts];
@@ -430,7 +483,7 @@ const NewsRecord = () => {
               <Input
                 id="emg_address1"
                 type="text"
-                placeholder="Residential address"
+                placeholder={`Residential address ${index + 1}`}
                 value={contact.residentialAddress}
                 onChange={(e) => {
                   const newContacts = [...emergencyContacts];
@@ -440,6 +493,7 @@ const NewsRecord = () => {
               />
             </div>
           ))}
+          {errors.emergencyContacts && <p className="text-red-500 text-xs">{errors.emergencyContacts}</p>}
         </div>
       </div>
 
@@ -460,13 +514,13 @@ const NewsRecord = () => {
         {/* <Button size='lg' className='bg-[#2924A6]'>Publish record</Button> */}
         <div onClick={() => {
           if (validateInputs()) {
+            setValidated(true);
             localStorage.clear();
           } else {
-            toast.error('Please fill in all required fields');
+            toast.error('Please fix the validation errors before submitting');
           }
-        }
-        }>
-          <Publish isValidated={validateInputs()} info={combinedInfo} />
+        }}>
+          <Publish isValidated={validated} info={combinedInfo} />
         </div>
       </div>
     </div>

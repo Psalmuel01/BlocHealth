@@ -25,7 +25,7 @@ export function WalletConnect() {
     <div className="flex">
       <Wallet>
         <ConnectWallet className="bg-[#2924A6] hover:bg-blue-800">
-          <ConnectWalletText>Sign In</ConnectWalletText>
+          <ConnectWalletText>Connect Wallet</ConnectWalletText>
           <Avatar address={address} chain={base} className="h-6 w-6" />
           <Name address={address} chain={base} className="text-white" />
         </ConnectWallet>
