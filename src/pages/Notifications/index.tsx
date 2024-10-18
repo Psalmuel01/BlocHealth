@@ -1,8 +1,6 @@
-import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons"
-import { useNavigate } from "react-router-dom"
+import { ChevronDownIcon } from "@radix-ui/react-icons"
 
 const generateNotificationText = (name: string) => `${name} has a pending record that needs to be updated`;
 const generateAppointmentText = (name: string) => `You have an appointment with ${name}`;
@@ -37,17 +35,14 @@ const notifications = [
 ]
 
 const Notifications = () => {
-    const navigate = useNavigate();
     return (
-        <div className='pt-10 px-5 lg:px-20 min-h-screen'>
-            <Header />
-
+        <div className='pt-10 px-5 lg:px-14 min-h-screen'>
             <div className='flex justify-between items-center mt-5'>
                 <div>
                     <p className='text-2xl font-clash_semibold'>Notifications (5)</p>
                     <p className='font-clash_light'>See all your notifications</p>
                 </div>
-                <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} />
+                {/* <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} /> */}
             </div>
 
             <div className="mt-8">

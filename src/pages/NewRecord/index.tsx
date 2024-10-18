@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link2Icon } from "@radix-ui/react-icons";
-import { Cross1Icon } from "@radix-ui/react-icons";
 import { Publish } from "./Publish";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import {
   Gender,
@@ -37,7 +36,7 @@ const shortenFileName = (fileName) => {
 };
 
 const NewRecord = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { isConnected } = useAccount();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -176,15 +175,13 @@ const NewRecord = () => {
   }
 
   return (
-    <div className="pt-10 px-5 lg:px-20 min-h-screen">
-      <Header />
-
+    <div className="pt-10 px-5 lg:px-14 min-h-screen">
       <div className="flex justify-between items-center mt-5">
         <div>
           <p className="text-2xl font-clash_semibold">New Record</p>
           <p className="font-clash_light">Create new patient record</p>
         </div>
-        <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} />
+        {/* <Cross1Icon className="cursor-pointer" onClick={() => navigate(-1)} /> */}
       </div>
 
       <div className="mt-5">

@@ -4,9 +4,9 @@ import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { WalletConnect } from './Connect';
 
 const navigation = [
-    { name: 'Dashboard', to: '/dashboard' },
-    { name: 'New Record', to: '/create-record' },
-    { name: 'About', to: '' },
+    { name: 'Home', to: '/' },
+    { name: 'Our Clients', to: '/clients' },
+    { name: 'How it works', to: '' },
 ];
 
 const NavButton = () => {

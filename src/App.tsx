@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home/index.tsx";
-import Dashboard from "./pages/Dashboard/index.tsx";
+import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 import NewRecord from "./pages/NewRecord/index.tsx";
 import Patients from "./pages/Patients/index.tsx";
 import Patient from "./pages/Patients/Patient/index.tsx";
@@ -21,6 +21,7 @@ import Notifications from "./pages/Notifications/index.tsx";
 import { ContractInteractionsProvider } from "./contexts/ContractInteractions";
 import Clients from "./pages/Clients/index.tsx";
 import Onboard from "./pages/Onboard/index.tsx";
+import Dash from "./pages/Dashboard/index.tsx";
 // import Header from "@/components/Header";
 // import TransactionTemplate from "@/components/TransactionTemplate";
 
@@ -60,12 +61,22 @@ function App() {
       element: <Onboard />,
     },
     {
-      path: "create-record",
-      element: <NewRecord />,
-    },
-    {
       path: "dashboard",
-      element: <Dashboard />,
+      element: <Dash />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/dashboard/new-record",
+          element: <NewRecord />,
+        },
+        {
+          path: "/dashboard/notifications",
+          element: <Notifications />
+        }
+      ]
     },
     {
       path: "patients",
@@ -87,14 +98,14 @@ function App() {
       path: "pending",
       element: <Pending />,
     },
-    {
-      path: "notifications",
-      element: <Notifications />,
-    },
     // {
     //   path: "example",
     //   element: <Example />,
     // },
+    {
+      path: "*",
+      element: <NoMatch />,
+    }
   ]);
 
   return (
@@ -111,6 +122,15 @@ function App() {
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
+  );
+}
+
+function NoMatch() {
+  return (
+    <div className="grid place-content-center h-screen max-md:text-xl text-3xl">
+      <h2>404: Page Not Found</h2>
+      <p>Uh oh! Wrong page 😞</p>
+    </div>
   );
 }
 

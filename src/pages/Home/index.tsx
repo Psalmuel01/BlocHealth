@@ -7,7 +7,7 @@ import HomeC from './HomeC';
 const Home = () => {
   const { isConnected } = useAccount();
 
-  if (!isConnected) {
+  if (isConnected) {
     return <HomeC />
   }
 
