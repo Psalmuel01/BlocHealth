@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import useContractInteractions from "@/pages/Dashboard/useContractInteractions";
@@ -17,7 +16,6 @@ const Dashboard = () => {
   if (!isConnected) {
     return (
       <div className="p-10 px-5 lg:px-20 lg:min-h-screen">
-        <Header />
         <div className="flex flex-col justify-center items-center h-[80vh]">
           <p className="text-3xl max-md:text-xl">Please connect your wallet</p>
         </div>
@@ -26,18 +24,19 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className="mb-10">
       <div className="bg-[#18166133] sticky flex justify-between items-center py-7 px-14">
         <p className="font-clash_semibold text-xl">Admin Dashboard</p>
         <Input placeholder="Search patients records" className="rounded-xl w-1/2" />
       </div>
       <div className="max-md:p-10 px-5 lg:px-14 lg:h-screen">
 
-        <div className="flex max-md:flex-col max-md:gap-2 items-center justify-between mt-10">
+        <div className="flex flex-col gap-1 justify-between mt-10">
           <p className="text-2xl w-full">
             Welcome!{" "}
             <span className="font-clash_semibold ml-1">Dr. John Leo</span>
           </p>
+          <p className="font-clash_extralight">University of Benin Teaching Hospital</p>
         </div>
 
         <div className="mt-10 flex flex-wrap max-md:flex-col justify-between gap-10 max-md:gap-5">

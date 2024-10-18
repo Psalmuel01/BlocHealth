@@ -10,18 +10,19 @@ import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home/index.tsx";
 import Dashboard from "./pages/Dashboard/Dashboard.tsx";
-import NewRecord from "./pages/NewRecord/index.tsx";
+import NewRecord from "./pages/Dashboard/NewRecord.tsx";
 import Patients from "./pages/Patients/index.tsx";
 import Patient from "./pages/Patients/Patient/index.tsx";
 import Appointments from "./pages/Appointments/index.tsx";
 import Shared from "./pages/Shared/index.tsx";
 import Pending from "./pages/Pending/index.tsx";
 import { baseSepolia } from "wagmi/chains";
-import Notifications from "./pages/Notifications/index.tsx";
+import Notifications from "./pages/Dashboard/Notifications.tsx";
 import { ContractInteractionsProvider } from "./contexts/ContractInteractions";
 import Clients from "./pages/Clients/index.tsx";
 import Onboard from "./pages/Onboard/index.tsx";
 import Dash from "./pages/Dashboard/index.tsx";
+import ManageStaffs from "./pages/Dashboard/ManageStaffs.tsx";
 // import Header from "@/components/Header";
 // import TransactionTemplate from "@/components/TransactionTemplate";
 
@@ -74,7 +75,11 @@ function App() {
         },
         {
           path: "/dashboard/notifications",
-          element: <Notifications />
+          element: <Notifications />,
+        },
+        {
+          path: "/dashboard/manage-staffs",
+          element: <ManageStaffs />,
         }
       ]
     },

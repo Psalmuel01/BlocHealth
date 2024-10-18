@@ -1,9 +1,8 @@
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link2Icon } from "@radix-ui/react-icons";
-import { Publish } from "./Publish";
+import { Publish } from "../../components/Publish";
 // import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -166,7 +165,6 @@ const NewRecord = () => {
   if (!isConnected) {
     return (
       <div className="p-10 px-5 lg:px-20 lg:min-h-screen">
-        <Header />
         <div className="flex flex-col justify-center items-center h-[80vh]">
           <p className="text-3xl max-md:text-xl">Please connect your wallet</p>
         </div>

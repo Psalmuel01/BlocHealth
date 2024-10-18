@@ -5,6 +5,7 @@ import { DashboardIcon } from '@radix-ui/react-icons';
 const navigation = [
     { name: 'Dashboard', to: '/dashboard' },
     { name: 'New Record', to: '/dashboard/new-record' },
+    { name: 'Manage Staffs', to: '/dashboard/manage-staffs' },
     { name: 'Notifications', to: '/dashboard/notifications' },
 ];
 
