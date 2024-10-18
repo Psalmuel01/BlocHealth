@@ -8,65 +8,69 @@ import {
 } from "@/components/ui/table";
 import { BookmarkIcon, TrashIcon } from "@radix-ui/react-icons";
 
-const invoices = [
+const shortenAddress = (address) => {
+    if (address.length > 16) {
+      const start = address.slice(0, 14);
+      const end = address.slice(-4);
+      return `${start}...${end}`;
+    }
+    return address;
+  };
+  
+
+const staffs = [
     {
-        invoice: "INV001",
-        paymentStatus: "Paid",
+        name: "Dr. Johnson Sule",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
         totalAmount: "$250.00",
         paymentMethod: "Credit Card",
     },
     {
-        invoice: "INV002",
-        paymentStatus: "Pending",
+        name: "Dr. Peace Alo",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
         totalAmount: "$150.00",
         paymentMethod: "PayPal",
     },
     {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
+        name: "Dr. Johnson Sule",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$250.00",
         paymentMethod: "Credit Card",
     },
     {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
+        name: "Dr. Peace Alo",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$150.00",
         paymentMethod: "PayPal",
     },
     {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
+        name: "Dr. Johnson Sule",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$250.00",
         paymentMethod: "Credit Card",
     },
     {
-        invoice: "INV008",
-        paymentStatus: "Paid",
-        totalAmount: "$400.00",
+        name: "Dr. Peace Alo",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$150.00",
         paymentMethod: "PayPal",
     },
     {
-        invoice: "INV009",
-        paymentStatus: "Paid",
-        totalAmount: "$500.00",
-        paymentMethod: "Bank Transfer",
+        name: "Dr. Johnson Sule",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$250.00",
+        paymentMethod: "Credit Card",
     },
     {
-        invoice: "INV010",
-        paymentStatus: "Pending",
-        totalAmount: "$600.00",
+        name: "Dr. Peace Alo",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$150.00",
+        paymentMethod: "PayPal",
+    },
+    {
+        name: "Dr. Johnson Sule",
+        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+        totalAmount: "$250.00",
         paymentMethod: "Credit Card",
     },
 ]
@@ -84,12 +88,12 @@ const StaffTable = () => {
                 </TableRow>
             </TableHeader>
             <TableBody className="text-gray-300text-center ">
-                {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice} className="border-[#2924A6]/50">
-                        <TableCell className="text-center font-medium border-r border-[#2924A6]/50">{invoice.invoice}</TableCell>
-                        <TableCell className="text-center border-r border-[#2924A6]/50">{invoice.paymentStatus}</TableCell>
-                        <TableCell className="text-center border-r border-[#2924A6]/50">{invoice.paymentMethod}</TableCell>
-                        <TableCell className="text-center border-r border-[#2924A6]/50">{invoice.totalAmount}</TableCell>
+                {staffs.map((staff, index) => (
+                    <TableRow key={index} className="border-[#2924A6]/50">
+                        <TableCell className="text-center font-medium border-r border-[#2924A6]/50">{staff.name}</TableCell>
+                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.address}</TableCell>
+                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.paymentMethod}</TableCell>
+                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.totalAmount}</TableCell>
                         <TableCell className="flex justify-center gap-5">
                             <BookmarkIcon color="green" className="cursor-pointer w-5 h-5" />
                             <TrashIcon className="cursor-pointer w-5 h-5" />

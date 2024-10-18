@@ -6,7 +6,6 @@ const Dash = () => {
     <div className="max-md:px-4 max-md:py-3">
       <Sidebar />
       <div className="ml-[20%] max-md:m-0">
-        {/* <DashHeader /> */}
         <Outlet />
       </div>
     </div>

@@ -3,17 +3,17 @@ import { WalletConnect } from './Connect';
 import { DashboardIcon } from '@radix-ui/react-icons';
 
 const navigation = [
-    { name: 'Dashboard', to: '/dashboard' },
-    { name: 'New Record', to: '/dashboard/new-record' },
-    { name: 'Manage Staffs', to: '/dashboard/manage-staffs' },
-    { name: 'Notifications', to: '/dashboard/notifications' },
+    { name: 'Dashboard', to: '' },
+    { name: 'New Record', to: 'new-record' },
+    { name: 'Manage Staffs', to: 'manage-staffs' },
+    { name: 'Notifications', to: 'notifications' },
 ];
 
 const Sidebar = () => {
     return (
         <div className='bg-[#181662] fixed max-md:hidden flex flex-col items-center justify-start p-10 py-20 min-h-screen'>
             <div className="flex flex-col gap-16">
-                <Link to="/" className="text-xl px-2">
+                <Link to="/" className="text-xl pl-5">
                     <span className='font-clash_semibold'>Bloc</span>Health
                 </Link>
                 <div className='flex flex-col gap-8'>
@@ -21,7 +21,7 @@ const Sidebar = () => {
                         <Link
                             key={item.name}
                             to={item.to}
-                            className="flex items-center gap-3 rounded-lg p-2 text-base leading-7 hover:bg-blue-800"
+                            className="flex items-center gap-3 rounded-lg py-2 pl-5 text-base leading-7 hover:bg-blue-800"
                         >
                             <DashboardIcon />
                             {item.name}

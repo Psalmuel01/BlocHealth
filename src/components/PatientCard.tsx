@@ -11,7 +11,7 @@ const PatientCard = ({
 }) => (
   <Card className="bg-[#35F3F324] p-3 px-5 w-[49%] max-md:w-full">
     <Link
-      to={`/patients/${patient.id}`}
+      to={`${patient.id}`}
       className="flex items-center justify-between"
     >
       <div className="lg:flex-1 flex items-center gap-3">

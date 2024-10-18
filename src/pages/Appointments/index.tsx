@@ -1,4 +1,3 @@
-import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Cross1Icon } from "@radix-ui/react-icons"
@@ -12,8 +11,6 @@ const Appointments = () => {
 
     return (
         <div className='pt-10 px-5 lg:px-20 min-h-screen'>
-            <Header />
-
             <div className='flex justify-between items-center mt-5'>
                 <div>
                     <p className='text-2xl font-clash_semibold'>Scheduled Appointments</p>

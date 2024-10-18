@@ -25,8 +25,8 @@ const Dashboard = () => {
 
   return (
     <div className="mb-10">
-      <div className="bg-[#18166133] sticky flex justify-between items-center py-7 px-14">
-        <p className="font-clash_semibold text-xl">Admin Dashboard</p>
+      <div className="bg-[#18166133] sticky flex justify-between items-center py-8 px-14">
+        <p className="font-clash_semibold text-2xl">Admin Dashboard</p>
         <Input placeholder="Search patients records" className="rounded-xl w-1/2" />
       </div>
       <div className="max-md:p-10 px-5 lg:px-14 lg:h-screen">
@@ -41,7 +41,7 @@ const Dashboard = () => {
 
         <div className="mt-10 flex flex-wrap max-md:flex-col justify-between gap-10 max-md:gap-5">
           <Card className="bg-[#D9D9D91A] py-10 w-[30%] max-md:w-full">
-            <Link to={"/patients"} className="flex flex-col gap-5 items-center">
+            <Link to={"patients"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/inpatient.png" alt="" className="w-16" />
               </div>
@@ -51,7 +51,7 @@ const Dashboard = () => {
           </Card>
           <Card className="bg-[#7CED0B61] py-10 w-[30%] max-md:w-full">
             <Link
-              to={"/appointments"}
+              to={"appointments"}
               className="flex flex-col gap-5 items-center"
             >
               <div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
             </Link>
           </Card>
           <Card className="bg-[#0BEDED61] py-10 w-[30%] max-md:w-full">
-            <Link to={"/pending"} className="flex flex-col gap-5 items-center">
+            <Link to={"pending"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/doc-chart.png" alt="" className="w-16" />
               </div>
@@ -73,7 +73,7 @@ const Dashboard = () => {
             </Link>
           </Card>
           <Card className="bg-[#B92BFC61] py-10 w-[30%] max-md:w-full">
-            <Link to={"/shared"} className="flex flex-col gap-5 items-center">
+            <Link to={"shared"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/arrow-up.png" alt="" className="w-16" />
               </div>
@@ -84,7 +84,7 @@ const Dashboard = () => {
             </Link>
           </Card>
           <Card className="bg-[#0BEDED61] py-10 w-[30%] max-md:w-full">
-            <Link to={"/pending"} className="flex flex-col gap-5 items-center">
+            <Link to={"pending"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/doc-chart.png" alt="" className="w-16" />
               </div>
@@ -95,7 +95,7 @@ const Dashboard = () => {
             </Link>
           </Card>
           <Card className="bg-[#B92BFC61] py-10 w-[30%] max-md:w-full">
-            <Link to={"/shared"} className="flex flex-col gap-5 items-center">
+            <Link to={"shared"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/arrow-up.png" alt="" className="w-16" />
               </div>

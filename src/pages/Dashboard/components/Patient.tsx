@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import {
     useGetPatientById,
@@ -24,8 +23,6 @@ const Patient = () => {
         );
     return (
         <div className="pt-10 px-5 lg:px-20 min-h-screen overflow-x-hidden">
-            <Header />
-
             <div className="mt-5 flex items-center justify-between">
                 <div className="lg:flex-1 flex items-center gap-3">
                     <img
