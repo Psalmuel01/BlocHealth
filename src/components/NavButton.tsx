@@ -5,7 +5,7 @@ import { WalletConnect } from './Connect';
 
 const navigation = [
     { name: 'Dashboard', to: '/dashboard' },
-    { name: 'NewsRecord', to: '/create-record' },
+    { name: 'New Record', to: '/create-record' },
     { name: 'About', to: '' },
 ];
 

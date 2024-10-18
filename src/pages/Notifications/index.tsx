@@ -39,7 +39,7 @@ const notifications = [
 const Notifications = () => {
     const navigate = useNavigate();
     return (
-        <div className='pt-10 px-5 lg:px-20 pb-0 min-h-screen'>
+        <div className='pt-10 px-5 lg:px-20 min-h-screen'>
             <Header />
 
             <div className='flex justify-between items-center mt-5'>

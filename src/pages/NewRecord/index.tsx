@@ -36,7 +36,7 @@ const shortenFileName = (fileName) => {
   return fileName;
 };
 
-const NewsRecord = () => {
+const NewRecord = () => {
   const navigate = useNavigate();
   const { isConnected } = useAccount();
 
@@ -176,7 +176,7 @@ const NewsRecord = () => {
   }
 
   return (
-    <div className="pt-10 px-5 lg:px-20 pb-0 min-h-screen">
+    <div className="pt-10 px-5 lg:px-20 min-h-screen">
       <Header />
 
       <div className="flex justify-between items-center mt-5">
@@ -499,7 +499,7 @@ const NewsRecord = () => {
 
       <div className="mt-14 mb-10 flex items-end justify-between">
         <div className="flex max-md:flex-col gap-5 max-md:gap-3">
-          <Button size="lg" className="bg-[#2924A6]" onClick={() => {
+          <Button size="lg" className="bg-[#2924A6] hover:bg-blue-800" onClick={() => {
             localStorage.setItem('patientRecord', JSON.stringify(combinedInfo));
           }}>
             Save
@@ -527,4 +527,4 @@ const NewsRecord = () => {
   );
 };
 
-export default NewsRecord;
+export default NewRecord;

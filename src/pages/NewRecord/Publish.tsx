@@ -20,7 +20,7 @@ export function Publish({ info, isValidated }: { info: IRecords, isValidated: bo
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button size="lg" className="bg-[#2924A6]" disabled={!isValidated}>
+                <Button size="lg" className="bg-[#2924A6] hover:bg-blue-800" disabled={!isValidated}>
                     Publish record
                 </Button>
             </DialogTrigger>

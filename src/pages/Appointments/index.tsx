@@ -11,7 +11,7 @@ const Appointments = () => {
     const { appointments } = useContractInteractions();
 
     return (
-        <div className='pt-10 px-5 lg:px-20 pb-0 min-h-screen'>
+        <div className='pt-10 px-5 lg:px-20 min-h-screen'>
             <Header />
 
             <div className='flex justify-between items-center mt-5'>
@@ -46,7 +46,7 @@ const Appointments = () => {
                 </Accordion>
             </div>
 
-            <div className='mt-10 mb-10 flex justify-between max-md:flex-col gap-5 max-md:gap-3'>
+            <div className='mt-10 flex justify-between max-md:flex-col gap-5 max-md:gap-3'>
                 <Button size='lg' disabled={true} className='bg-[#2924A6]'>Previous</Button>
                 <Button size='lg' className='bg-[#2924A6]'>Next</Button>
             </div>

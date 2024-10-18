@@ -4,13 +4,13 @@ import "@coinbase/onchainkit/styles.css";
 import { Buffer } from "buffer";
 import { WagmiProvider } from "wagmi";
 import { config } from "./config";
+// import { gql, request } from 'graphql-request';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home/index.tsx";
 import Dashboard from "./pages/Dashboard/index.tsx";
-import NewsRecord from "./pages/NewsRecord/index.tsx";
-
+import NewRecord from "./pages/NewRecord/index.tsx";
 import Patients from "./pages/Patients/index.tsx";
 import Patient from "./pages/Patients/Patient/index.tsx";
 import Appointments from "./pages/Appointments/index.tsx";
@@ -19,25 +19,49 @@ import Pending from "./pages/Pending/index.tsx";
 import { baseSepolia } from "wagmi/chains";
 import Notifications from "./pages/Notifications/index.tsx";
 import { ContractInteractionsProvider } from "./contexts/ContractInteractions";
-// import { TransactionDefault } from "@coinbase/onchainkit/transaction";
-// import { CONTRACT_ADDRESS } from "@/utils/constants";
+import Clients from "./pages/Clients/index.tsx";
+import Onboard from "./pages/Onboard/index.tsx";
 // import Header from "@/components/Header";
-// import CONTRACT_ABI from "@/utils/abi";
 // import TransactionTemplate from "@/components/TransactionTemplate";
 
 globalThis.Buffer = Buffer;
 
+// const query = gql`{
+//     patientAddeds(first: 5) {
+//       fullName
+//       id
+//       isPublished
+//       patientId
+//     }
+//     appointmentBookeds(first: 5) {
+//       appointmentId
+//       id
+//       name
+//       patientId
+//     }
+// }`
+// const url = 'https://api.studio.thegraph.com/query/91688/blochealth/version/latest'
+
 const queryClient = new QueryClient();
 
 function App() {
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Home />,
     },
     {
+      path: "/clients",
+      element: <Clients />,
+    },
+    {
+      path: "onboard",
+      element: <Onboard />,
+    },
+    {
       path: "create-record",
-      element: <NewsRecord />,
+      element: <NewRecord />,
     },
     {
       path: "dashboard",
@@ -91,12 +115,26 @@ function App() {
 }
 
 // const Example = () => {
+
+//   const { data, status } = useQuery({
+//     queryKey: ['data'],
+//     async queryFn() {
+//       return await request(url, query)
+//     }
+//   })
+//   // console.log(data, status);
+
 //   return (
 //     <div>
 //       <Header />
-//       <div className="h-[100vh] grid place-content-center">
+//       <div className="h-[100vh] grid place-content-center gap-10">
+//         <div>
+//           {status === 'pending' ? <div>Loading...</div> : null}
+//           {status === 'error' ? <div>Error ocurred querying the Subgraph</div> : null}
+//           <div>{JSON.stringify(data ?? {})}</div>
+//         </div>
 //         <TransactionTemplate
-//           args={[1n, "James", 102033334n, "fever"] as (string | bigint)[]}
+//           args={[1n, "Rice", 102033334n, "cancer"] as (string | bigint)[]}
 //           functionName="bookAppointment"
 //           text="Book Appointment"
 //         />
