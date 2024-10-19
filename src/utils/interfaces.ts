@@ -91,8 +91,8 @@ export interface IAddHospital {
   _hospitalId: string;
   _name: string;
   _location: string;
-  _DOE: bigint;
-  _hospitalRegNo: bigint;
+  _DOE: number;
+  _hospitalRegNo: number;
 }
 
 export interface IUpdateStaffRoles {

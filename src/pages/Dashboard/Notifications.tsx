@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
+import { useAccount } from "wagmi";
 
 const generateNotificationText = (name: string) => `${name} has a pending record that needs to be updated`;
 const generateAppointmentText = (name: string) => `You have an appointment with ${name}`;
@@ -35,9 +36,22 @@ const notifications = [
 ]
 
 const Notifications = () => {
+
+    const { isConnected } = useAccount();
+
+    if (!isConnected) {
+        return (
+            <div className="p-10 px-5 lg:px-20 lg:min-h-screen">
+                <div className="flex flex-col justify-center items-center h-[80vh]">
+                    <p className="text-3xl max-md:text-xl">Please connect your wallet</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className='pt-10 px-5 lg:px-14 min-h-screen'>
-            <div className='flex justify-between items-center mt-5'>
+        <div className='pt-5 px-5 lg:px-14 min-h-screen'>
+            <div className='flex justify-between items-center lg:mt-5'>
                 <div>
                     <p className='text-2xl font-clash_semibold'>Notifications (5)</p>
                     <p className='font-clash_light'>See all your notifications</p>

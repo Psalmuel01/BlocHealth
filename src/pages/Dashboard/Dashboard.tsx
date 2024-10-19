@@ -24,14 +24,14 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="mb-10">
-      <div className="bg-[#18166133] sticky flex justify-between items-center py-8 px-14">
+    <div className="max-md:mt-5 mb-10">
+      <div className="bg-[#18166133] sticky flex max-md:flex-col max-md:gap-3 justify-between items-center py-8 px-14">
         <p className="font-clash_semibold text-2xl">Admin Dashboard</p>
-        <Input placeholder="Search patients records" className="rounded-xl w-1/2" />
+        <Input placeholder="Search patients records" className="max-md:w-full rounded-xl w-1/2" />
       </div>
       <div className="max-md:p-10 px-5 lg:px-14 lg:h-screen">
 
-        <div className="flex flex-col gap-1 justify-between mt-10">
+        <div className="flex flex-col gap-1 justify-between lg:mt-10">
           <p className="text-2xl w-full">
             Welcome!{" "}
             <span className="font-clash_semibold ml-1">Dr. John Leo</span>

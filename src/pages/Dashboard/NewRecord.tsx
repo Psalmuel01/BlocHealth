@@ -16,14 +16,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { isAddress } from "ethers";
-
-const epochToDateString = (epochTimestamp) => {
-  const date = new Date(epochTimestamp * 1000);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+import { epochToDateString } from "@/utils/constants";
 
 const shortenFileName = (fileName) => {
   if (fileName.length > 20) {
@@ -41,7 +34,7 @@ const NewRecord = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(false);
   const [errors, setErrors] = useState({
-    fullName: '',
+    name: '',
     address: '',
     medications: '',
     gender: '',
@@ -117,7 +110,7 @@ const NewRecord = () => {
 
   const validateInputs = () => {
     const newErrors = {
-      fullName: basicInfo._name.trim() === '' ? 'Full name is required' : '',
+      name: basicInfo._name.trim() === '' ? 'Full name is required' : '',
       address: !isAddress(basicInfo._patient) ? 'Invalid Ethereum address' : '',
       medications: medicalInfo.currentMedications.trim() === '' ? 'Medications are required' : '',
       gender: basicInfo._gender === null ? 'Please select a gender' : '',
@@ -175,8 +168,8 @@ const NewRecord = () => {
   }
 
   return (
-    <div className="pt-10 px-5 lg:px-14 min-h-screen">
-      <div className="flex justify-between items-center mt-5">
+    <div className="pt-5 lg:px-14 min-h-screen">
+      <div className="flex justify-between items-center lg:mt-5">
         <div>
           <p className="text-2xl font-clash_semibold">New Record</p>
           <p className="font-clash_light">Create new patient record</p>
@@ -198,7 +191,7 @@ const NewRecord = () => {
                   setBasicInfo({ ...basicInfo, _name: e.target.value })
                 }
               />
-              {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
+              {errors.name && <p className="mt-2 text-red-500 text-xs">{errors.name}</p>}
             </div>
             <div className="w-full">
               <Input

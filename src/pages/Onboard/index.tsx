@@ -1,8 +1,49 @@
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
+import { epochToDateString } from "@/utils/constants";
+import { IAddHospital } from "@/utils/interfaces";
+import { useEffect, useState } from "react";
+import { AddModal } from "./AddModal";
 
 const Onboard = () => {
+    const [validated, setValidated] = useState<boolean>(false);
+
+    const [errors, setErrors] = useState({
+        _hospitalId: "",
+        _name: "",
+        _location: "",
+        _DOE: "",
+        _hospitalRegNo: ""
+    });
+
+    const [hospitalInfo, setHospitalInfo] = useState<IAddHospital>({
+        _hospitalId: "",
+        _name: "",
+        _location: "",
+        _DOE: 0,
+        _hospitalRegNo: 0
+    });
+
+    const validate = () => {
+        const newErrors = {
+            _hospitalId: hospitalInfo._hospitalId.trim().length === 0 ? "Hospital ID is required" : "",
+            _name: hospitalInfo._name.trim().length === 0 ? "Name is required" : "",
+            _location: hospitalInfo._location.trim().length === 0 ? "Location is required" : "",
+            _DOE: hospitalInfo._DOE === 0 ? "Date of establishment is required" : "",
+            _hospitalRegNo: hospitalInfo._hospitalRegNo === 0 ? "Hospital registration number is required" : ""
+        };
+        setErrors(newErrors);
+        return !Object.values(newErrors).some(errorMsg => errorMsg !== '');
+        // return Object.values(newErrors).every((err) => err.length === 0);
+    }
+
+    useEffect(() => {
+        validate() && setValidated(true);
+        !validate() && setValidated(false);
+        console.log(validated);
+    }, [hospitalInfo])
+
     return (
         <div className='flex flex-col justify-between p-10 px-5 lg:px-20 pb-0 min-h-scree'>
             <Header />
@@ -32,16 +73,20 @@ const Onboard = () => {
                                 id="name"
                                 type="text"
                                 placeholder="Hospital Name"
+                                value={hospitalInfo._name}
+                                onChange={(e) => setHospitalInfo({ ...hospitalInfo, _name: e.target.value })}
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors._name && <p className="mt-2 text-red-500 text-xs">{errors._name}</p>}
                         </div>
                         <div className="w-full">
                             <Input
                                 id="name"
                                 type="text"
                                 placeholder="Hospital Address"
+                                value={hospitalInfo._location}
+                                onChange={(e) => setHospitalInfo({ ...hospitalInfo, _location: e.target.value })}
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors._location && <p className="mt-2 text-red-500 text-xs">{errors._location}</p>}
                         </div>
                     </div>
                     <div className="flex max-md:flex-wrap items-center gap-3">
@@ -50,29 +95,39 @@ const Onboard = () => {
                                 id="name"
                                 type="text"
                                 placeholder="Hospital registration number"
+                                value={hospitalInfo._hospitalRegNo > 0 ? hospitalInfo._hospitalRegNo : ""}
+                                onChange={(e) => setHospitalInfo({ ...hospitalInfo, _hospitalRegNo: Number(e.target.value) })}
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors._hospitalRegNo && <p className="mt-2 text-red-500 text-xs">{errors._hospitalRegNo}</p>}
                         </div>
                         <div className="w-full">
                             <Input
                                 id="name"
-                                type="text"
+                                type="date"
                                 placeholder="Date of establishment"
+                                value={hospitalInfo._DOE > 0 ? epochToDateString(hospitalInfo._DOE) : ""}
+                                onChange={(e) => {
+                                    const date = new Date(e.target.value);
+                                    const epochTimestamp = date.getTime() / 1000;
+                                    setHospitalInfo({ ...hospitalInfo, _DOE: epochTimestamp });
+                                }}
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors._DOE && <p className="mt-2 text-red-500 text-xs">{errors._DOE}</p>}
                         </div>
                         <div className="w-full">
                             <Input
                                 id="name"
                                 type="text"
-                                placeholder="Number of staffs"
+                                placeholder="Hospital ID"
+                                value={hospitalInfo._hospitalId}
+                                onChange={(e) => setHospitalInfo({ ...hospitalInfo, _hospitalId: e.target.value })}
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors._hospitalId && <p className="mt-2 text-red-500 text-xs">{errors._hospitalId}</p>}
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="mt-5">
+            {/* <div className="mt-5">
                 <p className="font-clash_medium">Add Staff Members</p>
                 <div className="mt-3 flex flex-col gap-4">
                     <div className="flex max-md:flex-wrap items-center gap-3">
@@ -82,7 +137,7 @@ const Onboard = () => {
                                 type="text"
                                 placeholder="Full name"
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
                         </div>
                         <div className="w-full">
                             <Input
@@ -90,7 +145,7 @@ const Onboard = () => {
                                 type="text"
                                 placeholder="Wallet address/basename"
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
                         </div>
                     </div>
                     <div className="flex max-md:flex-wrap items-center gap-3">
@@ -100,7 +155,7 @@ const Onboard = () => {
                                 type="text"
                                 placeholder="Full name"
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
                         </div>
                         <div className="w-full">
                             <Input
@@ -108,11 +163,11 @@ const Onboard = () => {
                                 type="text"
                                 placeholder="Wallet address/basename"
                             />
-                            {/* {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>} */}
+                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="mt-14 mb-10 flex items-end justify-between">
                 <div className="flex max-md:flex-col gap-5 max-md:gap-3">
@@ -120,10 +175,14 @@ const Onboard = () => {
                         Cancel
                     </Button>
                 </div>
-                <div>
-                    <Button size='lg' className='bg-[#2924A6] hover:bg-blue-800'>Publish record</Button>
-                    {/* <Publish isValidated={validated} info={combinedInfo} /> */}
+                <div className="flex max-md:flex-col gap-5 max-md:gap-3">
+                    <AddModal info={hospitalInfo} isValidated={validated} />
                 </div>
+                {/* <TransactionTemplate
+                    text="Add Hospital"
+                    functionName="addHospital"
+                    args={Object.values(hospitalInfo)}
+                /> */}
             </div>
         </div>
     )

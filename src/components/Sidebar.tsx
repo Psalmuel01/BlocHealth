@@ -11,7 +11,7 @@ const navigation = [
 
 const Sidebar = () => {
     return (
-        <div className='bg-[#181662] fixed max-md:hidden flex flex-col items-center justify-start p-10 py-20 min-h-screen'>
+        <div className='bg-[#181662] fixed hidden lg:flex flex-col items-center justify-start p-10 py-20 min-h-screen'>
             <div className="flex flex-col gap-16">
                 <Link to="/" className="text-xl pl-5">
                     <span className='font-clash_semibold'>Bloc</span>Health
