@@ -46,11 +46,11 @@ const NewRecord = () => {
     medications: '',
     gender: '',
     dob: '',
-    diagnosis: '',
-    treatmentPlan: '',
+    // diagnosis: '',
+    // treatmentPlan: '',
     allergies: '',
-    phoneNumber: '',
-    emailAddress: '',
+    phone: '',
+    email: '',
     residentialAddress: '',
     nextOfKin: '',
     nextOfKinPhoneNumber: '',
@@ -65,24 +65,25 @@ const NewRecord = () => {
       "_contactInfo" | "_emergencyContacts" | "_medicalInfo" | "_isPublished"
     >
   >({
-    _patientAddress: "",
-    _fullName: "",
+    _hospitalId: "",
+    _patient: "",
+    _name: "",
     _gender: null,
-    _dateOfBirth: 0,
+    _DOB: 0,
   });
 
   const [medicalInfo, setMedicalInfo] = useState<IMedicalInfo>({
     currentMedications: "",
     allergies: "",
-    diagnosis: "",
-    treatmentPlan: "",
+    // diagnosis: "",
+    // treatmentPlan: "",
     medicalHistoryFile: "",
   });
 
   const [contactInfo, setContactInfo] = useState<IContactInfo>({
-    phoneNumber: "",
+    phone: "",
     residentialAddress: "",
-    emailAddress: "",
+    email: "",
     nextOfKin: "",
     nextOfKinPhoneNumber: "",
     nextOfKinResidentialAddress: "",
@@ -94,12 +95,12 @@ const NewRecord = () => {
   >([
     {
       name: "",
-      phoneNumber: "",
+      phone: "",
       residentialAddress: "",
     },
     {
       name: "",
-      phoneNumber: "",
+      phone: "",
       residentialAddress: "",
     },
   ]);
@@ -116,22 +117,22 @@ const NewRecord = () => {
 
   const validateInputs = () => {
     const newErrors = {
-      fullName: basicInfo._fullName.trim() === '' ? 'Full name is required' : '',
-      address: !isAddress(basicInfo._patientAddress) ? 'Invalid Ethereum address' : '',
+      fullName: basicInfo._name.trim() === '' ? 'Full name is required' : '',
+      address: !isAddress(basicInfo._patient) ? 'Invalid Ethereum address' : '',
       medications: medicalInfo.currentMedications.trim() === '' ? 'Medications are required' : '',
       gender: basicInfo._gender === null ? 'Please select a gender' : '',
-      dob: basicInfo._dateOfBirth === 0 ? 'Date of birth is required' : '',
-      diagnosis: medicalInfo.diagnosis.trim() === '' ? 'Diagnosis is required' : '',
-      treatmentPlan: medicalInfo.treatmentPlan.trim() === '' ? 'Treatment plan is required' : '',
+      dob: basicInfo._DOB === 0 ? 'Date of birth is required' : '',
+      // diagnosis: medicalInfo.diagnosis.trim() === '' ? 'Diagnosis is required' : '',
+      // treatmentPlan: medicalInfo.treatmentPlan.trim() === '' ? 'Treatment plan is required' : '',
       allergies: medicalInfo.allergies.trim() === '' ? 'Allergies are required' : '',
-      phoneNumber: contactInfo.phoneNumber.trim() === '' ? 'Phone number is required' : '',
-      emailAddress: contactInfo.emailAddress.trim() === '' ? 'Email is required' : '',
+      phone: contactInfo.phone.trim() === '' ? 'Phone number is required' : '',
+      email: contactInfo.email.trim() === '' ? 'Email is required' : '',
       residentialAddress: contactInfo.residentialAddress.trim() === '' ? 'Residential address is required' : '',
       nextOfKin: contactInfo.nextOfKin.trim() === '' ? 'Next of kin is required' : '',
       nextOfKinPhoneNumber: contactInfo.nextOfKinPhoneNumber.trim() === '' ? 'Next of kin phone number is required' : '',
       nextOfKinResidentialAddress: contactInfo.nextOfKinResidentialAddress.trim() === '' ? 'Next of kin address is required' : '',
       healthInsured: contactInfo.healthInsured === null ? 'Please select health insurance status' : '',
-      emergencyContacts: emergencyContacts.some(contact => contact.name.trim() === '' || contact.phoneNumber.trim() === '' || contact.residentialAddress.trim() === '')
+      emergencyContacts: emergencyContacts.some(contact => contact.name.trim() === '' || contact.phone.trim() === '' || contact.residentialAddress.trim() === '')
         ? 'All emergency contacts must be filled'
         : ''
     };
@@ -149,10 +150,11 @@ const NewRecord = () => {
       const parsedRecord: IRecords = JSON.parse(savedRecord);
 
       setBasicInfo({
-        _patientAddress: parsedRecord._patientAddress,
-        _fullName: parsedRecord._fullName,
+        _hospitalId: parsedRecord._hospitalId,
+        _patient: parsedRecord._patient,
+        _name: parsedRecord._name,
         _gender: parsedRecord._gender,
-        _dateOfBirth: parsedRecord._dateOfBirth,
+        _DOB: parsedRecord._DOB,
       });
 
       setMedicalInfo(parsedRecord._medicalInfo);
@@ -191,9 +193,9 @@ const NewRecord = () => {
                 id="name"
                 type="text"
                 placeholder="Full Name"
-                value={basicInfo._fullName}
+                value={basicInfo._name}
                 onChange={(e) =>
-                  setBasicInfo({ ...basicInfo, _fullName: e.target.value })
+                  setBasicInfo({ ...basicInfo, _name: e.target.value })
                 }
               />
               {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
@@ -203,8 +205,8 @@ const NewRecord = () => {
                 id="address_id"
                 type="text"
                 placeholder="Address ID"
-                value={basicInfo._patientAddress}
-                onChange={(e) => setBasicInfo({ ...basicInfo, _patientAddress: e.target.value })}
+                value={basicInfo._patient}
+                onChange={(e) => setBasicInfo({ ...basicInfo, _patient: e.target.value })}
               />
               {errors.address && <p className="mt-2 text-red-500 text-xs">{errors.address}</p>}
             </div>
@@ -285,15 +287,15 @@ const NewRecord = () => {
                 type="date"
                 placeholder="Date of Birth (dd/mm/yyyy)"
                 value={
-                  basicInfo._dateOfBirth > 0
-                    ? epochToDateString(basicInfo._dateOfBirth)
+                  basicInfo._DOB > 0
+                    ? epochToDateString(basicInfo._DOB)
                     : ""
                 }
                 onChange={(e) => {
                   const date = new Date(e.target.value);
                   const epochTimestamp = date.getTime() / 1000;
 
-                  setBasicInfo({ ...basicInfo, _dateOfBirth: epochTimestamp });
+                  setBasicInfo({ ...basicInfo, _DOB: epochTimestamp });
                 }}
               />
               {errors.dob && <p className="mt-2 text-red-500 text-xs">{errors.dob}</p>}
@@ -308,7 +310,7 @@ const NewRecord = () => {
               {errors.allergies && <p className="mt-2 text-red-500 text-xs">{errors.allergies}</p>}
             </div>
           </div>
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             <div className="w-full">
               <Input
                 id="diagnosis"
@@ -336,7 +338,7 @@ const NewRecord = () => {
               />
               {errors.treatmentPlan && <p className="mt-2 text-red-500 text-xs">{errors.treatmentPlan}</p>}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -349,24 +351,24 @@ const NewRecord = () => {
                 id="phone"
                 type="number"
                 placeholder="Phone number"
-                value={contactInfo.phoneNumber}
+                value={contactInfo.phone}
                 onChange={(e) =>
-                  setContactInfo({ ...contactInfo, phoneNumber: e.target.value })
+                  setContactInfo({ ...contactInfo, phone: e.target.value })
                 }
               />
-              {errors.phoneNumber && <p className="mt-2 text-red-500 text-xs">{errors.phoneNumber}</p>}
+              {errors.phone && <p className="mt-2 text-red-500 text-xs">{errors.phone}</p>}
             </div>
             <div className="w-full">
               <Input
                 id="email"
                 type="email"
                 placeholder="Email address"
-                value={contactInfo.emailAddress}
+                value={contactInfo.email}
                 onChange={(e) =>
-                  setContactInfo({ ...contactInfo, emailAddress: e.target.value })
+                  setContactInfo({ ...contactInfo, email: e.target.value })
                 }
               />
-              {errors.emailAddress && <p className="mt-2 text-red-500 text-xs">{errors.emailAddress}</p>}
+              {errors.email && <p className="mt-2 text-red-500 text-xs">{errors.email}</p>}
             </div>
             <div className="w-full">
               <Input
@@ -468,10 +470,10 @@ const NewRecord = () => {
                 id={`emg_phone${index + 1}`}
                 type="number"
                 placeholder={`Phone number ${index + 1}`}
-                value={contact.phoneNumber}
+                value={contact.phone}
                 onChange={(e) => {
                   const newContacts = [...emergencyContacts];
-                  newContacts[index].phoneNumber = e.target.value;
+                  newContacts[index].phone = e.target.value;
                   setEmergencyContacts(newContacts);
                 }}
               />

@@ -23,8 +23,7 @@ import Clients from "./pages/Clients/index.tsx";
 import Onboard from "./pages/Onboard/index.tsx";
 import Dash from "./pages/Dashboard/index.tsx";
 import ManageStaffs from "./pages/Dashboard/ManageStaffs.tsx";
-// import Header from "@/components/Header";
-// import TransactionTemplate from "@/components/TransactionTemplate";
+import TransactionTemplate from "@/components/TransactionTemplate";
 
 globalThis.Buffer = Buffer;
 
@@ -101,12 +100,12 @@ function App() {
           path: "pending",
           element: <Pending />,
         },
+        {
+          path: "example",
+          element: <Example />,
+        },
       ],
     },
-    // {
-    //   path: "example",
-    //   element: <Example />,
-    // },
     {
       path: "*",
       element: <NoMatch />,
@@ -139,33 +138,32 @@ function NoMatch() {
   );
 }
 
-// const Example = () => {
+const Example = () => {
 
-//   const { data, status } = useQuery({
-//     queryKey: ['data'],
-//     async queryFn() {
-//       return await request(url, query)
-//     }
-//   })
-//   // console.log(data, status);
+  // const { data, status } = useQuery({
+  //   queryKey: ['data'],
+  //   async queryFn() {
+  //     return await request(url, query)
+  //   }
+  // })
+  // console.log(data, status);
 
-//   return (
-//     <div>
-//       <Header />
-//       <div className="h-[100vh] grid place-content-center gap-10">
-//         <div>
-//           {status === 'pending' ? <div>Loading...</div> : null}
-//           {status === 'error' ? <div>Error ocurred querying the Subgraph</div> : null}
-//           <div>{JSON.stringify(data ?? {})}</div>
-//         </div>
-//         <TransactionTemplate
-//           args={[1n, "Rice", 102033334n, "cancer"] as (string | bigint)[]}
-//           functionName="bookAppointment"
-//           text="Book Appointment"
-//         />
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div>
+      <div className="h-[100vh] grid place-content-center gap-10">
+        {/* <div>
+          {status === 'pending' ? <div>Loading...</div> : null}
+          {status === 'error' ? <div>Error ocurred querying the Subgraph</div> : null}
+          <div>{JSON.stringify(data ?? {})}</div>
+        </div> */}
+        <TransactionTemplate
+          args={["12345", "Lagos University Teaching Hospital", "Lagos", 78796800n, 456n] as (string | bigint)[]}
+          functionName="addHospital"
+          text="Add Hospital"
+        />
+      </div>
+    </div>
+  );
+};
 
 export default App;

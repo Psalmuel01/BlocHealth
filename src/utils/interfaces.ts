@@ -1,12 +1,65 @@
+export enum AccessRoles {
+  Doctor,
+  Staff,
+  Nurse,
+  Admin,
+}
+
 export enum Gender {
   Male,
   Female,
   Other,
 }
 
+export interface IHospital {
+  name: string;
+  location: string;
+  DOE: bigint;
+  hospitalRegNo: bigint;
+  staffCount: bigint;
+  patientCount: bigint;
+  owner: string;
+  roles: {
+      [key: string]: IStaff;
+  }
+  patientAddresses: string[];
+  patients: {
+      [key: string]: IPatient;
+  }
+}
+
+export interface IStaff {
+  name: string;
+  role: AccessRoles;
+  email: string;
+  phone: string;
+}
+
+export interface IPatient {
+  name: string;
+  DOB: bigint;
+  gender: Gender;
+  contactInfo: IContactInfo;
+  medicalInfo: IMedicalInfo;
+  appointmentCount: bigint;
+  appointmentDates: bigint[];
+  appointments: {
+      [key: number]: IAppointment;
+  }
+  emergencyContacts: IEmergencyContact[];
+}
+
+export interface PatientReturnInfo {
+  name: string;
+  DOB: bigint;
+  gender: Gender;
+  contactInfo: IContactInfo;
+  medicalInfo: IMedicalInfo;
+}
+
 export interface IContactInfo {
-  phoneNumber: string;
-  emailAddress: string;
+  phone: string;
+  email: string;
   residentialAddress: string;
   nextOfKin: string;
   nextOfKinPhoneNumber: string;
@@ -17,42 +70,54 @@ export interface IContactInfo {
 export interface IMedicalInfo {
   currentMedications: string;
   allergies: string;
-  diagnosis: string;
-  treatmentPlan: string;
   medicalHistoryFile: string;
 }
 
 export interface IEmergencyContact {
   name: string;
-  phoneNumber: string;
+  phone: string;
   residentialAddress: string;
 }
 
-export interface IPatient {
-  fullName: string;
-  gender: Gender;
-  dateOfBirth: bigint;
-  contactInfo: IContactInfo;
-  medicalInfo: IMedicalInfo;
-  isPublished: boolean;
-  isActive: boolean;
-  emergencyContacts: IEmergencyContact[];
-  id: bigint;
+export interface IAppointment {
+  currentMedications: string;
+  diagnosis: string;
+  treatmentPlan: string;
+  date: bigint;
+  reason: string;
+}
+
+export interface IAddHospital {
+  _hospitalId: string;
+  _name: string;
+  _location: string;
+  _DOE: bigint;
+  _hospitalRegNo: bigint;
+}
+
+export interface IUpdateStaffRoles {
+  _hospitalId: string;
+  _address: string;
+  _name: string;
+  _role: AccessRoles;
+  _email: string;
+  _phone: string;
 }
 
 export interface IRecords {
-  _patientAddress: string;
-  _fullName: string;
-  _gender: Gender;
-  _dateOfBirth: number;
-  _contactInfo: IContactInfo;
-  _medicalInfo: IMedicalInfo;
-  _isPublished: boolean;
-  _emergencyContacts: IEmergencyContact[];
+   _hospitalId: string;
+   _patient: string;
+   _name: string;
+   _gender: Gender;
+   _DOB: number;
+   _contactInfo: IContactInfo;
+   _medicalInfo: IMedicalInfo;
+   _emergencyContacts: IEmergencyContact[];
 }
 
-export interface IAppointment {
-  name: string;
-  date: bigint;
-  reason: string;
+export interface IUploadAppointment {
+  _hospitalId: string;
+  _patient: string;
+  _date: bigint;
+  _appointment: IAppointment;
 }
