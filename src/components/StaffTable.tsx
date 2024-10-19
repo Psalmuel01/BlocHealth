@@ -22,56 +22,56 @@ const staffs = [
     {
         name: "Dr. Johnson Sule",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
+        phoneNo: "08145693020",
+        email: "johnsule@gmail.com",
     },
     {
         name: "Dr. Peace Alo",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
+        phoneNo: "$150.00",
+        email: "peacealo2@gmail.com",
     },
     {
         name: "Dr. Johnson Sule",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
+        phoneNo: "08145693020",
+        email: "johnsule@gmail.com",
     },
     {
         name: "Dr. Peace Alo",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
+        phoneNo: "$150.00",
+        email: "peacealo2@gmail.com",
     },
     {
         name: "Dr. Johnson Sule",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
+        phoneNo: "08145693020",
+        email: "johnsule@gmail.com",
     },
     {
         name: "Dr. Peace Alo",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
+        phoneNo: "$150.00",
+        email: "peacealo2@gmail.com",
     },
     {
         name: "Dr. Johnson Sule",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
+        phoneNo: "08145693020",
+        email: "johnsule@gmail.com",
     },
     {
         name: "Dr. Peace Alo",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
+        phoneNo: "$150.00",
+        email: "peacealo2@gmail.com",
     },
     {
         name: "Dr. Johnson Sule",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
+        phoneNo: "08145693020",
+        email: "johnsule@gmail.com",
     },
 ]
 
@@ -92,8 +92,8 @@ const StaffTable = () => {
                     <TableRow key={index} className="border-[#2924A6]/50">
                         <TableCell className="text-center font-medium border-r border-[#2924A6]/50">{staff.name}</TableCell>
                         <TableCell className="text-center border-r border-[#2924A6]/50">{staff.address}</TableCell>
-                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.paymentMethod}</TableCell>
-                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.totalAmount}</TableCell>
+                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.email}</TableCell>
+                        <TableCell className="text-center border-r border-[#2924A6]/50">{staff.phoneNo}</TableCell>
                         <TableCell className="flex justify-center gap-5">
                             <BookmarkIcon color="green" className="cursor-pointer w-5 h-5" />
                             <TrashIcon className="cursor-pointer w-5 h-5" />

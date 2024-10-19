@@ -1,26 +1,21 @@
-import { IAppointment, IPatient } from "../utils/interfaces";
 import { useReadMainContract } from "./hooks";
-import { createContext, useMemo } from "react";
+import { createContext } from "react";
 
 type TContractInteractions = {
   owner: string;
-  totalPatients: number;
-  totalAppointments: number;
-  patientsInfo: IPatient[];
-  appointments: IAppointment[];
-  publishedPatients: IPatient[];
-  pendingPatients: IPatient[];
+  hospitalCount: number;
+  // totalAppointments: number;
+  // publishedPatients: IPatient[];
+  // pendingPatients: IPatient[];
 };
 
 export const ContractInteractionsContext = createContext<TContractInteractions>(
   {
     owner: "0x0000000000000000000000000000000000000000",
-    totalPatients: 0,
-    totalAppointments: 0,
-    patientsInfo: [] as IPatient[],
-    appointments: [] as IAppointment[],
-    publishedPatients: [] as IPatient[],
-    pendingPatients: [] as IPatient[],
+    hospitalCount: 0,
+    // totalAppointments: 0,
+    // publishedPatients: [] as IPatient[],
+    // pendingPatients: [] as IPatient[],
   }
 );
 
@@ -30,54 +25,37 @@ export const ContractInteractionsProvider = ({
   children: React.ReactNode;
 }) => {
   const { data: owner } = useReadMainContract({
-    functionName: "admin",
+    functionName: "owner",
     // args: [],
   });
 
-  const { data: patientIdCounter } = useReadMainContract({
-    functionName: "patientIdCounter",
+  const { data: hospitalCount } = useReadMainContract({
+    functionName: "hospitalCount",
     // args: [1],
   });
 
-  const { data: appointmentIdCounter } = useReadMainContract({
-    functionName: "appointmentIdCounter",
-    // args: [1],
-  });
+  // const publishedPatients = useMemo(() => {
+  //   if (!allPatientsInfo) return [];
+  //   return (allPatientsInfo as IPatient[]).filter(
+  //     (patient) => patient.isPublished
+  //   );
+  // }, [allPatientsInfo]);
 
-  const { data: patientsInfo } = useReadMainContract({
-    functionName: "getAllPatients",
-    args: [],
-  });
-
-  const { data: appointments } = useReadMainContract({
-    functionName: "getAllAppointments",
-    args: [],
-  })
-
-  const publishedPatients = useMemo(() => {
-    if (!patientsInfo) return [];
-    return (patientsInfo as IPatient[]).filter(
-      (patient) => patient.isPublished
-    );
-  }, [patientsInfo]);
-
-  const pendingPatients = useMemo(() => {
-    if (!patientsInfo) return [];
-    return (patientsInfo as IPatient[]).filter(
-      (patient) => !patient.isPublished
-    );
-  }, [patientsInfo]);
+  // const pendingPatients = useMemo(() => {
+  //   if (!allPatientsInfo) return [];
+  //   return (allPatientsInfo as IPatient[]).filter(
+  //     (patient) => !patient.isPublished
+  //   );
+  // }, [allPatientsInfo]);
 
   return (
     <ContractInteractionsContext.Provider
       value={{
         owner: owner as string,
-        totalPatients: Number(patientIdCounter) - 1,
-        totalAppointments: Number(appointmentIdCounter) - 1,
-        patientsInfo: patientsInfo as IPatient[],
-        appointments: appointments as IAppointment[],
-        publishedPatients,
-        pendingPatients,
+        hospitalCount: Number(hospitalCount),
+        // totalAppointments: appointmentIdCounter,
+        // publishedPatients,
+        // pendingPatients,
       }}
     >
       {children}

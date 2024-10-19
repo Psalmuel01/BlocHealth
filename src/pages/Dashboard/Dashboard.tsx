@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useGetAllPatients, useHospital } from "@/contexts/hooks";
 import useContractInteractions from "@/pages/Dashboard/useContractInteractions";
 import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
@@ -7,11 +8,16 @@ import { useAccount } from "wagmi";
 const Dashboard = () => {
   const { isConnected } = useAccount();
   const {
-    totalPatients,
-    totalAppointments,
-    pendingPatients,
-    publishedPatients,
+    hospitalCount
   } = useContractInteractions();
+
+  const allPatientsInfo = useGetAllPatients();
+  const hospital = useHospital("12345"); 
+  console.log({hospital});
+  const patientCount = allPatientsInfo?.length;
+  // const patientCount = hospital && hospital[5];
+  console.log(patientCount);
+
 
   if (!isConnected) {
     return (
@@ -45,7 +51,7 @@ const Dashboard = () => {
               <div>
                 <img src="/images/inpatient.png" alt="" className="w-16" />
               </div>
-              <p className="text-6xl font-clash_semibold">{totalPatients}</p>
+              <p className="text-6xl font-clash_semibold">{patientCount}</p>
               <p>Patient records</p>
             </Link>
           </Card>
@@ -57,7 +63,7 @@ const Dashboard = () => {
               <div>
                 <img src="/images/icon-park.png" alt="" className="w-16" />
               </div>
-              <p className="text-6xl font-clash_semibold">{totalAppointments}</p>
+              <p className="text-6xl font-clash_semibold">{hospitalCount}</p>
               <p>Appointments</p>
             </Link>
           </Card>
@@ -67,7 +73,7 @@ const Dashboard = () => {
                 <img src="/images/doc-chart.png" alt="" className="w-16" />
               </div>
               <p className="text-6xl font-clash_semibold">
-                {pendingPatients.length}
+                {allPatientsInfo?.length}
               </p>
               <p>Pending records</p>
             </Link>
@@ -78,7 +84,7 @@ const Dashboard = () => {
                 <img src="/images/arrow-up.png" alt="" className="w-16" />
               </div>
               <p className="text-6xl font-clash_semibold">
-                {publishedPatients.length}
+                {allPatientsInfo?.length}
               </p>
               <p>Shared records</p>
             </Link>
@@ -89,7 +95,7 @@ const Dashboard = () => {
                 <img src="/images/doc-chart.png" alt="" className="w-16" />
               </div>
               <p className="text-6xl font-clash_semibold">
-                {pendingPatients.length}
+                {allPatientsInfo?.length}
               </p>
               <p>Pending records</p>
             </Link>
@@ -100,13 +106,13 @@ const Dashboard = () => {
                 <img src="/images/arrow-up.png" alt="" className="w-16" />
               </div>
               <p className="text-6xl font-clash_semibold">
-                {publishedPatients.length}
+                {allPatientsInfo?.length}
               </p>
               <p>Shared records</p>
             </Link>
           </Card>
         </div>
-{/* 
+        {/* 
         <Card className="mt-10 px-10 py-5">
           <p className="text-lg font-clash_medium">Latest Health News</p>
           <p className="mt-3">

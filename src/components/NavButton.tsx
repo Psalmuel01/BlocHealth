@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { WalletConnect } from './Connect';
+import { Button } from './ui/button';
+import { useAccount } from 'wagmi';
 
 const navigation = [
     { name: 'Home', to: '/' },
@@ -10,6 +12,7 @@ const navigation = [
 ];
 
 const NavButton = () => {
+    const { isConnected } = useAccount();
     return (
         <div className='lg:hidden'>
             <Dialog>
@@ -23,8 +26,8 @@ const NavButton = () => {
                     </button>
                 </DialogTrigger>
                 {/* <div className="fixed inset-0 z-50" /> */}
-                <DialogContent className="fixed h-full left-32 z-50 w-2/3 bg-[#100E40] text-white px-6 py-6">
-                    <div className="flex items-end justify-start">
+                <DialogContent className="fixed h-[70vh] right-0 z-50 text-center justify-center bg-[#100E40]/80 w-2/3 rounded-2xl text-white px-6 py-6">
+                    <div className="flex items-end justify-center">
                         <Link to="/" className="text-xl">
                             <span className='font-clash_semibold'>Bloc</span>Health
                         </Link>
@@ -42,7 +45,8 @@ const NavButton = () => {
                                 </Link>
                             ))}
                         </div>
-                        <div className="py-6">
+                        <div className="py-6 flex flex-col gap-5">
+                            {isConnected && <Link to="dashboard"><Button className='bg-[#2924A6] hover:bg-blue-800 font-clash_medium'>Dashboard</Button></Link>}
                             <WalletConnect />
                         </div>
                     </div>

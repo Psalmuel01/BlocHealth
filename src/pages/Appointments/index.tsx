@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Cross1Icon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
-import useContractInteractions from "../Dashboard/useContractInteractions"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { useGetPatientsAppointments } from "@/contexts/hooks"
 
 const Appointments = () => {
     const navigate = useNavigate();
-    const { appointments } = useContractInteractions();
+    const appointments = useGetPatientsAppointments("0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
 
     return (
         <div className='pt-10 px-5 lg:px-20 min-h-screen'>
@@ -20,15 +20,15 @@ const Appointments = () => {
             </div>
 
             <div className="mt-8">
-                {appointments.length === 0 && <p className="text-center">No scheduled appointments</p>}
+                {appointments?.length === 0 && <p className="text-center">No scheduled appointments</p>}
                 <Accordion type="single" collapsible className="w-full flex flex-col gap-5">
-                    {appointments.map((appointment, index) => (
-                        <Card className="flex max-md:gap-2 items-center justify-between p-2 px-6 border-none bg-[#35F3F324]" key={appointment.name}>
+                    {appointments?.map((appointment, index) => (
+                        <Card className="flex max-md:gap-2 items-center justify-between p-2 px-6 border-none bg-[#35F3F324]" key={index}>
                             <AccordionItem className="w-full border-none" value={`item-${index}`}>
                                 <AccordionTrigger className="max-md:flex max-md:flex-col max-md:gap-2.5">
                                     <div className="flex-1 pr-10 flex max-md:text-center items-center gap-3">
                                         <img src="/images/cross.png" alt="" className="w-7" />
-                                        <p>You have an appointment with <span className="font-clash_medium">{appointment.name}</span></p>
+                                        <p>You have an appointment with <span className="font-clash_medium">{appointment.reason}</span></p>
                                     </div>
                                     <div className="">{new Date(Number(appointment.date) * 1000).toDateString()}</div>
                                     <div className="flex-1 text-center">{new Date(Number(appointment.date) * 1000).toLocaleTimeString('en-US', { hour: "2-digit", minute: "2-digit" })}</div>

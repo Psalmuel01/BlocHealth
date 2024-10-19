@@ -1,13 +1,13 @@
 import PatientCard from "@/components/PatientCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useContractInteractions from "@/pages/Dashboard/useContractInteractions";
+import { useGetAllPatients } from "@/contexts/hooks";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
 
 const Pending = () => {
     const navigate = useNavigate();
-    const { pendingPatients } = useContractInteractions();
+    const allPatientsInfo = useGetAllPatients();
 
     return (
         <div className="pt-10 px-5 lg:px-20 min-h-screen">
@@ -29,9 +29,9 @@ const Pending = () => {
                 />
             </div>
 
-            {pendingPatients.length > 0 && (
+            {allPatientsInfo.length > 0 && (
                 <div className="mt-5 flex flex-wrap justify-between gap-4 text-sm">
-                    {pendingPatients.map((patient, index) => (
+                    {allPatientsInfo.map((patient, index) => (
                         <PatientCard key={index} patient={patient} index={index} />
                     ))}
                 </div>

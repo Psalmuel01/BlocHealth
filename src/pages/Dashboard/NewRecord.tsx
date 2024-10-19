@@ -58,7 +58,7 @@ const NewRecord = () => {
       "_contactInfo" | "_emergencyContacts" | "_medicalInfo" | "_isPublished"
     >
   >({
-    _hospitalId: "",
+    _hospitalId: "12345",
     _patient: "",
     _name: "",
     _gender: null,
@@ -103,7 +103,7 @@ const NewRecord = () => {
       ...basicInfo,
       _contactInfo: contactInfo,
       _medicalInfo: medicalInfo,
-      _isPublished: false,
+      // _isPublished: false,
       _emergencyContacts: emergencyContacts,
     };
   }, [basicInfo, contactInfo, emergencyContacts, medicalInfo]);

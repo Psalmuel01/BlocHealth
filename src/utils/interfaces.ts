@@ -49,7 +49,7 @@ export interface IPatient {
   emergencyContacts: IEmergencyContact[];
 }
 
-export interface PatientReturnInfo {
+export interface IPatientReturnInfo {
   name: string;
   DOB: bigint;
   gender: Gender;

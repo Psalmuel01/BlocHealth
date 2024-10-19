@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { WalletConnect } from './Connect';
-import { DashboardIcon } from '@radix-ui/react-icons';
+import { BellIcon, DashboardIcon, FileIcon, PersonIcon } from '@radix-ui/react-icons';
 
 const navigation = [
-    { name: 'Dashboard', to: '' },
-    { name: 'New Record', to: 'new-record' },
-    { name: 'Manage Staffs', to: 'manage-staffs' },
-    { name: 'Notifications', to: 'notifications' },
+    { name: 'Dashboard', to: '', icon: <DashboardIcon /> },
+    { name: 'New Record', to: 'new-record', icon: <FileIcon /> },
+    { name: 'Manage Staffs', to: 'manage-staffs', icon: <PersonIcon /> },
+    { name: 'Notifications', to: 'notifications', icon: <BellIcon /> },
 ];
 
 const Sidebar = () => {
@@ -23,7 +23,7 @@ const Sidebar = () => {
                             to={item.to}
                             className="flex items-center gap-3 rounded-lg py-2 pl-5 text-base leading-7 hover:bg-blue-800"
                         >
-                            <DashboardIcon />
+                            {item.icon}
                             {item.name}
                         </Link>
                     ))}

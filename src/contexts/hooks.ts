@@ -2,7 +2,7 @@ import { CONTRACT_ADDRESS } from "@/utils/constants";
 import CONTRACT_ABI from "@/utils/abi";
 import { useReadContract } from "wagmi";
 import { type UseReadContractParameters } from "wagmi";
-import { IPatient } from "../utils/interfaces";
+import { IAppointment, IEmergencyContact, IHospital, IPatientReturnInfo } from "../utils/interfaces";
 
 export const useReadMainContract = (params: UseReadContractParameters) => {
   const result = useReadContract({
@@ -15,20 +15,38 @@ export const useReadMainContract = (params: UseReadContractParameters) => {
   return result;
 };
 
-export const useGetPatientById = (patientId: number) => {
-  const { data: patientAddress } = useReadMainContract({
-    functionName: "getPatientByID",
-    args: [patientId],
+export const useGetAllPatients = () => {
+  const { data: allPatientsInfo } = useReadMainContract({
+    functionName: "getAllPatients",
+    args: ["12345"],
   });
 
-  return patientAddress as string;
-};
+  return allPatientsInfo as IPatientReturnInfo[];
+}
 
-export const useGetPatientInfoByAddress = (_patientAddress: string) => {
+export const useGetPatientsAppointments = (_patientAddress: string) => {
+  const { data: appointments } = useReadMainContract({
+    functionName: "getPatientAppointments",
+    args: ["12345", _patientAddress],
+  });
+
+  return appointments as IAppointment[];
+}
+
+export const useGetPatientRecord = (_patientAddress: string) => {
   const { data: patientInfo } = useReadMainContract({
-    functionName: "getPatientInfoByAddress",
-    args: [_patientAddress],
+    functionName: "getPatientRecord",
+    args: ["12345", _patientAddress],
   });
 
-  return patientInfo as IPatient;
+  return patientInfo as [IPatientReturnInfo, IEmergencyContact[]];
 };
+
+export const useHospital = (_hospitalId: string) => {
+  const { data: hospital } = useReadMainContract({
+    functionName: "hospitals",
+    args: [_hospitalId]
+  });
+
+  return hospital as IHospital;
+}

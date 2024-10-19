@@ -10,6 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { IRecords } from "@/utils/interfaces";
+import { toast } from "react-hot-toast";
 
 export function Publish({ info, isValidated }: { info: IRecords, isValidated: boolean }) {
     console.log({
@@ -35,9 +36,13 @@ export function Publish({ info, isValidated }: { info: IRecords, isValidated: bo
                 </DialogHeader>
                 <div className="flex gap-3 justify-center mt-5">
                     <AddPatientTxBtn
-                        text="Proceed to publish"
-                        functionName="addPatient"
+                        text="Create record"
+                        functionName="createPatientRecord"
                         args={Object.values(info)}
+                        onError={(e) => {
+                            toast.error(e.message);
+                            console.log(e.error);
+                        }}
                     />
                     {/* <Button
                         variant="outline"
