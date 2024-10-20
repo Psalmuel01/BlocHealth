@@ -5,12 +5,13 @@ import {
 import { IEmergencyContact, IPatientReturnInfo } from "@/utils/interfaces";
 import { Cross1Icon, OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { useNavigate, useParams } from "react-router-dom";
+import useContractInteractions from "../useContractInteractions";
 
 const Patient = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-
-    const patientInfo = useGetPatientRecord("0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
+    const { hospitalID } = useContractInteractions();
+    const patientInfo = useGetPatientRecord(hospitalID, "0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
 
     if (!patientInfo || !Array.isArray(patientInfo)) {
         console.error("patientInfo is undefined or not an array");
@@ -106,12 +107,12 @@ const Patient = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-wrap gap-20 max-md:gap-10">
+                <div className="flex max-md:flex-wrap gap-20 max-md:gap-10">
                     <p className="font-clash_medium">Emergency Contacts:</p>
-                    <div className="lg:w-[20%]">
+                    <div className="flex flex-col justify-between gap-4">
                         {emergencyContacts.length > 0 ? (
                             emergencyContacts.map((contact, index) => (
-                                <div key={index} className="flex justify-between">
+                                <div key={index} className="flex gap-7 justify-between">
                                     <p>Name: {contact.name}</p>
                                     <p>Phone: {contact.phone}</p>
                                     <p>Address: {contact.residentialAddress}</p>
@@ -123,7 +124,7 @@ const Patient = () => {
                     </div>
                 </div>
 
-                <div className="mt-14 mb-10 flex max-md:flex-col gap-5 max-md:gap-3">
+                <div className="mt-5 mb-10 flex max-md:flex-col gap-5 max-md:gap-3">
                     <Button
                         variant="outline"
                         size="lg"

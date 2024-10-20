@@ -22,7 +22,7 @@ import { ContractInteractionsProvider } from "./contexts/ContractInteractions";
 import Clients from "./pages/Clients/index.tsx";
 import Onboard from "./pages/Onboard/index.tsx";
 import Dash from "./pages/Dashboard/index.tsx";
-import ManageStaffs from "./pages/Dashboard/ManageStaffs.tsx";
+import ManageStaff from "./pages/Dashboard/ManageStaff.tsx";
 import TransactionTemplate from "@/components/TransactionTemplate";
 
 globalThis.Buffer = Buffer;
@@ -77,8 +77,8 @@ function App() {
           element: <Notifications />,
         },
         {
-          path: "manage-staffs",
-          element: <ManageStaffs />,
+          path: "manage-staff",
+          element: <ManageStaff />,
         },
         {
           path: "patients",

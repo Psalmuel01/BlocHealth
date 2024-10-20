@@ -1,15 +1,22 @@
 import { Link } from 'react-router-dom';
 import { WalletConnect } from './Connect';
 import { BellIcon, DashboardIcon, FileIcon, PersonIcon } from '@radix-ui/react-icons';
-
-const navigation = [
-    { name: 'Dashboard', to: '', icon: <DashboardIcon /> },
-    { name: 'New Record', to: 'new-record', icon: <FileIcon /> },
-    { name: 'Manage Staffs', to: 'manage-staffs', icon: <PersonIcon /> },
-    { name: 'Notifications', to: 'notifications', icon: <BellIcon /> },
-];
+import { useAccount } from 'wagmi';
+import useContractInteractions from '@/pages/Dashboard/useContractInteractions';
+import { useIsHospitalOwner } from '@/contexts/hooks';
 
 const Sidebar = () => {
+    const { address } = useAccount();
+    const { hospitalID } = useContractInteractions();
+    const isHospitalOwner = useIsHospitalOwner(hospitalID, address);
+
+    const navigation = [
+        { name: 'Dashboard', to: '', icon: <DashboardIcon /> },
+        { name: 'New Record', to: 'new-record', icon: <FileIcon /> },
+        isHospitalOwner ? { name: 'Manage Staff', to: 'manage-staff', icon: <PersonIcon /> } : null,
+        { name: 'Notifications', to: 'notifications', icon: <BellIcon /> },
+    ].filter(Boolean);
+
     return (
         <div className='bg-[#181662] fixed hidden lg:flex flex-col items-center justify-start p-10 py-20 min-h-screen'>
             <div className="flex flex-col gap-16">

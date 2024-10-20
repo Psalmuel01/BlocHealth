@@ -17,6 +17,7 @@ import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { isAddress } from "ethers";
 import { epochToDateString } from "@/utils/constants";
+import useContractInteractions from "./useContractInteractions";
 
 const shortenFileName = (fileName) => {
   if (fileName.length > 20) {
@@ -30,6 +31,7 @@ const shortenFileName = (fileName) => {
 const NewRecord = () => {
   // const navigate = useNavigate();
   const { isConnected } = useAccount();
+  const { hospitalID } = useContractInteractions();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(false);
@@ -58,7 +60,7 @@ const NewRecord = () => {
       "_contactInfo" | "_emergencyContacts" | "_medicalInfo" | "_isPublished"
     >
   >({
-    _hospitalId: "12345",
+    _hospitalId: hospitalID,
     _patient: "",
     _name: "",
     _gender: null,

@@ -1,21 +1,19 @@
 import { useReadMainContract } from "./hooks";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
 type TContractInteractions = {
   owner: string;
   hospitalCount: number;
-  // totalAppointments: number;
-  // publishedPatients: IPatient[];
-  // pendingPatients: IPatient[];
+  hospitalID: string;
+  setHospitalID: (id: string) => void;
 };
 
 export const ContractInteractionsContext = createContext<TContractInteractions>(
   {
     owner: "0x0000000000000000000000000000000000000000",
     hospitalCount: 0,
-    // totalAppointments: 0,
-    // publishedPatients: [] as IPatient[],
-    // pendingPatients: [] as IPatient[],
+    hospitalID: "",
+    setHospitalID: () => {},
   }
 );
 
@@ -26,12 +24,10 @@ export const ContractInteractionsProvider = ({
 }) => {
   const { data: owner } = useReadMainContract({
     functionName: "owner",
-    // args: [],
   });
 
   const { data: hospitalCount } = useReadMainContract({
     functionName: "hospitalCount",
-    // args: [1],
   });
 
   // const publishedPatients = useMemo(() => {
@@ -48,14 +44,16 @@ export const ContractInteractionsProvider = ({
   //   );
   // }, [allPatientsInfo]);
 
+  // Add state for hospitalID
+  const [hospitalID, setHospitalID] = useState<string>("");
+
   return (
     <ContractInteractionsContext.Provider
       value={{
         owner: owner as string,
         hospitalCount: Number(hospitalCount),
-        // totalAppointments: appointmentIdCounter,
-        // publishedPatients,
-        // pendingPatients,
+        hospitalID,
+        setHospitalID,
       }}
     >
       {children}

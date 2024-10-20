@@ -5,8 +5,10 @@ import { epochToDateString } from "@/utils/constants";
 import { IAddHospital } from "@/utils/interfaces";
 import { useEffect, useState } from "react";
 import { AddModal } from "./AddModal";
+import { useNavigate } from "react-router-dom";
 
 const Onboard = () => {
+    const navigate = useNavigate();
     const [validated, setValidated] = useState<boolean>(false);
 
     const [errors, setErrors] = useState({
@@ -117,7 +119,7 @@ const Onboard = () => {
                         <div className="w-full">
                             <Input
                                 id="name"
-                                type="text"
+                                type="number"
                                 placeholder="Hospital ID"
                                 value={hospitalInfo._hospitalId}
                                 onChange={(e) => setHospitalInfo({ ...hospitalInfo, _hospitalId: e.target.value })}
@@ -171,7 +173,7 @@ const Onboard = () => {
 
             <div className="mt-14 mb-10 flex items-end justify-between">
                 <div className="flex max-md:flex-col gap-5 max-md:gap-3">
-                    <Button variant="outline" size="lg" className="bg-transparent hover:bg-[#2924A6] hover:text-white">
+                    <Button variant="outline" size="lg" className="bg-transparent hover:bg-[#2924A6] hover:text-white" onClick={() => navigate(-1)}>
                         Cancel
                     </Button>
                 </div>

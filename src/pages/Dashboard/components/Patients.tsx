@@ -4,10 +4,12 @@ import { Input } from "@/components/ui/input";
 import { useGetAllPatients } from "@/contexts/hooks";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
+import useContractInteractions from "../useContractInteractions";
 
 const Patients = () => {
     const navigate = useNavigate();
-    const allPatientsInfo = useGetAllPatients();
+    const { hospitalID } = useContractInteractions();
+    const allPatientsInfo = useGetAllPatients(hospitalID);
 
     return (
         <div className="pt-10 px-5 lg:px-20 min-h-screen">

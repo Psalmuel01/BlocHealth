@@ -15,28 +15,28 @@ export const useReadMainContract = (params: UseReadContractParameters) => {
   return result;
 };
 
-export const useGetAllPatients = () => {
+export const useGetAllPatients = (_hospitalId: string) => {
   const { data: allPatientsInfo } = useReadMainContract({
     functionName: "getAllPatients",
-    args: ["12345"],
+    args: [_hospitalId],
   });
 
   return allPatientsInfo as IPatientReturnInfo[];
 }
 
-export const useGetPatientsAppointments = (_patientAddress: string) => {
+export const useGetPatientsAppointments = (_hospitalId: string, _patientAddress: string) => {
   const { data: appointments } = useReadMainContract({
     functionName: "getPatientAppointments",
-    args: ["12345", _patientAddress],
+    args: [_hospitalId, _patientAddress],
   });
 
   return appointments as IAppointment[];
 }
 
-export const useGetPatientRecord = (_patientAddress: string) => {
+export const useGetPatientRecord = (_hospitalId: string, _patientAddress: string) => {
   const { data: patientInfo } = useReadMainContract({
     functionName: "getPatientRecord",
-    args: ["12345", _patientAddress],
+    args: [_hospitalId, _patientAddress],
   });
 
   return patientInfo as [IPatientReturnInfo, IEmergencyContact[]];
@@ -49,4 +49,18 @@ export const useHospital = (_hospitalId: string) => {
   });
 
   return hospital as IHospital;
+}
+
+export const useIsHospitalStaff = (_hospitalId: string) => {
+  const { data: isStaff } = useReadMainContract({
+    functionName: "isHospitalStaff",
+    args: [_hospitalId]
+  });
+
+  return isStaff as boolean;
+}
+
+export const useIsHospitalOwner = (_hospitalId: string, _connectedAddress: string) => {
+  const hospital = useHospital(_hospitalId);
+  return hospital && hospital[6] === _connectedAddress;
 }

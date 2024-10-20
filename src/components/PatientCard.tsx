@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { IPatientReturnInfo } from "../utils/interfaces";
 import { Link } from "react-router-dom";
+// import useContractInteractions from "@/pages/Dashboard/useContractInteractions";
 // import { useHospital } from "@/contexts/hooks";
 
 const PatientCard = ({
@@ -10,7 +11,8 @@ const PatientCard = ({
   patient: IPatientReturnInfo;
   index: number;
 }) => {
-  // const hospital = useHospital("12345");
+  // const { hospitalID } = useContractInteractions();
+  // const hospital = useHospital(hospitalID);
 
   return (
     <Card className="bg-[#35F3F324] p-3 px-5 w-[49%] max-md:w-full">

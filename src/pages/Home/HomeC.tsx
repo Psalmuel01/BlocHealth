@@ -1,6 +1,7 @@
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
+import { Join } from "./Join"
 
 const HomeC = () => {
   return (
@@ -30,9 +31,9 @@ const HomeC = () => {
               <img src="/images/staff.png" alt="staff" />
               <div>
                 <div className="flex flex-col gap-4">
-                  <p className="lg:text-xl font-clash_medium">Staff Join Request</p>
-                  <p className="max-md:text-sm">Send a request to your hospital admin to add you up as a staff of the hospital you work at.</p>
-                  <Button size="lg" className="w-fit bg-[#2924A6] hover:bg-blue-800 font-clash_medium">Request to Join</Button>
+                  <p className="lg:text-xl font-clash_medium">Join Hospital as Staff</p>
+                  <p className="max-md:text-sm">Log on to view and manage hospital records dashboard with your protected hospital ID.</p>
+                  <div><Join /></div>
                 </div>
               </div>
             </div>

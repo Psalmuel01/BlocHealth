@@ -1,22 +1,20 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useGetAllPatients, useHospital } from "@/contexts/hooks";
+import { useIsHospitalOwner, useGetAllPatients, useHospital } from "@/contexts/hooks";
 import useContractInteractions from "@/pages/Dashboard/useContractInteractions";
 import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 
 const Dashboard = () => {
-  const { isConnected } = useAccount();
-  const {
-    hospitalCount
-  } = useContractInteractions();
-
-  const allPatientsInfo = useGetAllPatients();
-  const hospital = useHospital("12345"); 
-  console.log({hospital});
+  const { isConnected, address } = useAccount();
+  const { hospitalCount, hospitalID } = useContractInteractions();
+  const allPatientsInfo = useGetAllPatients(hospitalID);
+  const isHospitalOwner = useIsHospitalOwner(hospitalID, address);
+  const hospital = useHospital(hospitalID);
   const patientCount = allPatientsInfo?.length;
-  // const patientCount = hospital && hospital[5];
-  console.log(patientCount);
+  // console.log(hospital && hospital[0]);
+  // console.log(hospitalID);
+  // console.log(patientCount);
 
 
   if (!isConnected) {
@@ -35,14 +33,14 @@ const Dashboard = () => {
         <p className="font-clash_semibold text-2xl">Admin Dashboard</p>
         <Input placeholder="Search patients records" className="max-md:w-full rounded-xl w-1/2" />
       </div>
-      <div className="max-md:p-10 px-5 lg:px-14 lg:h-screen">
+      <div className="max-md:p-10 px-5 lg:px-14 lg:min-h-screen">
 
         <div className="flex flex-col gap-1 justify-between lg:mt-10">
           <p className="text-2xl w-full">
             Welcome!{" "}
             <span className="font-clash_semibold ml-1">Dr. John Leo</span>
           </p>
-          <p className="font-clash_extralight">University of Benin Teaching Hospital</p>
+          <p className="font-clash_extralight">{hospital && (hospital[0] == '' ? 'No Hospital ID found' : hospital[0])}</p>
         </div>
 
         <div className="mt-10 flex flex-wrap max-md:flex-col justify-between gap-10 max-md:gap-5">
@@ -89,7 +87,7 @@ const Dashboard = () => {
               <p>Shared records</p>
             </Link>
           </Card>
-          <Card className="bg-[#0BEDED61] py-10 w-[30%] max-md:w-full">
+          <Card className={`${!isHospitalOwner && 'hidden'} bg-[#0BEDED61] py-10 w-[30%] max-md:w-full`}>
             <Link to={"pending"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/doc-chart.png" alt="" className="w-16" />
@@ -100,7 +98,7 @@ const Dashboard = () => {
               <p>Pending records</p>
             </Link>
           </Card>
-          <Card className="bg-[#B92BFC61] py-10 w-[30%] max-md:w-full">
+          <Card className={`${!isHospitalOwner && 'hidden'} bg-[#B92BFC61] py-10 w-[30%] max-md:w-full`}>
             <Link to={"shared"} className="flex flex-col gap-5 items-center">
               <div>
                 <img src="/images/arrow-up.png" alt="" className="w-16" />
@@ -111,17 +109,17 @@ const Dashboard = () => {
               <p>Shared records</p>
             </Link>
           </Card>
+          <Card className={`${isHospitalOwner && 'hidden'} px-10 py-10 flex-1 max-md:w-full`}>
+            <p className="text-lg font-clash_medium">Latest Health News</p>
+            <p className="mt-3 leading-loose max-md:leading-relaxed">
+              Lorem ipsum dolor sit amet consectetur. Faucibus at tincidunt ac
+              turpis euismod.Lorem ipsum dolor sit amet consectetur. Faucibus at
+              tincidunt ac turpis euismod. Lorem ipsum dolor sit amet consectetur.
+              Faucibus at tincidunt ac turpis euismod.
+            </p>
+          </Card>
         </div>
-        {/* 
-        <Card className="mt-10 px-10 py-5">
-          <p className="text-lg font-clash_medium">Latest Health News</p>
-          <p className="mt-3">
-            Lorem ipsum dolor sit amet consectetur. Faucibus at tincidunt ac
-            turpis euismod.Lorem ipsum dolor sit amet consectetur. Faucibus at
-            tincidunt ac turpis euismod.Lorem ipsum dolor sit amet consectetur.
-            Faucibus at tincidunt ac turpis euismod.
-          </p>
-        </Card> */}
+
       </div>
     </div>
   );

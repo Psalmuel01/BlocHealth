@@ -4,10 +4,12 @@ import { Cross1Icon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useGetPatientsAppointments } from "@/contexts/hooks"
+import useContractInteractions from "../Dashboard/useContractInteractions"
 
 const Appointments = () => {
     const navigate = useNavigate();
-    const appointments = useGetPatientsAppointments("0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
+    const { hospitalID } = useContractInteractions();
+    const appointments = useGetPatientsAppointments(hospitalID, "0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
 
     return (
         <div className='pt-10 px-5 lg:px-20 min-h-screen'>

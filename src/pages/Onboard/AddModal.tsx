@@ -10,12 +10,15 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { IAddHospital } from "@/utils/interfaces";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export function AddModal({ info, isValidated }: { info: IAddHospital, isValidated: boolean }) {
     console.log({
         info,
         entries: Object.entries(info),
     })
+    const navigate = useNavigate();
 
     return (
         <Dialog>
@@ -30,7 +33,7 @@ export function AddModal({ info, isValidated }: { info: IAddHospital, isValidate
                         Continue to Add Hospital
                     </DialogTitle>
                     <DialogDescription className="text-sm">
-                        Are you sure you want to publish this patient's record?
+                        Are you sure you want to add hospital to BlocHealth?
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex gap-3 justify-center mt-5">
@@ -38,6 +41,18 @@ export function AddModal({ info, isValidated }: { info: IAddHospital, isValidate
                         text="Proceed"
                         functionName="addHospital"
                         args={Object.values(info)}
+                        onError={(e) => {
+                            toast.error(e.message);
+                            console.log(e.error);
+                        }}
+                        onStatus={(status) => {
+                            console.log(status);
+                        }}
+                        onSuccess={(response) => {
+                            console.log(response);
+                            toast.success("Hospital added successfully");
+                            navigate("/");
+                        }}
                     />
                     <DialogClose>
                         <Button

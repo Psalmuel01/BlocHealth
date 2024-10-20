@@ -1,12 +1,8 @@
 import { Link } from 'react-router-dom'
 import NavButton from './NavButton'
 import { WalletConnect } from './Connect'
-import { useAccount } from 'wagmi'
-import { Button } from './ui/button'
 
 const Header = () => {
-    const { isConnected } = useAccount();
-
     return (
         <div className='flex items-center justify-between'>
             <Link to="/" className='text-xl'><span className='font-clash_semibold'>Bloc</span>Health</Link>
@@ -16,8 +12,7 @@ const Header = () => {
                 <Link to="/clients">Our Clients</Link>
                 <Link to="">How it works</Link>
             </div>
-            <div className='hidden lg:flex items-center gap-3'>
-                {isConnected && <Link to="/dashboard"><Button size='lg' className='bg-[#2924A6] hover:bg-blue-800 font-clash_medium'>Dashboard</Button></Link>}
+            <div className='max-md:hidden gap-3'>
                 <WalletConnect />
             </div>
         </div>

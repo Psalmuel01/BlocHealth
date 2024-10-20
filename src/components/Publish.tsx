@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/dialog";
 import { IRecords } from "@/utils/interfaces";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export function Publish({ info, isValidated }: { info: IRecords, isValidated: boolean }) {
-    console.log({
-        info,
-        entries: Object.entries(info),
-    })
+    // console.log({
+    //     info,
+    //     entries: Object.entries(info),
+    // })
+    const navigate = useNavigate();
 
     return (
         <Dialog>
@@ -42,6 +44,10 @@ export function Publish({ info, isValidated }: { info: IRecords, isValidated: bo
                         onError={(e) => {
                             toast.error(e.message);
                             console.log(e.error);
+                        }}
+                        onSuccess={() => {
+                            toast.success("Record created successfully");
+                            navigate("/dashboard");
                         }}
                     />
                     {/* <Button
