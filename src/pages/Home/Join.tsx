@@ -13,11 +13,12 @@ import { useNavigate } from "react-router-dom";
 import useContractInteractions from "../Dashboard/useContractInteractions";
 import { useIsHospitalStaff } from "@/contexts/hooks";
 
+
 export function Join() {
     const navigate = useNavigate();
     const { hospitalID, setHospitalID } = useContractInteractions();
     const isStaff = useIsHospitalStaff(hospitalID);
-    console.log(isStaff);
+    // console.log(isStaff);
 
     const handleSubmit = () => {
         if (isStaff === undefined) {

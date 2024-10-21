@@ -1,50 +1,27 @@
-# React + TypeScript + Vite
+# BlocHealth
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BlocHealth is a platform that helps healthcare providers manage and store patient health records. It makes it easy to access records quickly, saving time and reducing mistakes. This helps to save lives and avoid wasting resources.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    • Authentication: Secure login to make sure that only authorized healthcare providers can access patient records.
+  
+    • Dashboard: A simple overview of all records, appointments, and activities to keep providers organized.
+    
+    • Create Record: Allows healthcare providers to add new patient records, keeping information up-to-date.
 
-## Expanding the ESLint configuration
+    • Profile: View and manage patient details, including their medical history and contact info.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+    • Appointment: Schedule and manage patient appointments, making it easier to keep track of visits.
 
-- Configure the top-level `parserOptions` property like this:
+    • Share Record: Share patient records safely with other providers or patients for better communication and care.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+    • Manage Staff: Add and manage staff, making sure each person has the right access.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## What's Next?
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. Mobile Access:
+2. Data Analytics
+3. Patient Portal
+4. Patient Health Reminders
+5. Multi-Language Support

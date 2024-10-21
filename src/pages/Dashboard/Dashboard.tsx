@@ -1,16 +1,17 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useIsHospitalOwner, useGetAllPatients, useHospital } from "@/contexts/hooks";
+import { useIsHospitalOwner, useGetAllPatients, useHospital, useGetPatientsAppointments } from "@/contexts/hooks";
 import useContractInteractions from "@/pages/Dashboard/useContractInteractions";
 import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 
 const Dashboard = () => {
   const { isConnected, address } = useAccount();
-  const { hospitalCount, hospitalID } = useContractInteractions();
+  const { hospitalID } = useContractInteractions();
   const allPatientsInfo = useGetAllPatients(hospitalID);
   const isHospitalOwner = useIsHospitalOwner(hospitalID, address);
   const hospital = useHospital(hospitalID);
+  const appointments = useGetPatientsAppointments(hospitalID, "0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
   const patientCount = allPatientsInfo?.length;
   // console.log(hospital && hospital[0]);
   // console.log(hospitalID);
@@ -30,7 +31,7 @@ const Dashboard = () => {
   return (
     <div className="max-md:mt-5 mb-10">
       <div className="bg-[#18166133] sticky flex max-md:flex-col max-md:gap-3 justify-between items-center py-8 px-14">
-        <p className="font-clash_semibold text-2xl">Admin Dashboard</p>
+        <p className="font-clash_semibold text-2xl">{isHospitalOwner ? 'Admin Dashboard' : 'Staff Dashboard'}</p>
         <Input placeholder="Search patients records" className="max-md:w-full rounded-xl w-1/2" />
       </div>
       <div className="max-md:p-10 px-5 lg:px-14 lg:min-h-screen">
@@ -61,7 +62,7 @@ const Dashboard = () => {
               <div>
                 <img src="/images/icon-park.png" alt="" className="w-16" />
               </div>
-              <p className="text-6xl font-clash_semibold">{hospitalCount}</p>
+              <p className="text-6xl font-clash_semibold">{appointments?.length}</p>
               <p>Appointments</p>
             </Link>
           </Card>

@@ -1,17 +1,24 @@
 import { Button } from "@/components/ui/button";
 import {
-    useGetPatientRecord,
+    useGetPatientRecord, useGetPatientsAppointments,
 } from "@/contexts/hooks";
 import { IEmergencyContact, IPatientReturnInfo } from "@/utils/interfaces";
 import { Cross1Icon, OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import useContractInteractions from "../useContractInteractions";
+import { shortenAddress } from "@/utils/constants";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const Patient = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { hospitalID } = useContractInteractions();
     const patientInfo = useGetPatientRecord(hospitalID, "0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
+    const appointments = useGetPatientsAppointments(hospitalID, "0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
+    console.log(appointments);
+    console.log(appointments && appointments[Number(id)]);
+
+    const appointment = appointments && appointments[Number(id)];
 
     if (!patientInfo || !Array.isArray(patientInfo)) {
         console.error("patientInfo is undefined or not an array");
@@ -23,8 +30,6 @@ const Patient = () => {
     }
 
     const [patientDetails, emergencyContacts] = patientInfo as [IPatientReturnInfo, IEmergencyContact[]];
-    // const patientDetails = patientInfo[0];
-    // const emergencyContacts = patientInfo.length > 1 && patientInfo[1];
 
     if (!patientDetails) {
         console.error("patientDetails is undefined");
@@ -70,26 +75,35 @@ const Patient = () => {
             <div className="mt-10 flex flex-col gap-14 max-md:gap-10">
                 <div className="flex max-md:flex-col gap-20 max-md:gap-10">
                     <div className="">
-                        <p className="font-clash_medium">Date of birth:</p>
-                        <p>{DOB ? new Date(Number(DOB) * 1000).toDateString() : 'N/A'}</p>
-                    </div>
-                    {/* <div className="lg:ml-[13%]">
-                        <p className="font-clash_medium">Diagnosis:</p>
-                        <p>{medicalInfo.diagnosis || 'N/A'}</p>
-                    </div> */}
-                </div>
-                <div className="flex flex-wrap gap-20 max-md:gap-10">
-                    <div className="lg:w-[20%]">
-                        <p className="font-clash_medium">Date of last visit:</p>
-                        <p>08/10/2024</p>
+                        <p className="font-clash_medium">Address:</p>
+                        <p>{shortenAddress('0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E') || 'None'}</p>
                     </div>
                     <div className="">
-                        <p className="font-clash_medium">Current medications:</p>
-                        <p>{medicalInfo.currentMedications || 'N/A'}</p>
+                        <p className="font-clash_medium">Date of birth:</p>
+                        <p>{DOB ? new Date(Number(DOB) * 1000).toDateString() : 'N/A'}</p>
                     </div>
                     <div className="">
                         <p className="font-clash_medium">Allergies:</p>
                         <p>{medicalInfo.allergies || 'None'}</p>
+                    </div>
+
+                </div>
+                <div className="flex flex-wrap gap-20 max-md:gap-10">
+                    <div className="lg:w-[20%]">
+                        <p className="font-clash_medium">Date of last visit:</p>
+                        <p>{new Date(Number(appointment.date) * 1000).toDateString() || 'N/A'}</p>
+                    </div>
+                    <div className="">
+                        <p className="font-clash_medium">Diagnosis:</p>
+                        <p>{appointment.diagnosis || 'N/A'}</p>
+                    </div>
+                    <div className="">
+                        <p className="font-clash_medium">Treatment Plan:</p>
+                        <p>{appointment.treatmentPlan || 'N/A'}</p>
+                    </div>
+                    <div className="">
+                        <p className="font-clash_medium">Current medications:</p>
+                        <p>{appointment.currentMedications || 'N/A'}</p>
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-20 max-md:gap-10">
@@ -107,24 +121,33 @@ const Patient = () => {
                     </div>
                 </div>
 
-                <div className="flex max-md:flex-wrap gap-20 max-md:gap-10">
+                <div className="flex flex-col max-md:flex-wrap gap-5">
                     <p className="font-clash_medium">Emergency Contacts:</p>
-                    <div className="flex flex-col justify-between gap-4">
-                        {emergencyContacts.length > 0 ? (
+                    <Table className="w-2/3 max-md:w-full">
+                        <TableHeader>
+                            <TableRow className="border-b-gray-500">
+                                <TableHead>Name</TableHead>
+                                <TableHead>Phone</TableHead>
+                                <TableHead>Address</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {emergencyContacts.length > 0 ? (
                             emergencyContacts.map((contact, index) => (
-                                <div key={index} className="flex gap-7 justify-between">
-                                    <p>Name: {contact.name}</p>
-                                    <p>Phone: {contact.phone}</p>
-                                    <p>Address: {contact.residentialAddress}</p>
-                                </div>
+                                <TableRow key={index} className="border-b-0">
+                                    <TableCell>{contact.name}</TableCell>
+                                    <TableCell>{contact.phone}</TableCell>
+                                    <TableCell>{contact.residentialAddress}</TableCell>
+                                </TableRow>
                             ))
                         ) : (
                             <p>No emergency contacts listed.</p>
                         )}
-                    </div>
+                        </TableBody>
+                    </Table>
                 </div>
 
-                <div className="mt-5 mb-10 flex max-md:flex-col gap-5 max-md:gap-3">
+                <div className="mb-10 flex max-md:flex-col gap-5 max-md:gap-3">
                     <Button
                         variant="outline"
                         size="lg"

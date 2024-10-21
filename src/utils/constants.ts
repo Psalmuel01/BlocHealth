@@ -8,3 +8,12 @@ export const epochToDateString = (epochTimestamp) => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 };
+
+export const shortenAddress = (address) => {
+    if (address.length > 16) {
+        const start = address.slice(0, 11);
+        const end = address.slice(-5);
+        return `${start}...${end}`;
+    }
+    return address;
+};

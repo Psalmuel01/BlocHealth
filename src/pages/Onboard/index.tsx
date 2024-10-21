@@ -35,7 +35,7 @@ const Onboard = () => {
             _DOE: hospitalInfo._DOE === 0 ? "Date of establishment is required" : "",
             _hospitalRegNo: hospitalInfo._hospitalRegNo === 0 ? "Hospital registration number is required" : ""
         };
-        setErrors(newErrors);
+        hospitalInfo._hospitalId.trim().length > 0 && setErrors(newErrors);
         return !Object.values(newErrors).some(errorMsg => errorMsg !== '');
         // return Object.values(newErrors).every((err) => err.length === 0);
     }
@@ -129,47 +129,6 @@ const Onboard = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="mt-5">
-                <p className="font-clash_medium">Add Staff Members</p>
-                <div className="mt-3 flex flex-col gap-4">
-                    <div className="flex max-md:flex-wrap items-center gap-3">
-                        <div className="w-full">
-                            <Input
-                                id="name"
-                                type="text"
-                                placeholder="Full name"
-                            />
-                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
-                        </div>
-                        <div className="w-full">
-                            <Input
-                                id="name"
-                                type="text"
-                                placeholder="Wallet address/basename"
-                            />
-                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
-                        </div>
-                    </div>
-                    <div className="flex max-md:flex-wrap items-center gap-3">
-                        <div className="w-full">
-                            <Input
-                                id="name"
-                                type="text"
-                                placeholder="Full name"
-                            />
-                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
-                        </div>
-                        <div className="w-full">
-                            <Input
-                                id="name"
-                                type="text"
-                                placeholder="Wallet address/basename"
-                            />
-                            {errors.fullName && <p className="mt-2 text-red-500 text-xs">{errors.fullName}</p>}
-                        </div>
-                    </div>
-                </div>
-            </div> */}
 
             <div className="mt-14 mb-10 flex items-end justify-between">
                 <div className="flex max-md:flex-col gap-5 max-md:gap-3">

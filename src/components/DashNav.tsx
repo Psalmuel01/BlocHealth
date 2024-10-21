@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
-import { WalletConnect } from './Connect';
 import { useAccount } from 'wagmi';
 import useContractInteractions from '@/pages/Dashboard/useContractInteractions';
 import { useIsHospitalOwner } from '@/contexts/hooks';
 import { BellIcon, DashboardIcon, FileIcon, PersonIcon } from '@radix-ui/react-icons';
+import { Button } from './ui/button';
 
 const DashNav = () => {
     const { address } = useAccount();
@@ -33,9 +33,9 @@ const DashNav = () => {
                 </DialogTrigger>
                 <DialogContent className="fixed h-full left-32 z-50 w-2/3 bg-[#100E40] text-white px-6 py-6">
                     <div className="flex items-end justify-start">
-                        <Link to="/" className="ml-10 text-xl">
+                        <div className="ml-10 text-xl">
                             <span className='font-clash_semibold'>Bloc</span>Health
-                        </Link>
+                        </div>
                     </div>
                     <div>
                         <div className="py-10 flex flex-col gap-5">
@@ -51,10 +51,9 @@ const DashNav = () => {
                             ))}
                         </div>
                         <div className="py-6">
-                            <WalletConnect />
+                            <Link to="/"><Button size="lg" className="mt-5 w-full font-clash_semibold bg-[#2924A6] hover:bg-blue-800">Logout</Button></Link>
                         </div>
                     </div>
-                    {/* </div> */}
                 </DialogContent>
             </Dialog>
         </div>

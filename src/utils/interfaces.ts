@@ -20,11 +20,11 @@ export interface IHospital {
   patientCount: bigint;
   owner: string;
   roles: {
-      [key: string]: IStaff;
+    [key: string]: IStaff;
   }
   patientAddresses: string[];
   patients: {
-      [key: string]: IPatient;
+    [key: string]: IPatient;
   }
 }
 
@@ -44,7 +44,7 @@ export interface IPatient {
   appointmentCount: bigint;
   appointmentDates: bigint[];
   appointments: {
-      [key: number]: IAppointment;
+    [key: number]: IAppointment;
   }
   emergencyContacts: IEmergencyContact[];
 }
@@ -105,14 +105,14 @@ export interface IUpdateStaffRoles {
 }
 
 export interface IRecords {
-   _hospitalId: string;
-   _patient: string;
-   _name: string;
-   _gender: Gender;
-   _DOB: number;
-   _contactInfo: IContactInfo;
-   _medicalInfo: IMedicalInfo;
-   _emergencyContacts: IEmergencyContact[];
+  _hospitalId: string;
+  _patient: string;
+  _name: string;
+  _gender: Gender;
+  _DOB: number;
+  _contactInfo: IContactInfo;
+  _medicalInfo: IMedicalInfo;
+  _emergencyContacts: IEmergencyContact[];
 }
 
 export interface IUploadAppointment {

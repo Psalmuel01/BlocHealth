@@ -13,7 +13,7 @@ import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 import NewRecord from "./pages/Dashboard/NewRecord.tsx";
 import Patients from "./pages/Dashboard/components/Patients.tsx";
 import Patient from "./pages/Dashboard/components/Patient.tsx";
-import Appointments from "./pages/Appointments/index.tsx";
+import Appointments from "./pages/Dashboard/components/Appointments.tsx";
 import Shared from "./pages/Dashboard/components/Shared.tsx";
 import Pending from "./pages/Dashboard/components/Pending.tsx";
 import { baseSepolia } from "wagmi/chains";

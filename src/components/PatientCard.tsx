@@ -13,6 +13,7 @@ const PatientCard = ({
 }) => {
   // const { hospitalID } = useContractInteractions();
   // const hospital = useHospital(hospitalID);
+  // console.log(hospital);
 
   return (
     <Card className="bg-[#35F3F324] p-3 px-5 w-[49%] max-md:w-full">

@@ -4,12 +4,13 @@ import { Cross1Icon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useGetPatientsAppointments } from "@/contexts/hooks"
-import useContractInteractions from "../Dashboard/useContractInteractions"
+import useContractInteractions from "../useContractInteractions"
 
 const Appointments = () => {
     const navigate = useNavigate();
     const { hospitalID } = useContractInteractions();
     const appointments = useGetPatientsAppointments(hospitalID, "0xB2AF542dA937A6aC46228eBA63f21A7EFc40C70E");
+    console.log(Object.values(appointments));
 
     return (
         <div className='pt-10 px-5 lg:px-20 min-h-screen'>
@@ -30,14 +31,17 @@ const Appointments = () => {
                                 <AccordionTrigger className="max-md:flex max-md:flex-col max-md:gap-2.5">
                                     <div className="flex-1 pr-10 flex max-md:text-center items-center gap-3">
                                         <img src="/images/cross.png" alt="" className="w-7" />
-                                        <p>You have an appointment with <span className="font-clash_medium">{appointment.reason}</span></p>
+                                        <p>You have an appointment with <span className="font-clash_medium">Dynamic</span></p>
                                     </div>
                                     <div className="">{new Date(Number(appointment.date) * 1000).toDateString()}</div>
                                     <div className="flex-1 text-center">{new Date(Number(appointment.date) * 1000).toLocaleTimeString('en-US', { hour: "2-digit", minute: "2-digit" })}</div>
 
                                 </AccordionTrigger>
-                                <AccordionContent className="flex gap-2 mt-2 max-md:justify-center">
+                                <AccordionContent className="flex max-md:flex-wrap gap-2 mt-2 justify-center">
                                     <span className="font-clash_medium">Reason:</span>{appointment.reason}
+                                    <span className="font-clash_medium">Medications:</span>{appointment.currentMedications}
+                                    <span className="font-clash_medium">Diagnosis:</span>{appointment.diagnosis}
+                                    <span className="font-clash_medium">Treatment:</span>{appointment.treatmentPlan}
                                 </AccordionContent>
                             </AccordionItem>
                         </Card>

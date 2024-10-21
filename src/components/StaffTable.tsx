@@ -6,17 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { shortenAddress } from "@/utils/constants";
 import { BookmarkIcon, TrashIcon } from "@radix-ui/react-icons";
-
-const shortenAddress = (address) => {
-    if (address.length > 16) {
-      const start = address.slice(0, 14);
-      const end = address.slice(-4);
-      return `${start}...${end}`;
-    }
-    return address;
-  };
-  
 
 const staffs = [
     {
@@ -28,51 +19,51 @@ const staffs = [
     {
         name: "Dr. Peace Alo",
         address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "$150.00",
+        phoneNo: "08055841810",
         email: "peacealo2@gmail.com",
     },
-    {
-        name: "Dr. Johnson Sule",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "08145693020",
-        email: "johnsule@gmail.com",
-    },
-    {
-        name: "Dr. Peace Alo",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "$150.00",
-        email: "peacealo2@gmail.com",
-    },
-    {
-        name: "Dr. Johnson Sule",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "08145693020",
-        email: "johnsule@gmail.com",
-    },
-    {
-        name: "Dr. Peace Alo",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "$150.00",
-        email: "peacealo2@gmail.com",
-    },
-    {
-        name: "Dr. Johnson Sule",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "08145693020",
-        email: "johnsule@gmail.com",
-    },
-    {
-        name: "Dr. Peace Alo",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "$150.00",
-        email: "peacealo2@gmail.com",
-    },
-    {
-        name: "Dr. Johnson Sule",
-        address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
-        phoneNo: "08145693020",
-        email: "johnsule@gmail.com",
-    },
+    // {
+    //     name: "Dr. Johnson Sule",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08145693020",
+    //     email: "johnsule@gmail.com",
+    // },
+    // {
+    //     name: "Dr. Peace Alo",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08055841810",
+    //     email: "peacealo2@gmail.com",
+    // },
+    // {
+    //     name: "Dr. Johnson Sule",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08145693020",
+    //     email: "johnsule@gmail.com",
+    // },
+    // {
+    //     name: "Dr. Peace Alo",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08055841810",
+    //     email: "peacealo2@gmail.com",
+    // },
+    // {
+    //     name: "Dr. Johnson Sule",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08145693020",
+    //     email: "johnsule@gmail.com",
+    // },
+    // {
+    //     name: "Dr. Peace Alo",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08055841810",
+    //     email: "peacealo2@gmail.com",
+    // },
+    // {
+    //     name: "Dr. Johnson Sule",
+    //     address: shortenAddress("0x2ds887dj2od98dklns887dj2od98dklns82od98"),
+    //     phoneNo: "08145693020",
+    //     email: "johnsule@gmail.com",
+    // },
 ]
 
 const StaffTable = () => {
@@ -82,8 +73,8 @@ const StaffTable = () => {
                 <TableRow className="font-clash_medium border-none shadow-sm">
                     <TableHead className="text-white text-center">Name</TableHead>
                     <TableHead className="text-white text-center">Wallet Address</TableHead>
-                    <TableHead className="text-white text-center">Phone Number</TableHead>
                     <TableHead className="text-white text-center">Email Address</TableHead>
+                    <TableHead className="text-white text-center">Phone Number</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
